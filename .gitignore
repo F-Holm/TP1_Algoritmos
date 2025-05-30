@@ -1,32 +1,77 @@
-# Prerequisites
-*.d
+# Archivos sin extención (Ejecutables de linux)
+*
+!/**/
+!*.*
 
-# Compiled Object files
-*.slo
-*.lo
+# Archivos de compilación
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
+*.lo
+*.slo
 *.la
 *.a
 *.lib
-
-# Executables
+*.dll
+*.so
+*.so.*
+*.dylib
 *.exe
 *.out
 *.app
+*.out
+*.run
+
+# Archivos de dependencias
+*.d
+
+# Archivos de logs y debug
+*.log
+*.stackdump
+core
+*.core
+
+# Archivos de CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+install_manifest.txt
+
+# Archivos generados por compiladores
+__pycache__/
+*.pch
+*.pdb
+*.idb
+*.class
+*.ilk
+*.tlog
+*.gch
+*.dSYM/
+
+# Archivos de IDEs (Visual Studio, CLion, etc.)
+.vscode/
+.idea/
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+# Archivos temporales
+*.tmp
+*.swp
+*.bak
+*.old
+*~
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Binarios y carpetas de salida comunes
+build/
+bin/
+dist/
+
+# Archivos de enlace intermedios
+*.so
+*.a
