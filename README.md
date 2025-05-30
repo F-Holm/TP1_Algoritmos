@@ -17,7 +17,7 @@ Hay scripts están para aquellos que no quieran utilizar Code::Blocks o Borland.
 
 ---
 
-Si quieren instalar clang y clang-format lo pueden hacer mediante:
+Si quieren instalar clang y clang-format lo pueden hacer mediante el siguiente comando:
 
 ```bash
 winget install --id LLVM.LLVM --source winget
