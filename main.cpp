@@ -16,27 +16,39 @@ struct Articulo {   // max 10.000 - desordenado
   float percio_uni;  // 6,2
 };
 
-struct Descripcion {  // ordenado por desc
+struct Descripcion {  // ordenado por descripción
   str30 desc_articulo;
   int pos_articulo;
   bool estado;
 };
 
-struct Rubro {  // hay 15 - ordenado
+struct Rubro {  // hay 15 - ordenado por codigo
   short cod_rubro;
   str20 desc_rubro;
 };
 
-struct ListaCompras {
+struct ListaCompras {  // desordenado
   str30 desc_articulo;
   short cant_requerida;  // 2 dígitos
 };
 
+const ushort kMaxArticulos = 10000;
+const ushort kCantRubros = 15;
+typedef Articulo Articulos[kMaxArticulos];
+typedef Descripcion Descripciones[kMaxArticulos];  // no se que tamaño
+typedef Rubro Rubros[kCantRubros];
+typedef ListaCompras ListasCompras[kMaxArticulos];  // no se que tamaño
+
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
+void Abrir(Articulos &Articulos, Descripciones &descripcion, Rubros &rubro,
+           ListasCompras &ListaCompras);
 
 int main() {
-  // Declarar variables
+  Articulos articulo;
+  Descripciones descripcion;
+  Rubros rubro;
+  ListasCompras ListaCompras;
 
   // Abrir(Articulos, IndDescripArt, Rubros, ListaCompras);
   // VolcarArchivos(lista de parámetros que
