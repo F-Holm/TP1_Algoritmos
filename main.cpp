@@ -4,6 +4,18 @@
 
 using namespace std;
 
+typedef char str30[31];
+typedef unsigned short ushort;
+
+struct Articulo{
+  int cod_ven;//8 dígitos
+  short cod_rubro;//2 dígitos
+  str30 desc_articulo;
+  ushort stock;//4 dígitos
+  float percio_uni;//6,2
+  
+};
+
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
 
