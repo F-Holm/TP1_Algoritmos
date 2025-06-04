@@ -5,15 +5,31 @@
 using namespace std;
 
 typedef char str30[31];
+typedef char str20[21];
 typedef unsigned short ushort;
 
-struct Articulo{
-  int cod_ven;//8 dígitos
-  short cod_rubro;//2 dígitos
+struct Articulo {   // max 10.000 - desordenado
+  int cod_ven;      // 8 dígitos
+  short cod_rubro;  // 2 dígitos
   str30 desc_articulo;
-  ushort stock;//4 dígitos
-  float percio_uni;//6,2
-  
+  ushort stock;      // 4 dígitos
+  float percio_uni;  // 6,2
+};
+
+struct Descripcion {  // ordenado por desc
+  str30 desc_articulo;
+  int pos_articulo;
+  bool estado;
+};
+
+struct Rubro {  // hay 15 - ordenado
+  short cod_rubro;
+  str20 desc_rubro;
+};
+
+struct ListaCompras {
+  str30 desc_articulo;
+  short cant_requerida;  // 2 dígitos
 };
 
 long GetTime(int &hh, int &mm, int &ss);
@@ -22,13 +38,13 @@ long GetDate(int &year, int &mes, int &dia, int &ds);
 int main() {
   // Declarar variables
 
-  Abrir(Articulos, IndDescripArt, Rubros, ListaCompras);
-  VolcarArchivos(lista de parámetros que
-                     correspondan);  // indicados por el grupo de trabajo.
-  ProcCompras(lista de parámetros que correspondan);
-  EmitirTicket(lista de parámetros que correspondan);
-  EmitirArt_x_Rubro(lista de parámetros que correspondan);
-  Cerrar(Articulos, IndDescripArt, Rubros, ListaCompras);
+  // Abrir(Articulos, IndDescripArt, Rubros, ListaCompras);
+  // VolcarArchivos(lista de parámetros que
+  //                    correspondan);  // indicados por el grupo de trabajo.
+  // ProcCompras(lista de parámetros que correspondan);
+  // EmitirTicket(lista de parámetros que correspondan);
+  // EmitirArt_x_Rubro(lista de parámetros que correspondan);
+  // Cerrar(Articulos, IndDescripArt, Rubros, ListaCompras);
   return 0;
 }
 
