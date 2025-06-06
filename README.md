@@ -48,11 +48,27 @@ Estos scripts utilizan `clang++` y `clang-format` que se instalan con el comando
 
 ## Comandos de git
 
-- `git clone https://github.com/F-Holm/TP1_Algoritmos.git`
-- `git add .`
-- `git commit -m "<nombre_commit>"`
-- `git push origin <nombre_branch>`
-- `git reset --hard`
-- `git status`
-- `git branch <nombre_branch>`
-- `git checkout <nombre_branch>`
+```bash
+git clone https://github.com/F-Holm/TP1_Algoritmos.git
+```
+```bash
+git add .
+```
+```bash
+git commit -m "<nombre_commit>"
+```
+```bash
+git push origin <nombre_branch>
+```
+```bash
+git reset --hard
+```
+```bash
+git status
+```
+```bash
+git branch <nombre_branch>
+```
+```bash
+git checkout <nombre_branch>
+```
