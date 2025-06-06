@@ -48,6 +48,8 @@ Estos scripts utilizan `clang++` y `clang-format` que se instalan con el comando
 
 ## Comandos de git
 
+Comandos útilies de git:
+
 ```bash
 git clone https://github.com/F-Holm/TP1_Algoritmos.git
 ```
