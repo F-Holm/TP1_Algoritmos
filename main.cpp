@@ -46,25 +46,26 @@ typedef IndDescripcion IndDescripciones[kMaxArticulos];
 typedef Rubro Rubros[kCantRubros];
 typedef Compra ListasCompras[kMaxArticulos];
 
-// Declaraciones de funciones
+// Declaraciones de funciones (las que dan error son las que no sabemos que tipo
+// de variable deberían ser sus parámetros)
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
-bool LeerArticulo(ifstream &archivo, Articulo &articulo);
-bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc);
-bool LeerRubro(ifstream &archivo, Rubro &rubro);
-bool LeerCompra(ifstream &archivo, Compra &ListaCompras);
-void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
-void CabeceraTicket(int &ds);
-void OrdxBur(tid tbl, tid card);
-void IntCmb(id &elem1, id &elem2);
-void ActLinea(fstream &arch_articulos, sid id);
-int BusBinVec(tbl id, tid clv, tid ult);
-string Replicate(char car, unsigned n);
+bool LeerArticulo(ifstream &archivo, Articulo &articulo);               // Falta
+bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc);      // Falta
+bool LeerRubro(ifstream &archivo, Rubro &rubro);                        // Falta
+bool LeerCompra(ifstream &archivo, Compra &ListaCompras);               // Falta
+void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
+void CabeceraTicket(int &ds);                                           // Falta
+void OrdxBur(tid tbl, tid card);                                        // Falta
+void IntCmb(id &elem1, id &elem2);                                      // Falta
+void ActLinea(fstream &arch_articulos, sid id);                         // Falta
+int BusBinVec(tbl id, tid clv, tid ult);                                // Falta
+string Replicate(char car, unsigned n);                                 // Falta
 void Abrir(fstream &arch_articulos, ifstream &arch_ind_desc,
-           ifstream &arch_rubros, ifstream &arch_compras);
+           ifstream &arch_rubros, ifstream &arch_compras);  // Falta
 void Cerrar(fstream &arch_articulos, ifstream &arch_ind_desc,
-            ifstream &arch_rubros, ifstream &arch_compras);
+            ifstream &arch_rubros, ifstream &arch_compras);  // Falta
 
 int main() {
   Articulos articulos;
