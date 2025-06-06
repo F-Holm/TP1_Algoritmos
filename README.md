@@ -22,7 +22,7 @@
 
 Si quieren utilizar algo más cómodo y moderno que Code::Blocks con Borland y con mensajes de error más claros:
 
-### Si escriben el siguiente comando en la terminal (cmd / powershell) se instalará un compilador moderno para C/C++
+Si escriben el siguiente comando en la terminal (cmd / powershell) se instalará un compilador moderno para C/C++
 
 ```bash
 winget install --id LLVM.LLVM --source winget
