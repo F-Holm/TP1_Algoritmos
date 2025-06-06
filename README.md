@@ -10,6 +10,7 @@
 ## Aclaraciones:
 
 - Cualquier duda le pasan esto a `ChatGPT` o me preguntan
+- Si se les hace dificil utilizar GitHub, pueden mandar por whatsapp las funciones que definan. No manden todo el archivo, solo los cambios
 - Todas las funciones deben ser declaradas arriba del main y definida abajo del mismo
 - Cada uno debe trabajar en una branch aparte. Esto es porque trabajamos sobre un solo archivo y puede generar muchos conflictos
 - cuando terminen de hacer su parte, avisen por el grupo. Si no detectamos ningún error se fusiona con la branch `main`
