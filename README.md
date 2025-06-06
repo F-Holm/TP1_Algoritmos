@@ -7,6 +7,15 @@
 
 ---
 
+## Aclaraciones:
+
+- Cualquier duda le pasan esto a `ChatGPT` o me preguntan
+- Todas las funciones deben ser declaradas arriba del main y definida abajo del mismo
+- Cada uno debe trabajar en una branch aparte. Esto es porque trabajamos sobre un solo archivo y puede generar muchos conflictos
+- cuando terminen de hacer su parte y están seguros de que funciona hacen una `pull request` y no la aprueben, avisen por el grupo y si no se detecta ningún error se fusiona con la branch `main`
+
+---
+
 ## Scripts
 
 Hay scripts están para aquellos que no quieran utilizar Code::Blocks o Borland. Estos van a ser eliminados en la entrega final.
@@ -17,8 +26,18 @@ Hay scripts están para aquellos que no quieran utilizar Code::Blocks o Borland.
 
 ---
 
-Si quieren instalar clang y clang-format lo pueden hacer mediante el siguiente comando:
+## VS Code
+
+Si quieren utilizar algo más cómodo y moderno que Code::Blocks y Borland y con mensajes de error más claros:
+
+#### Si escriben el siguiente comando en la terminal (cmd / powershell) se instalará un compilador moderno para C/C++
 
 ```bash
 winget install --id LLVM.LLVM --source winget
 ```
+
+### Extensiones recomendadas
+
+- `C/C++ Extension Pack`
+- `vscode-pdf`
+- `clangd`
