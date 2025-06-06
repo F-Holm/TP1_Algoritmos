@@ -20,7 +20,7 @@
 
 Si quieren utilizar algo más cómodo y moderno que Code::Blocks y Borland y con mensajes de error más claros:
 
-#### Si escriben el siguiente comando en la terminal (cmd / powershell) se instalará un compilador moderno para C/C++
+### Si escriben el siguiente comando en la terminal (cmd / powershell) se instalará un compilador moderno para C/C++
 
 ```bash
 winget install --id LLVM.LLVM --source winget
@@ -36,7 +36,7 @@ winget install --id LLVM.LLVM --source winget
 
 ## Scripts
 
-Hay scripts están para aquellos que no quieran utilizar Code::Blocks o Borland. Estos van a ser eliminados en la entrega final.
+Estos scripts utilizan `clang++` y `clang-format` que se instalan con el comando de arriba
 
 - `c.bat` se encarga de compilar `main.cpp` con el compilador clang++ que es más moderno y tiene mensajes de error más claros
 - `f.bat` se encarga de darle un formato estándar a `main.cpp`. Suele estar incluido con el compilador clang++
