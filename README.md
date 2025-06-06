@@ -20,7 +20,7 @@
 
 ## VS Code
 
-Si quieren utilizar algo más cómodo y moderno que Code::Blocks y Borland y con mensajes de error más claros:
+Si quieren utilizar algo más cómodo y moderno que Code::Blocks con Borland y con mensajes de error más claros:
 
 ### Si escriben el siguiente comando en la terminal (cmd / powershell) se instalará un compilador moderno para C/C++
 
@@ -43,3 +43,16 @@ Estos scripts utilizan `clang++` y `clang-format` que se instalan con el comando
 - `c.bat` se encarga de compilar `main.cpp` con el compilador clang++ que es más moderno y tiene mensajes de error más claros
 - `f.bat` se encarga de darle un formato estándar a `main.cpp`. Suele estar incluido con el compilador clang++
 - `l.bat` se encarga de eliminar todos los archivos temporales
+
+---
+
+## Comandos de git
+
+- `git clone https://github.com/F-Holm/TP1_Algoritmos.git`
+- `git add .`
+- `git commit -m ""`
+- `git push origin branch`
+- `git reset --hard`
+- `git status`
+- `git branch`
+- `git checkout`
