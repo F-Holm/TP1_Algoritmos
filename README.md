@@ -50,9 +50,9 @@ Estos scripts utilizan `clang++` y `clang-format` que se instalan con el comando
 
 - `git clone https://github.com/F-Holm/TP1_Algoritmos.git`
 - `git add .`
-- `git commit -m ""`
-- `git push origin branch`
+- `git commit -m "<nombre_commit>"`
+- `git push origin <nombre_branch>`
 - `git reset --hard`
 - `git status`
-- `git branch`
-- `git checkout`
+- `git branch <nombre_branch>`
+- `git checkout <nombre_branch>`
