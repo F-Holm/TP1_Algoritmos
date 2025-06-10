@@ -21,7 +21,7 @@
 
 ## VS Code
 
-Si quieren utilizar algo más cómodo y moderno que `Code::Blocks` con `Borland` y con mensajes de error más claros:
+Si quieren utilizar algo más cómodo, moderno y con mensajes de error más claros que `Code::Blocks` con `Borland:
 
 [Visual Studio code](https://code.visualstudio.com/download)
 
