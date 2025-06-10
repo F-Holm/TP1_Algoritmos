@@ -1,4 +1,5 @@
 // NO USAR MEMORIA DINÁMICA (new, delete, mallo, realloc, free)
+// Muchos comentarios van a ser eliminados en la entrega final
 #include <ctime>
 #include <fstream>
 #include <iostream>
@@ -10,11 +11,6 @@ typedef char str20[21];
 typedef char str10[11];
 typedef unsigned short ushort;
 
-// Constantes globales
-const ushort kMaxArticulos = 10000;
-const ushort kCantRubros = 15;
-
-// Registros / structs
 struct Articulo {   // max 10.000 - desordenado
   int cod_ven;      // 8 dígitos
   short cod_rubro;  // 2 dígitos
@@ -41,20 +37,31 @@ struct Compra {  // desordenado
   short cant_requerida;  // 2 dígitos
 };
 
+const ushort kMaxArticulos = 10000;
+const ushort kCantRubros = 15;
 typedef Articulo Articulos[kMaxArticulos];
 typedef IndDescripcion IndDescripciones[kMaxArticulos];
 typedef Rubro Rubros[kCantRubros];
-typedef Compra ListasCompras[kMaxArticulos];
+typedef Compra ListaCompras[kMaxArticulos];
 
-// Declaraciones de funciones (las que dan error son las que no sabemos que tipo
-// de variable deberían ser sus parámetros)
+#define ARCHIVOS                                                           \
+  fstream &arch_articulos, ifstream &arch_ind_desc, ifstream &arch_rubros, \
+      ifstream &arch_compras
+#define REGISTROS                                                        \
+  Articulos &articulos, IndDescripciones &descripciones, Rubros &rubros, \
+      ListaCompras &lista_compras
+
+// Declaraciones de funciones
+// Las que tienen comentario '// Falta' no están definidas
+// Las declaraciones que tienen errores son porque todavía no definimos los
+// parámetros de esa función
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
 bool LeerArticulo(ifstream &archivo, Articulo &articulo);               // Falta
 bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc);      // Falta
 bool LeerRubro(ifstream &archivo, Rubro &rubro);                        // Falta
-bool LeerCompra(ifstream &archivo, Compra &ListaCompras);               // Falta
+bool LeerCompra(ifstream &archivo, Compra &compra);                     // Falta
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
 void CabeceraTicket(int &ds);                                           // Falta
 void OrdxBur(tid tbl, tid card);                                        // Falta
@@ -62,25 +69,29 @@ void IntCmb(id &elem1, id &elem2);                                      // Falta
 void ActLinea(fstream &arch_articulos, sid id);                         // Falta
 int BusBinVec(tbl id, tid clv, tid ult);                                // Falta
 string Replicate(char car, unsigned n);                                 // Falta
-void Abrir(fstream &arch_articulos, ifstream &arch_ind_desc,
-           ifstream &arch_rubros, ifstream &arch_compras);  // Falta
-void Cerrar(fstream &arch_articulos, ifstream &arch_ind_desc,
-            ifstream &arch_rubros, ifstream &arch_compras);  // Falta
+void Abrir(ARCHIVOS);                                                   // Falta
+void VolcarArchivos(ARCHIVOS, REGISTROS);                               // Falta
+void ProcCompras(fstream &arch_articulos, Articulos &articulos,
+                 IndDescripciones &descripciones,
+                 ListaCompras &lista_compras);                 // Falta
+void EmitirTicket(lista de parámetros que correspondan);       // Falta
+void EmitirArt_x_Rubro(lista de parámetros que correspondan);  // Falta
+void Cerrar(ARCHIVOS);                                         // Falta
 
 int main() {
   Articulos articulos;
   IndDescripciones descripciones;
   Rubros rubros;
-  ListasCompras ListaCompras;
+  ListaCompras lista_compras;
   fstream arch_articulos;
   ifstream arch_ind_desc, arch_rubros, arch_compras;
 
   Abrir(arch_articulos, arch_ind_desc, arch_rubros, arch_compras);
-  // VolcarArchivos(lista de parámetros que
-  //                    correspondan);  // indicados por el grupo de trabajo.
-  // ProcCompras(lista de parámetros que correspondan);
-  // EmitirTicket(lista de parámetros que correspondan);
-  // EmitirArt_x_Rubro(lista de parámetros que correspondan);
+  VolcarArchivos(arch_articulos, arch_ind_desc, arch_rubros, arch_compras,
+                 articulos, descripciones, rubros, lista_compras);
+  ProcCompras(arch_articulos, articulos, descripciones, lista_compras);
+  EmitirTicket(parametros);
+  EmitirArt_x_Rubro(parametros);
   Cerrar(arch_articulos, arch_ind_desc, arch_rubros, arch_compras);
   return 0;
 }
