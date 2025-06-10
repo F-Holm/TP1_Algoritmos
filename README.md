@@ -47,7 +47,7 @@ La versión final la vamos a compilar con `Borland 5.5` en `Code::Blocks`
 Estos scripts utilizan `clang++` y `clang-format` que se instalan con el comando de arriba
 
 - `c.bat` se encarga de compilar `main.cpp` con el compilador clang++ que es más moderno y tiene mensajes de error más claros
-- `f.bat` se encarga de darle un formato estándar a `main.cpp`. Suele estar incluido con el compilador clang++
+- `f.bat` se encarga de darle un formato estándar a `main.cpp` con `clang-format`
 - `l.bat` se encarga de eliminar todos los archivos temporales
 
 ---
