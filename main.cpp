@@ -1,4 +1,4 @@
-// NO USAR MEMORIA DINÁMICA (new, delete, mallo, realloc, free)
+// NO USAR MEMORIA DINÁMICA (new, delete, malloc, realloc, free)
 // Muchos comentarios van a ser eliminados en la entrega final
 #include <ctime>
 #include <fstream>
