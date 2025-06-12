@@ -45,10 +45,11 @@ typedef IndDescripcion IndDescripciones[kMaxArticulos];
 typedef Rubro Rubros[kCantRubros];
 typedef Compra ListaCompras[kMaxArticulos];
 
-#define ARCHIVOS                                                           \
+#define ARCHIVOS_LECTURA                                                   \
   fstream &arch_articulos, ifstream &arch_ind_desc, ifstream &arch_rubros, \
-      ifstream &arch_compras, ofstream &arch_list_articulos,               \
-      ofstream &arch_ticket
+      ifstream &arch_compras
+#define ARCHIVOS \
+  ARCHIVOS_LECTURA, ofstream &arch_list_articulos, ofstream &arch_ticket
 #define REGISTROS                                                        \
   Articulos &articulos, IndDescripciones &descripciones, Rubros &rubros, \
       ListaCompras &lista_compras
@@ -72,7 +73,7 @@ void ActLinea(fstream &arch_articulos, sid id);                         // Falta
 int BusBinVec(tbl id, tid clv, tid ult);                                // Falta
 string Replicate(char car, ushort n);                                   // Falta
 void Abrir(ARCHIVOS);                                                   // Falta
-void VolcarArchivos(ARCHIVOS, REGISTROS);                               // Falta
+void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS);                       // Falta
 void ProcCompras(fstream &arch_articulos, Articulos &articulos,
                  IndDescripciones &descripciones,
                  ListaCompras &lista_compras);                 // Falta
@@ -85,17 +86,19 @@ int main() {
   IndDescripciones descripciones;
   Rubros rubros;
   ListaCompras lista_compras;
-  fstream arch_articulos;
-  ifstream arch_ind_desc, arch_rubros, arch_compras;
-  ofstream arch_list_articulos, arch_ticket;
+  fstream arch_articulos;                             // Lectura y Escritura
+  ifstream arch_ind_desc, arch_rubros, arch_compras;  // Lectura
+  ofstream arch_list_articulos, arch_ticket;          // Escritura
 
-  Abrir(arch_articulos, arch_ind_desc, arch_rubros, arch_compras);
+  Abrir(arch_articulos, arch_ind_desc, arch_rubros, arch_compras,
+        arch_list_articulos, arch_ticket);
   VolcarArchivos(arch_articulos, arch_ind_desc, arch_rubros, arch_compras,
                  articulos, descripciones, rubros, lista_compras);
   ProcCompras(arch_articulos, articulos, descripciones, lista_compras);
   EmitirTicket(parametros);
   EmitirArt_x_Rubro(parametros);
-  Cerrar(arch_articulos, arch_ind_desc, arch_rubros, arch_compras);
+  Cerrar(arch_articulos, arch_ind_desc, arch_rubros, arch_compras,
+         arch_list_articulos, arch_ticket);
   return 0;
 }
 

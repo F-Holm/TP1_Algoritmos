@@ -31,6 +31,13 @@
 		<Compiler>
 			<Add option="-w" />
 		</Compiler>
+		<Unit filename="Articulos.txt" />
+		<Unit filename="IndDescripArt.txt" />
+		<Unit filename="ListaCompras.txt" />
+		<Unit filename="ListadoArticulos.txt" />
+		<Unit filename="Rubros.txt" />
+		<Unit filename="Ticket.txt" />
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
