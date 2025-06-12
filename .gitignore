@@ -68,6 +68,7 @@ __pycache__/
 Thumbs.db
 
 # Binarios y carpetas de salida comunes
+obj/
 build/
 bin/
 dist/
