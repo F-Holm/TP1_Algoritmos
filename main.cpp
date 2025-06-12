@@ -2,6 +2,7 @@
 // Muchos comentarios van a ser eliminados en la entrega final
 #include <ctime>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 
 using namespace std;
@@ -46,7 +47,8 @@ typedef Compra ListaCompras[kMaxArticulos];
 
 #define ARCHIVOS                                                           \
   fstream &arch_articulos, ifstream &arch_ind_desc, ifstream &arch_rubros, \
-      ifstream &arch_compras
+      ifstream &arch_compras, ofstream &arch_list_articulos,               \
+      ofstream &arch_ticket
 #define REGISTROS                                                        \
   Articulos &articulos, IndDescripciones &descripciones, Rubros &rubros, \
       ListaCompras &lista_compras
@@ -68,7 +70,7 @@ void OrdxBur(tid tbl, tid card);                                        // Falta
 void IntCmb(id &elem1, id &elem2);                                      // Falta
 void ActLinea(fstream &arch_articulos, sid id);                         // Falta
 int BusBinVec(tbl id, tid clv, tid ult);                                // Falta
-string Replicate(char car, unsigned n);                                 // Falta
+string Replicate(char car, ushort n);                                   // Falta
 void Abrir(ARCHIVOS);                                                   // Falta
 void VolcarArchivos(ARCHIVOS, REGISTROS);                               // Falta
 void ProcCompras(fstream &arch_articulos, Articulos &articulos,
@@ -85,6 +87,7 @@ int main() {
   ListaCompras lista_compras;
   fstream arch_articulos;
   ifstream arch_ind_desc, arch_rubros, arch_compras;
+  ofstream arch_list_articulos, arch_ticket;
 
   Abrir(arch_articulos, arch_ind_desc, arch_rubros, arch_compras);
   VolcarArchivos(arch_articulos, arch_ind_desc, arch_rubros, arch_compras,
