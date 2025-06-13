@@ -56,7 +56,7 @@ typedef Compra ListaCompras[kMaxArticulos];
 
 // Declaraciones de funciones
 // Las que tienen comentario '// Falta' no están definidas
-// Puede que tengan que cambiar algunos parámetros
+// Puede que tengan que cambiar, eliminar o agregar algunos parámetros
 // Las declaraciones que tienen errores son porque todavía no definimos los
 // parámetros de esa función
 
@@ -72,19 +72,22 @@ void OrdxBur(Articulos &articulos, ushort card);                        // Falta
 void IntCmb(Articulo &elem1, Articulo &elem2);                          // Falta
 void ActLinea(fstream &arch_articulos, Articulo &articulo);             // Falta
 int BusBinVec(IndDescripciones &ind_descripciones, str30 &desc_articulo,
-              ushort ult);                         // Falta
-string Replicate(char car, ushort n);              // Falta
-void Abrir(ARCHIVOS);                              // Falta
-void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS);  // Falta
+              ushort ult);             // Falta
+string Replicate(char car, ushort n);  // Falta
+void Abrir(ARCHIVOS);                  // Falta
+void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cant_articulos,
+                    ushort &cant_compras);  // Falta
 void ProcCompras(fstream &arch_articulos, Articulos &articulos,
                  IndDescripciones &ind_descripciones,
-                 ListaCompras &lista_compras);  // Falta
+                 ListaCompras &lista_compras, ushort cant_articulos,
+                 ushort cant_compras);  // Falta
 void EmitirTicket(ofstream &archivo, Articulos &articulos,
                   IndDescripciones &ind_descripciones,
-                  ListaCompras &lista_compras);  // Falta
-void EmitirArt_x_Rubro(ofstream &archivo, Articulos &articulos,
-                       Rubros &rubros);  // Falta
-void Cerrar(ARCHIVOS);                   // Falta
+                  ListaCompras &lista_compras, ushort cant_articulos,
+                  ushort cant_compras);  // Falta
+void EmitirArt_x_Rubro(ofstream &archivo, Articulos &articulos, Rubros &rubros,
+                       ushort cant_articulos);  // Falta
+void Cerrar(ARCHIVOS);                          // Falta
 
 int main() {
   Articulos articulos;
@@ -94,15 +97,18 @@ int main() {
   fstream arch_articulos;                             // Lectura y Escritura
   ifstream arch_ind_desc, arch_rubros, arch_compras;  // Lectura
   ofstream arch_ticket, arch_list_articulos;          // Escritura
+  ushort cant_articulos = 0, cant_compras = 0;
 
   Abrir(arch_articulos, arch_ind_desc, arch_rubros, arch_compras, arch_ticket,
         arch_list_articulos);
   VolcarArchivos(arch_articulos, arch_ind_desc, arch_rubros, arch_compras,
-                 articulos, ind_descripciones, rubros, lista_compras);
-  ProcCompras(arch_articulos, articulos, ind_descripciones, lista_compras);
-  EmitirTicket(arch_list_articulos, articulos, ind_descripciones,
-               lista_compras);
-  EmitirArt_x_Rubro(arch_ticket, articulos, rubros);
+                 articulos, ind_descripciones, rubros, lista_compras,
+                 cant_articulos, cant_compras);
+  ProcCompras(arch_articulos, articulos, ind_descripciones, lista_compras,
+              cant_articulos, cant_compras);
+  EmitirTicket(arch_list_articulos, articulos, ind_descripciones, lista_compras,
+               cant_articulos, cant_compras);
+  EmitirArt_x_Rubro(arch_ticket, articulos, rubros, cant_articulos);
   Cerrar(arch_articulos, arch_ind_desc, arch_rubros, arch_compras, arch_ticket,
          arch_list_articulos);
   return 0;
