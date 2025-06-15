@@ -1,1 +1,1 @@
-clang-format -i -style=Google ./main.cpp
+clang-format -i ./main.cpp
