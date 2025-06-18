@@ -62,7 +62,7 @@ typedef Compra ListaCompras[kMaxArticulos];
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
-bool LeerArticulo(ifstream &archivo, Articulo &articulo);               // Falta
+bool LeerArticulo(fstream &archivo, Articulo &articulo);                // Falta
 bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc);      // Falta
 bool LeerRubro(ifstream &archivo, Rubro &rubro);                        // Falta
 bool LeerCompra(ifstream &archivo, Compra &compra);                     // Falta
@@ -150,6 +150,29 @@ void Abrir(ARCHIVOS) {
   arch_ticket.open("Ticket.txt");
   arch_list_articulos.open("ListadoArticulos.txt");
 }  // Abrir
+
+void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cant_articulos,
+                    ushort &cant_compras) {
+  Articulo art;
+  IndDescripcion ind_desc;
+  Rubro rub;
+  Compra comp;
+  cant_articulos = 0;
+  cant_compras = 0;
+
+  while (LeerArticulo(arch_articulos, art)) {
+    articulos[cant_articulos] = art;
+    cant_articulos++;
+  }
+  for (ushort i = 0; LeerDescripcion(arch_ind_desc, ind_desc); i++)
+    ind_descripciones[i] = ind_desc;
+  for (ushort i = 0; LeerRubro(arch_rubros, rub); i++)
+    rubros[i] = rub;
+  for (LeerCompra(arch_compras, comp)) {
+    lista_compras[cant_compras] = comp;
+    cant_compras++;
+  }
+}  // VolcarArchivos
 
 void Cerrar(ARCHIVOS) {
   arch_articulos.close();
