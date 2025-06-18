@@ -20,7 +20,8 @@ struct Articulo {   // max 10.000 - desordenado
   float percio_uni;  // 6,2
   str10 medida;
   short ofertas[14];  //= {tipo descuento; porcentaje; tipo; porcentaje...}
-};
+};  // Cada par de "ofertas" es de un dia específico de la semana
+// ofertas[0] = oferta_lunes
 
 struct IndDescripcion {  // ordenado por descripción
   str30 desc_articulo;
@@ -33,17 +34,18 @@ struct Rubro {  // hay 15 - ordenado por codigo
   str20 desc_rubro;
 };
 
-struct Compra {  // desordenado
+struct Compra {  // desordenado - máx 100
   str30 desc_articulo;
   short cant_requerida;  // 2 dígitos
 };
 
 const ushort kMaxArticulos = 10000;
 const ushort kCantRubros = 15;
+const ushort kMaxCompras = 100;
 typedef Articulo Articulos[kMaxArticulos];
 typedef IndDescripcion IndDescripciones[kMaxArticulos];
 typedef Rubro Rubros[kCantRubros];
-typedef Compra ListaCompras[kMaxArticulos];
+typedef Compra ListaCompras[kMaxCompras];
 
 #define ARCHIVOS_LECTURA                                                   \
   fstream &arch_articulos, ifstream &arch_ind_desc, ifstream &arch_rubros, \
@@ -62,18 +64,18 @@ typedef Compra ListaCompras[kMaxArticulos];
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
-bool LeerArticulo(fstream &archivo, Articulo &articulo);                // Falta
-bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc);      // Falta
-bool LeerRubro(ifstream &archivo, Rubro &rubro);                        // Falta
-bool LeerCompra(ifstream &archivo, Compra &compra);                     // Falta
+bool LeerArticulo(fstream &archivo, Articulo &articulo);
+bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc);
+bool LeerRubro(ifstream &archivo, Rubro &rubro);
+bool LeerCompra(ifstream &archivo, Compra &compra);
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
 void CabeceraTicket(int &ds);                                           // Falta
 void OrdxBur(Articulos &articulos, ushort card);                        // Falta
-void IntCmb(Articulo &elem1, Articulo &elem2);                          // Falta
-void ActLinea(fstream &arch_articulos, Articulo &articulo);             // Falta
+void IntCmb(Articulo &elem1, Articulo &elem2);
+void ActLinea(fstream &arch_articulos, Articulo &articulo);  // Falta
 int BusBinVec(IndDescripciones &ind_descripciones, str30 &desc_articulo,
               ushort ult);             // Falta
-string Replicate(char car, ushort n);  // Falta
+string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cant_articulos,
                     ushort &cant_compras);
@@ -141,6 +143,51 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
   return (1900 + timeinfo->tm_year) * 10000 + (1 + timeinfo->tm_mon) * 100 +
          timeinfo->tm_mday;
 }  // GetDate
+
+bool LeerArticulo(ifstream &archivo, Articulo &articulo) {
+  archivo >> articulo.cod_ven >> articulo.cod_rubro;
+  archivo.get(articulo.desc_articulo,31);
+  archivo >> articulo.stock >> articulo.percio_uni;
+  archivo.get(articulo.medida,11);
+  for (short i = 0;i < 14;i++)
+    archivo >> articulo.ofertas[i];
+  archivo.ignore();
+  return archivo.good();
+}
+
+bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc) {
+  archivo.get(ind_desc.desc_articulo,31);
+  archivo >> ind_desc.pos_articulo >> ind_desc.estado;
+  archivo.ignore();
+  return archivo.good();
+}
+
+bool LeerRubro(ifstream &archivo, Rubro &rubro) {
+  archivo >> rubro.cod_rubro;
+  archivo.get(rubro.desc_rubro,21);
+  archivo.ignore();
+  return archivo.good();
+}
+
+bool LeerCompra(ifstream &archivo, Compra &compra) {
+  archivo.get(compra.desc_articulo,31);
+  archivo >> compra.cant_requerida;
+  archivo.ignore();
+  return archivo.good();
+}
+
+void IntCmb(Articulo &elem1, Articulo &elem2) {
+  Articulo auxiliar = elem1;
+  elem1 = elem2;
+  elem2 = auxiliar;
+}  // IntCmb
+
+string Replicate(char car, ushort n) {
+  string resultado = "";
+  for (ushort i = 0; i < n; i++)
+    resultado += car;
+  return resultado;
+}  // Replicate
 
 void Abrir(ARCHIVOS) {
   arch_articulos.open("Articulos.txt", ios::in | ios::out);
