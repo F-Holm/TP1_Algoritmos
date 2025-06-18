@@ -66,7 +66,7 @@ bool LeerArticulo(fstream &Art, tsArt &sArt);
 bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc);
 bool LeerRubro(ifstream &Rub, tsRub &sRub);
 bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra);
-void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
+void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  
 void CabeceraTicket(int &ds);                                           // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);                               
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
@@ -81,8 +81,7 @@ void ProcCompras(fstream &Art, tvsArt &vsArt, tvsIndDesc &vsIndDesc,
 void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmp &vsListCmpr,
                   ushort cantArt, ushort cantCmpr);                    // Falta
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt);  // Falta
-void Cerrar(
-  ARCHIVOS);
+void Cerrar(ARCHIVOS);
 
 int main() {
   tvsArt vsArt;
@@ -131,7 +130,7 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
          timeinfo->tm_mday;
 }  // GetDate
 
-bool LeerArticulo(ifstream &Arc, tsArt &sArt) {
+bool LeerArticulo(fstream &Arc, tsArt &sArt) {
   Arc >> sArt.codVen >> sArt.codRub;
   Arc.get(sArt.descArt, 31);
   Arc >> sArt.stock >> sArt.preUni;
@@ -162,6 +161,43 @@ bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra) {
   ListCmpr.ignore();
   return ListCmpr.good();
 }  // LeerCompra
+
+void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
+  float pagoUsuario = 1500.00;
+
+  float vuelto = pagoUsuario - impTotConDesto;
+
+  cout << fixed << setprecision(2);
+  cout << Replicate('-', 40) << endl;
+  cout << left << setw(28) << "Total bruto:" << "$ " << setw(9) << impTot << endl;
+  cout << left << setw(28) << "Descuento aplicado:" << "$ " << setw(9) << impTotDesto << endl;
+  cout << left << setw(28) << "Total a pagar:" << "$ " << setw(9) << impTotConDesto << endl;
+  cout << left << setw(28) << "Su pago con Tipo Pago:" << "$ " << setw(9) << pagoUsuario << endl;
+  cout << left << setw(28) << "Su vuelto:" << "$ " << setw(9) << vuelto << endl;
+  cout << endl;
+  cout << "         G R A C I A S  P O R  S U  C O M P R A" << endl;
+  cout << "Para consultas, sugerencias o reclamos" << endl;
+  cout << "comunicarse al correo infoKotto.com.ar" << endl;
+  cout << Replicate('-', 40) << endl;
+}
+
+void OrdxBur(tvsArt &vsArt, ushort card) {
+ bool hayCambios;
+ ushort k = 0;
+
+ do {
+   hayCambios = false;
+   k++;
+
+   for (ushort i = 0; i < card - k; i++) {
+     if (strcmp(vsArt[i].descArt, vsArt[i + 1].descArt) > 0) {
+       IntCmb(vsArt[i], vsArt[i + 1]);
+       hayCambios = true;
+     }
+   }
+ } while (hayCambios);
+
+}    
 
 void IntCmb(tsArt &sElem1, tsArt &sElem2) {
   tsArt auxiliar = sElem1;
@@ -211,21 +247,3 @@ void Cerrar(ARCHIVOS) {
   Rub.close();
   ListCmpr.close();
 }  // Cerrar
-
-void OrdxBur(tvsArt &vsArt, ushort card) {
- bool hayCambios;
- ushort k = 0;
-
- do {
-   hayCambios = false;
-   k++;
-
-   for (ushort i = 0; i < card - k; i++) {
-     if (strcmp(vsArt[i].descArt, vsArt[i + 1].descArt) > 0) {
-       IntCmb(vsArt[i], vsArt[i + 1]);
-       hayCambios = true;
-     }
-   }
- } while (hayCambios);
-
-}                             
