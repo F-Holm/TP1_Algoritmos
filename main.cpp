@@ -60,10 +60,10 @@ typedef tsCompra tvsListCmp[MAX_ART];  // lista compras
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
-bool LeerArticulo(ifstream &arch, tsArt &sArt);                         // Falta
-bool LeerDescripcion(ifstream &arch, tsIndDesc &sIndDesc);              // Falta
-bool LeerRubro(ifstream &arch, tsRub &sRub);                            // Falta
-bool LeerCompra(ifstream &arch, tsCompra &sCompra);                     // Falta
+bool LeerArticulo(ifstream &Art, tsArt &sArt);                          // Falta
+bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc);           // Falta
+bool LeerRubro(ifstream &Rub, tsRub &sRub);                             // Falta
+bool LeerCompra(ifstream &ListCmp, tsCompra &sCompra);                  // Falta
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
 void CabeceraTicket(int &ds);                                           // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);                               // Falta
@@ -77,10 +77,10 @@ void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cantArt,
 void ProcCompras(fstream &Art, tvsArt &vsArt, tvsIndDesc &vsIndDesc,
                  tvsListCmp &vsListCmp, ushort cantArt,
                  ushort cantCmp);  // Falta
-void EmitirTicket(ofstream &arch, tvsArt &vsArt, tvsIndDesc &vsIndDesc,
+void EmitirTicket(ofstream &Ticket, tvsArt &vsArt, tvsIndDesc &vsIndDesc,
                   tvsListCmp &vsListCmp, ushort cantArt,
                   ushort cantCmp);  // Falta
-void EmitirArt_x_Rubro(ofstream &arch, tvsArt &vsArt, tvsRub &vsRub,
+void EmitirArt_x_Rubro(ofstream &ListArt, tvsArt &vsArt, tvsRub &vsRub,
                        ushort cantArt);  // Falta
 void Cerrar(ARCHIVOS);                   // Falta
 
