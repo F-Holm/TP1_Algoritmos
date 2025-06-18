@@ -68,7 +68,7 @@ bool LeerRubro(ifstream &Rub, tsRub &sRub);
 bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra);
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
 void CabeceraTicket(int &ds);                                           // Falta
-void OrdxBur(tvsArt &vsArt, ushort card);                               // Falta
+void OrdxBur(tvsArt &vsArt, ushort card);                               
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
 void ActLinea(fstream &Art, tsArt &sArt);                          // Falta
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);  // Falta
@@ -81,7 +81,8 @@ void ProcCompras(fstream &Art, tvsArt &vsArt, tvsIndDesc &vsIndDesc,
 void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmp &vsListCmpr,
                   ushort cantArt, ushort cantCmpr);                    // Falta
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt);  // Falta
-void Cerrar(ARCHIVOS);
+void Cerrar(
+  ARCHIVOS);
 
 int main() {
   tvsArt vsArt;
@@ -210,3 +211,21 @@ void Cerrar(ARCHIVOS) {
   Rub.close();
   ListCmpr.close();
 }  // Cerrar
+
+void OrdxBur(tvsArt &vsArt, ushort card) {
+ bool hayCambios;
+ ushort k = 0;
+
+ do {
+   hayCambios = false;
+   k++;
+
+   for (ushort i = 0; i < card - k; i++) {
+     if (strcmp(vsArt[i].descArt, vsArt[i + 1].descArt) > 0) {
+       IntCmb(vsArt[i], vsArt[i + 1]);
+       hayCambios = true;
+     }
+   }
+ } while (hayCambios);
+
+}                             
