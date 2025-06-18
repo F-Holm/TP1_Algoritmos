@@ -154,10 +154,22 @@ bool LeerArticulo(ifstream &archivo, Articulo &articulo) {
 }
 
 bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc) {
+  archivo.get(ind_desc.desc_articulo,31);
+  archivo >> ind_desc.pos_articulo >> ind_desc.estado;
+  archivo.ignore();
+  return archivo.good();
 }
 
 bool LeerRubro(ifstream &archivo, Rubro &rubro) {
+  archivo >> rubro.cod_rubro;
+  archivo.get(rubro.desc_rubro,21);
+  archivo.ignore();
+  return archivo.good();
 }
 
 bool LeerCompra(ifstream &archivo, Compra &compra) {
+  archivo.get(compra.desc_articulo,31);
+  archivo >> compra.cant_requerida;
+  archivo.ignore();
+  return archivo.good();
 }
