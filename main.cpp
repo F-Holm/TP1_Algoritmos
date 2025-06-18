@@ -20,7 +20,8 @@ struct Articulo {   // max 10.000 - desordenado
   float percio_uni;  // 6,2
   str10 medida;
   short ofertas[14];  //= {tipo descuento; porcentaje; tipo; porcentaje...}
-};
+};  // Cada par de "ofertas" es de un dia específico de la semana
+// ofertas[0] = oferta_lunes
 
 struct IndDescripcion {  // ordenado por descripción
   str30 desc_articulo;
