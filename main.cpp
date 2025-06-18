@@ -62,10 +62,10 @@ typedef Compra ListaCompras[kMaxArticulos];
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
-bool LeerArticulo(ifstream &archivo, Articulo &articulo);               // Falta
-bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc);      // Falta
-bool LeerRubro(ifstream &archivo, Rubro &rubro);                        // Falta
-bool LeerCompra(ifstream &archivo, Compra &compra);                     // Falta
+bool LeerArticulo(ifstream &archivo, Articulo &articulo);
+bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc);
+bool LeerRubro(ifstream &archivo, Rubro &rubro);
+bool LeerCompra(ifstream &archivo, Compra &compra);
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
 void CabeceraTicket(int &ds);                                           // Falta
 void OrdxBur(Articulos &articulos, ushort card);                        // Falta
@@ -141,3 +141,23 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
   return (1900 + timeinfo->tm_year) * 10000 + (1 + timeinfo->tm_mon) * 100 +
          timeinfo->tm_mday;
 }  // GetDate
+
+bool LeerArticulo(ifstream &archivo, Articulo &articulo) {
+  archivo >> articulo.cod_ven >> articulo.cod_rubro;
+  archivo.get(articulo.desc_articulo,31);
+  archivo >> articulo.stock >> articulo.percio_uni;
+  archivo.get(articulo.medida,11);
+  for (short i = 0;i < 14;i++)
+    archivo >> articulo.ofertas[i];
+  archivo.ignore();
+  return archivo.good();
+}
+
+bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc) {
+}
+
+bool LeerRubro(ifstream &archivo, Rubro &rubro) {
+}
+
+bool LeerCompra(ifstream &archivo, Compra &compra) {
+}
