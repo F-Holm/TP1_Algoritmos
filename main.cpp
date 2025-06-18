@@ -66,7 +66,7 @@ bool LeerArticulo(fstream &Art, tsArt &sArt);
 bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc);
 bool LeerRubro(ifstream &Rub, tsRub &sRub);
 bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra);
-void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
+void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  
 void CabeceraTicket(int &ds);                                           // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);                               // Falta
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
@@ -210,3 +210,21 @@ void Cerrar(ARCHIVOS) {
   Rub.close();
   ListCmpr.close();
 }  // Cerrar
+void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
+  float pagoUsuario = 1500.00;
+
+  float vuelto = pagoUsuario - impTotConDesto;
+
+  cout << fixed << setprecision(2);
+  cout << Replicate('-', 40) << endl;
+  cout << left << setw(28) << "Total bruto:" << "$ " << setw(9) << impTot << endl;
+  cout << left << setw(28) << "Descuento aplicado:" << "$ " << setw(9) << impTotDesto << endl;
+  cout << left << setw(28) << "Total a pagar:" << "$ " << setw(9) << impTotConDesto << endl;
+  cout << left << setw(28) << "Su pago con Tipo Pago:" << "$ " << setw(9) << pagoUsuario << endl;
+  cout << left << setw(28) << "Su vuelto:" << "$ " << setw(9) << vuelto << endl;
+  cout << endl;
+  cout << "         G R A C I A S  P O R  S U  C O M P R A" << endl;
+  cout << "Para consultas, sugerencias o reclamos" << endl;
+  cout << "comunicarse al correo infoKotto.com.ar" << endl;
+  cout << Replicate('-', 40) << endl;
+}
