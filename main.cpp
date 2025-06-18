@@ -76,7 +76,7 @@ int BusBinVec(IndDescripciones &ind_descripciones, str30 &desc_articulo,
 string Replicate(char car, ushort n);  // Falta
 void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cant_articulos,
-                    ushort &cant_compras);  // Falta
+                    ushort &cant_compras);
 void ProcCompras(fstream &arch_articulos, Articulos &articulos,
                  IndDescripciones &ind_descripciones,
                  ListaCompras &lista_compras, ushort cant_articulos,
@@ -168,7 +168,7 @@ void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cant_articulos,
     ind_descripciones[i] = ind_desc;
   for (ushort i = 0; LeerRubro(arch_rubros, rub); i++)
     rubros[i] = rub;
-  for (LeerCompra(arch_compras, comp)) {
+  while (LeerCompra(arch_compras, comp)) {
     lista_compras[cant_compras] = comp;
     cant_compras++;
   }
