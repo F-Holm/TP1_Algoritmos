@@ -34,17 +34,18 @@ struct Rubro {  // hay 15 - ordenado por codigo
   str20 desc_rubro;
 };
 
-struct Compra {  // desordenado
+struct Compra {  // desordenado - máx 100
   str30 desc_articulo;
   short cant_requerida;  // 2 dígitos
 };
 
 const ushort kMaxArticulos = 10000;
 const ushort kCantRubros = 15;
+const ushort kMaxCompras = 100;
 typedef Articulo Articulos[kMaxArticulos];
 typedef IndDescripcion IndDescripciones[kMaxArticulos];
 typedef Rubro Rubros[kCantRubros];
-typedef Compra ListaCompras[kMaxArticulos];
+typedef Compra ListaCompras[kMaxCompras];
 
 #define ARCHIVOS_LECTURA                                                   \
   fstream &arch_articulos, ifstream &arch_ind_desc, ifstream &arch_rubros, \
@@ -70,12 +71,12 @@ bool LeerCompra(ifstream &archivo, Compra &compra);                     // Falta
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
 void CabeceraTicket(int &ds);                                           // Falta
 void OrdxBur(Articulos &articulos, ushort card);                        // Falta
-void IntCmb(Articulo &elem1, Articulo &elem2);                          // Falta
-void ActLinea(fstream &arch_articulos, Articulo &articulo);             // Falta
+void IntCmb(Articulo &elem1, Articulo &elem2);
+void ActLinea(fstream &arch_articulos, Articulo &articulo);  // Falta
 int BusBinVec(IndDescripciones &ind_descripciones, str30 &desc_articulo,
-              ushort ult);             // Falta
-string Replicate(char car, ushort n);  // Falta
-void Abrir(ARCHIVOS);                  // Falta
+              ushort ult);  // Falta
+string Replicate(char car, ushort n);
+void Abrir(ARCHIVOS);  // Falta
 void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cant_articulos,
                     ushort &cant_compras);  // Falta
 void ProcCompras(fstream &arch_articulos, Articulos &articulos,
@@ -142,3 +143,14 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
   return (1900 + timeinfo->tm_year) * 10000 + (1 + timeinfo->tm_mon) * 100 +
          timeinfo->tm_mday;
 }  // GetDate
+
+void IntCmb(Articulo &elem1, Articulo &elem2) {
+
+}
+
+string Replicate(char car, ushort n) {
+  string resultado = "";
+  for (ushort i = 0; i < n; i++)
+    resultado += car;
+  return resultado;
+}
