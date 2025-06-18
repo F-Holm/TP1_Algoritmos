@@ -74,7 +74,7 @@ void ActLinea(fstream &arch_articulos, Articulo &articulo);             // Falta
 int BusBinVec(IndDescripciones &ind_descripciones, str30 &desc_articulo,
               ushort ult);             // Falta
 string Replicate(char car, ushort n);  // Falta
-void Abrir(ARCHIVOS);                  // Falta
+void Abrir(ARCHIVOS);                
 void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cant_articulos,
                     ushort &cant_compras);  // Falta
 void ProcCompras(fstream &arch_articulos, Articulos &articulos,
@@ -87,7 +87,7 @@ void EmitirTicket(ofstream &archivo, Articulos &articulos,
                   ushort cant_compras);  // Falta
 void EmitirArt_x_Rubro(ofstream &archivo, Articulos &articulos, Rubros &rubros,
                        ushort cant_articulos);  // Falta
-void Cerrar(ARCHIVOS);                          // Falta
+void Cerrar(ARCHIVOS);                        
 
 int main() {
   Articulos articulos;
@@ -141,3 +141,21 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
   return (1900 + timeinfo->tm_year) * 10000 + (1 + timeinfo->tm_mon) * 100 +
          timeinfo->tm_mday;
 }  // GetDate
+
+void Abrir(ARCHIVOS){
+  arch_articulos.open("Articulos.txt", ios::in | ios::out);
+  arch_ind_desc.open("IndDescripArt.txt");
+  arch_rubros.open("Rubros.txt");
+  arch_compras.open("ListaCompras.txt");
+  arch_ticket.open("Ticket.txt");
+  arch_list_articulos.open("ListadoArticulos.txt");
+} // Abrir
+
+void Cerrar(ARCHIVOS){
+  arch_articulos.close();
+  arch_ind_desc.close();
+  arch_rubros.close();
+  arch_compras.close();
+  arch_ticket.close();
+  arch_list_articulos.close();
+} // Cerrar
