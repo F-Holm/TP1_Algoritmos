@@ -145,12 +145,14 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
 }  // GetDate
 
 void IntCmb(Articulo &elem1, Articulo &elem2) {
-
-}
+  Articulo auxiliar = elem1;
+  elem1 = elem2;
+  elem2 = auxiliar;
+}  // IntCmb
 
 string Replicate(char car, ushort n) {
   string resultado = "";
   for (ushort i = 0; i < n; i++)
     resultado += car;
   return resultado;
-}
+}  // Replicate
