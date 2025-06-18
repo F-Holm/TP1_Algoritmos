@@ -47,9 +47,9 @@ typedef tsRub tvsRub[CANT_RUB];
 typedef tsCompra tvsListCmp[MAX_ART];  // lista compras
 
 #define ARCHIVOS_LECTURA                                      \
-  fstream &archArt, ifstream &archIndDesc, ifstream &archRub, \
-      ifstream &archListCmp
-#define ARCHIVOS ARCHIVOS_LECTURA, ofstream &archTicket, ofstream &archListArt
+  fstream &Art, ifstream &IndDesc, ifstream &Rub, \
+      ifstream &ListCmp
+#define ARCHIVOS ARCHIVOS_LECTURA, ofstream &Ticket, ofstream &ListArt
 #define REGISTROS \
   tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsRub &vsRub, tvsListCmp &vsListCmp
 
@@ -69,20 +69,14 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
 void CabeceraTicket(int &ds);                                           // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);                               // Falta
 void IntCmb(tsArt &sElem1, tsArt &sElem2);                              // Falta
-void ActLinea(fstream &archArt, tsArt &sArt);                           // Falta
+void ActLinea(fstream &Art, tsArt &sArt);                           // Falta
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);       // Falta
 string Replicate(char car, ushort n);                                   // Falta
 void Abrir(ARCHIVOS);                                                   // Falta
-void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cantArt,
-                    ushort &cantCmp);  // Falta
-void ProcCompras(fstream &archArt, tvsArt &vsArt, tvsIndDesc &vsIndDesc,
-                 tvsListCmp &vsListCmp, ushort cantArt,
-                 ushort cantCmp);  // Falta
-void EmitirTicket(ofstream &arch, tvsArt &vsArt, tvsIndDesc &vsIndDesc,
-                  tvsListCmp &vsListCmp, ushort cantArt,
-                  ushort cantCmp);  // Falta
-void EmitirArt_x_Rubro(ofstream &arch, tvsArt &vsArt, tvsRub &vsRub,
-                       ushort cantArt);  // Falta
+void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cantArt,ushort &cantCmp);  // Falta
+void ProcCompras(fstream &Art, tvsArt &vsArt, tvsIndDesc &vsIndDesc,tvsListCmp &vsListCmp, ushort cantArt,ushort cantCmp);  // Falta
+void EmitirTicket(ofstream &arch, tvsArt &vsArt, tvsIndDesc &vsIndDesc,tvsListCmp &vsListCmp, ushort cantArt,ushort cantCmp);  // Falta
+void EmitirArt_x_Rubro(ofstream &arch, tvsArt &vsArt, tvsRub &vsRub,ushort cantArt);  // Falta
 void Cerrar(ARCHIVOS);                   // Falta
 
 int main() {
@@ -90,18 +84,17 @@ int main() {
   tvsIndDesc vsIndDesc;
   tvsRub vsRub;
   tvsListCmp vsListCmp;
-  fstream archArt;                         // Lectura y Escritura
-  ifstream archIndDesc, archRub, archCmp;  // Lectura
-  ofstream archTicket, archListArt;        // Escritura
+  fstream Art;                         // Lectura y Escritura
+  ifstream IndDesc, Rub, ListCmp;  // Lectura
+  ofstream Ticket, ListArt;        // Escritura
   ushort cantArt = 0, cantCmp = 0;
 
-  Abrir(archArt, archIndDesc, archRub, archCmp, archTicket, archListArt);
-  VolcarArchivos(archArt, archIndDesc, archRub, archCmp, vsArt, vsIndDesc,
-                 vsRub, vsListCmp, cantArt, cantCmp);
-  ProcCompras(archArt, vsArt, vsIndDesc, vsListCmp, cantArt, cantCmp);
-  EmitirTicket(archListArt, vsArt, vsIndDesc, vsListCmp, cantArt, cantCmp);
-  EmitirArt_x_Rubro(archTicket, vsArt, vsRub, cantArt);
-  Cerrar(archArt, archIndDesc, archRub, archCmp, archTicket, archListArt);
+  Abrir(Art, IndDesc, Rub, ListCmp, Ticket, ListArt);
+  VolcarArchivos(Art, IndDesc, Rub, ListCmp, vsArt, vsIndDesc,vsRub, vsListCmp, cantArt, cantCmp);
+  ProcCompras(Art, vsArt, vsIndDesc, vsListCmp, cantArt, cantCmp);
+  EmitirTicket(ListArt, vsArt, vsIndDesc, vsListCmp, cantArt, cantCmp);
+  EmitirArt_x_Rubro(Ticket, vsArt, vsRub, cantArt);
+  Cerrar(Art, IndDesc, Rub, ListCmp, Ticket, ListArt);
   return 0;
 }
 
