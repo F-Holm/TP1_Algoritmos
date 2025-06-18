@@ -1,5 +1,6 @@
 // NO USAR MEMORIA DINÁMICA (new, delete, malloc, realloc, free)
 // Muchos comentarios van a ser eliminados en la entrega final
+#include <cstdio>
 #include <ctime>
 #include <fstream>
 #include <iomanip>
@@ -16,8 +17,8 @@ struct tsArt {   // max 10.000 - desordenado
   int codVen;    // 8 dígitos
   short codRub;  // 2 dígitos
   str30 descArt;
-  ushort stock;     // 4 dígitos
-  float percioUni;  // 6,2
+  ushort stock;  // 4 dígitos
+  float preUni;  // 6,2
   str10 medida;
   short ofertas[14];  //= {tipo descuento; porcentaje; tipo; porcentaje...}
 };  // Cada par de "ofertas" es de un dia específico de la semana
@@ -47,11 +48,10 @@ typedef tsIndDesc tvsIndDesc[MAX_ART];
 typedef tsRub tvsRub[CANT_RUB];
 typedef tsCompra tvsListCmp[MAX_COMPRAS];  // lista compras
 
-#define ARCHIVOS_LECTURA \
-  fstream &Art, ifstream &IndDesc, ifstream &Rub, ifstream &ListCmp
-#define ARCHIVOS ARCHIVOS_LECTURA, ofstream &Ticket, ofstream &ListArt
+#define ARCHIVOS \
+  fstream &Art, ifstream &IndDesc, ifstream &Rub, ifstream &ListCmpr
 #define REGISTROS \
-  tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsRub &vsRub, tvsListCmp &vsListCmp
+  tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsRub &vsRub, tvsListCmp &vsListCmpr
 
 // Declaraciones de funciones
 // Las que tienen comentario '// Falta' no están definidas
@@ -61,47 +61,43 @@ typedef tsCompra tvsListCmp[MAX_COMPRAS];  // lista compras
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
-bool LeerArticulo(fstream &Art, tsArt &sArt);                          
-bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc);      
-bool LeerRubro(ifstream &Rub, tsRub &sRub);                           
-bool LeerCompra(ifstream &ListCmp, tsCompra &sCompra);               
+bool LeerArticulo(fstream &Art, tsArt &sArt);
+bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc);
+bool LeerRubro(ifstream &Rub, tsRub &sRub);
+bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra);
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  // Falta
 void CabeceraTicket(int &ds);                                           // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);                               // Falta
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
-void ActLinea(fstream &Art, tsArt &sArt);                               // Falta
-int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);       // Falta
-string Replicate(char car, ushort n);                                 
-void Abrir(ARCHIVOS);                                                  
-void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cantArt,
-                    ushort &cantCmp);  
+void ActLinea(fstream &Art, tsArt &sArt);                          // Falta
+int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);  // Falta
+string Replicate(char car, ushort n);
+void Abrir(ARCHIVOS);
+void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr);
 void ProcCompras(fstream &Art, tvsArt &vsArt, tvsIndDesc &vsIndDesc,
-                 tvsListCmp &vsListCmp, ushort cantArt,
-                 ushort cantCmp);  // Falta
-void EmitirTicket(ofstream &Ticket, tvsArt &vsArt, tvsIndDesc &vsIndDesc,
-                  tvsListCmp &vsListCmp, ushort cantArt,
-                  ushort cantCmp);  // Falta
-void EmitirArt_x_Rubro(ofstream &ListArt, tvsArt &vsArt, tvsRub &vsRub,
-                       ushort cantArt);  // Falta
-void Cerrar(ARCHIVOS);                 
+                 tvsListCmp &vsListCmpr, ushort cantArt,
+                 ushort cantCmpr);  // Falta
+void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmp &vsListCmpr,
+                  ushort cantArt, ushort cantCmpr);                    // Falta
+void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt);  // Falta
+void Cerrar(ARCHIVOS);
 
 int main() {
   tvsArt vsArt;
   tvsIndDesc vsIndDesc;
   tvsRub vsRub;
-  tvsListCmp vsListCmp;
-  fstream Art;                     // Lectura y Escritura
-  ifstream IndDesc, Rub, ListCmp;  // Lectura
-  ofstream Ticket, ListArt;        // Escritura
-  ushort cantArt = 0, cantCmp = 0;
+  tvsListCmp vsListCmpr;
+  fstream Art;
+  ifstream IndDesc, Rub, ListCmpr;
+  ushort cantArt, cantCmpr;
 
-  Abrir(Art, IndDesc, Rub, ListCmp, Ticket, ListArt);
-  VolcarArchivos(Art, IndDesc, Rub, ListCmp, vsArt, vsIndDesc, vsRub, vsListCmp,
-                 cantArt, cantCmp);
-  ProcCompras(Art, vsArt, vsIndDesc, vsListCmp, cantArt, cantCmp);
-  EmitirTicket(ListArt, vsArt, vsIndDesc, vsListCmp, cantArt, cantCmp);
-  EmitirArt_x_Rubro(Ticket, vsArt, vsRub, cantArt);
-  Cerrar(Art, IndDesc, Rub, ListCmp, Ticket, ListArt);
+  Abrir(Art, IndDesc, Rub, ListCmpr);
+  VolcarArchivos(Art, IndDesc, Rub, ListCmpr, vsArt, vsIndDesc, vsRub,
+                 vsListCmpr, cantArt, cantCmpr);
+  ProcCompras(Art, vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
+  EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
+  EmitirArt_x_Rubro(vsArt, vsRub, cantArt);
+  Cerrar(Art, IndDesc, Rub, ListCmpr);
   return 0;
 }
 
@@ -133,42 +129,42 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
          timeinfo->tm_mday;
 }  // GetDate
 
-bool LeerArticulo(ifstream &archivo, Articulo &articulo) {
-  archivo >> articulo.cod_ven >> articulo.cod_rubro;
-  archivo.get(articulo.desc_articulo,31);
-  archivo >> articulo.stock >> articulo.percio_uni;
-  archivo.get(articulo.medida,11);
-  for (short i = 0;i < 14;i++)
-    archivo >> articulo.ofertas[i];
-  archivo.ignore();
-  return archivo.good();
-}
+bool LeerArticulo(ifstream &Arc, tsArt &sArt) {
+  Arc >> sArt.codVen >> sArt.codRub;
+  Arc.get(sArt.descArt, 31);
+  Arc >> sArt.stock >> sArt.preUni;
+  Arc.get(sArt.medida, 11);
+  for (short i = 0; i < 14; i++)
+    Arc >> sArt.ofertas[i];
+  Arc.ignore();
+  return Arc.good();
+}  // LeerArticulo
 
-bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc) {
-  archivo.get(ind_desc.desc_articulo,31);
-  archivo >> ind_desc.pos_articulo >> ind_desc.estado;
-  archivo.ignore();
-  return archivo.good();
-}
+bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc) {
+  IndDesc.get(sIndDesc.descArt, 31);
+  IndDesc >> sIndDesc.posArt >> sIndDesc.estado;
+  IndDesc.ignore();
+  return IndDesc.good();
+}  // LeerDescripcion
 
-bool LeerRubro(ifstream &archivo, Rubro &rubro) {
-  archivo >> rubro.cod_rubro;
-  archivo.get(rubro.desc_rubro,21);
-  archivo.ignore();
-  return archivo.good();
-}
+bool LeerRubro(ifstream &Rub, tsRub &sRub) {
+  Rub >> sRub.codRub;
+  Rub.get(sRub.descRub, 21);
+  Rub.ignore();
+  return Rub.good();
+}  // LeerRubro
 
-bool LeerCompra(ifstream &archivo, Compra &compra) {
-  archivo.get(compra.desc_articulo,31);
-  archivo >> compra.cant_requerida;
-  archivo.ignore();
-  return archivo.good();
-}
+bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra) {
+  ListCmpr.get(sCompra.descArt, 31);
+  ListCmpr >> sCompra.cantReq;
+  ListCmpr.ignore();
+  return ListCmpr.good();
+}  // LeerCompra
 
-void IntCmb(Articulo &elem1, Articulo &elem2) {
-  Articulo auxiliar = elem1;
-  elem1 = elem2;
-  elem2 = auxiliar;
+void IntCmb(tsArt &sElem1, tsArt &sElem2) {
+  tsArt auxiliar = sElem1;
+  sElem1 = sElem2;
+  sElem2 = auxiliar;
 }  // IntCmb
 
 string Replicate(char car, ushort n) {
@@ -179,42 +175,37 @@ string Replicate(char car, ushort n) {
 }  // Replicate
 
 void Abrir(ARCHIVOS) {
-  arch_articulos.open("Articulos.txt", ios::in | ios::out);
-  arch_ind_desc.open("IndDescripArt.txt");
-  arch_rubros.open("Rubros.txt");
-  arch_compras.open("ListaCompras.txt");
-  arch_ticket.open("Ticket.txt");
-  arch_list_articulos.open("ListadoArticulos.txt");
+  Art.open("Articulos.txt", ios::in | ios::out);
+  IndDesc.open("IndDescripArt.txt");
+  Rub.open("Rubros.txt");
+  ListCmpr.open("ListaCompras.txt");
 }  // Abrir
 
-void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cant_articulos,
-                    ushort &cant_compras) {
-  Articulo art;
-  IndDescripcion ind_desc;
-  Rubro rub;
-  Compra comp;
-  cant_articulos = 0;
-  cant_compras = 0;
+void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
+  tsArt sArt;
+  tsIndDesc sIndDesc;
+  tsRub sRub;
+  tsCompra sCompra;
+  cantArt = 0;
+  cantCmpr = 0;
 
-  while (LeerArticulo(arch_articulos, art)) {
-    articulos[cant_articulos] = art;
-    cant_articulos++;
+  while (LeerArticulo(Art, sArt)) {
+    vsArt[cantArt] = sArt;
+    cantArt++;
   }
-  for (ushort i = 0; LeerDescripcion(arch_ind_desc, ind_desc); i++)
-    ind_descripciones[i] = ind_desc;
-  for (ushort i = 0; LeerRubro(arch_rubros, rub); i++)
-    rubros[i] = rub;
-  while (LeerCompra(arch_compras, comp)) {
-    lista_compras[cant_compras] = comp;
-    cant_compras++;
+  for (ushort i = 0; LeerDescripcion(IndDesc, sIndDesc); i++)
+    vsIndDesc[i] = sIndDesc;
+  for (ushort i = 0; LeerRubro(Rub, sRub); i++)
+    vsRub[i] = sRub;
+  while (LeerCompra(ListCmpr, sCompra)) {
+    vsListCmpr[cantCmpr] = sCompra;
+    cantCmpr++;
   }
 }  // VolcarArchivos
 
 void Cerrar(ARCHIVOS) {
-  arch_articulos.close();
-  arch_ind_desc.close();
-  arch_rubros.close();
-  arch_compras.close();
-  arch_ticket.close();
-  arch_list_articulos.close();
+  Art.close();
+  IndDesc.close();
+  Rub.close();
+  ListCmpr.close();
 }  // Cerrar
