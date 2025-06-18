@@ -1,5 +1,6 @@
 // NO USAR MEMORIA DINÁMICA (new, delete, malloc, realloc, free)
 // Muchos comentarios van a ser eliminados en la entrega final
+// UTILIZAR LA NOMENCLATURA DE HUGO CUELLO
 #include <cstdio>
 #include <ctime>
 #include <fstream>
