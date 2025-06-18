@@ -64,7 +64,7 @@ typedef Compra ListaCompras[kMaxCompras];
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
-bool LeerArticulo(ifstream &archivo, Articulo &articulo);
+bool LeerArticulo(fstream &archivo, Articulo &articulo);
 bool LeerDescripcion(ifstream &archivo, IndDescripcion &ind_desc);
 bool LeerRubro(ifstream &archivo, Rubro &rubro);
 bool LeerCompra(ifstream &archivo, Compra &compra);
@@ -74,11 +74,11 @@ void OrdxBur(Articulos &articulos, ushort card);                        // Falta
 void IntCmb(Articulo &elem1, Articulo &elem2);
 void ActLinea(fstream &arch_articulos, Articulo &articulo);  // Falta
 int BusBinVec(IndDescripciones &ind_descripciones, str30 &desc_articulo,
-              ushort ult);  // Falta
+              ushort ult);             // Falta
 string Replicate(char car, ushort n);
-void Abrir(ARCHIVOS);  // Falta
+void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cant_articulos,
-                    ushort &cant_compras);  // Falta
+                    ushort &cant_compras);
 void ProcCompras(fstream &arch_articulos, Articulos &articulos,
                  IndDescripciones &ind_descripciones,
                  ListaCompras &lista_compras, ushort cant_articulos,
@@ -89,7 +89,7 @@ void EmitirTicket(ofstream &archivo, Articulos &articulos,
                   ushort cant_compras);  // Falta
 void EmitirArt_x_Rubro(ofstream &archivo, Articulos &articulos, Rubros &rubros,
                        ushort cant_articulos);  // Falta
-void Cerrar(ARCHIVOS);                          // Falta
+void Cerrar(ARCHIVOS);
 
 int main() {
   Articulos articulos;
@@ -188,3 +188,44 @@ string Replicate(char car, ushort n) {
     resultado += car;
   return resultado;
 }  // Replicate
+
+void Abrir(ARCHIVOS) {
+  arch_articulos.open("Articulos.txt", ios::in | ios::out);
+  arch_ind_desc.open("IndDescripArt.txt");
+  arch_rubros.open("Rubros.txt");
+  arch_compras.open("ListaCompras.txt");
+  arch_ticket.open("Ticket.txt");
+  arch_list_articulos.open("ListadoArticulos.txt");
+}  // Abrir
+
+void VolcarArchivos(ARCHIVOS_LECTURA, REGISTROS, ushort &cant_articulos,
+                    ushort &cant_compras) {
+  Articulo art;
+  IndDescripcion ind_desc;
+  Rubro rub;
+  Compra comp;
+  cant_articulos = 0;
+  cant_compras = 0;
+
+  while (LeerArticulo(arch_articulos, art)) {
+    articulos[cant_articulos] = art;
+    cant_articulos++;
+  }
+  for (ushort i = 0; LeerDescripcion(arch_ind_desc, ind_desc); i++)
+    ind_descripciones[i] = ind_desc;
+  for (ushort i = 0; LeerRubro(arch_rubros, rub); i++)
+    rubros[i] = rub;
+  while (LeerCompra(arch_compras, comp)) {
+    lista_compras[cant_compras] = comp;
+    cant_compras++;
+  }
+}  // VolcarArchivos
+
+void Cerrar(ARCHIVOS) {
+  arch_articulos.close();
+  arch_ind_desc.close();
+  arch_rubros.close();
+  arch_compras.close();
+  arch_ticket.close();
+  arch_list_articulos.close();
+}  // Cerrar
