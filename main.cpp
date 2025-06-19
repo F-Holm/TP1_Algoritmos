@@ -66,9 +66,9 @@ bool LeerArticulo(fstream &Art, tsArt &sArt);
 bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc);
 bool LeerRubro(ifstream &Rub, tsRub &sRub);
 bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra);
-void PieTicket(float impTot, float impTotDesto, float impTotConDesto);  
-void CabeceraTicket(int &ds);                                           // Falta
-void OrdxBur(tvsArt &vsArt, ushort card);                               
+void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
+void CabeceraTicket(int &ds);  // Falta
+void OrdxBur(tvsArt &vsArt, ushort card);
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
 void ActLinea(fstream &Art, tsArt &sArt);                          // Falta
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);  // Falta
@@ -169,35 +169,39 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
 
   cout << fixed << setprecision(2);
   cout << Replicate('-', 40) << endl;
-  cout << left << setw(28) << "Total bruto:" << "$ " << setw(9) << impTot << endl;
-  cout << left << setw(28) << "Descuento aplicado:" << "$ " << setw(9) << impTotDesto << endl;
-  cout << left << setw(28) << "Total a pagar:" << "$ " << setw(9) << impTotConDesto << endl;
-  cout << left << setw(28) << "Su pago con Tipo Pago:" << "$ " << setw(9) << pagoUsuario << endl;
+  cout << left << setw(28) << "Total bruto:" << "$ " << setw(9) << impTot
+       << endl;
+  cout << left << setw(28) << "Descuento aplicado:" << "$ " << setw(9)
+       << impTotDesto << endl;
+  cout << left << setw(28) << "Total a pagar:" << "$ " << setw(9)
+       << impTotConDesto << endl;
+  cout << left << setw(28) << "Su pago con Tipo Pago:" << "$ " << setw(9)
+       << pagoUsuario << endl;
   cout << left << setw(28) << "Su vuelto:" << "$ " << setw(9) << vuelto << endl;
   cout << endl;
   cout << "         G R A C I A S  P O R  S U  C O M P R A" << endl;
   cout << "Para consultas, sugerencias o reclamos" << endl;
   cout << "comunicarse al correo infoKotto.com.ar" << endl;
   cout << Replicate('-', 40) << endl;
-}
+}  // PieTicket
 
 void OrdxBur(tvsArt &vsArt, ushort card) {
- bool hayCambios;
- ushort k = 0;
+  bool hayCambios;
+  ushort k = 0;
 
- do {
-   hayCambios = false;
-   k++;
+  do {
+    hayCambios = false;
+    k++;
 
-   for (ushort i = 0; i < card - k; i++) {
-     if (strcmp(vsArt[i].descArt, vsArt[i + 1].descArt) > 0) {
-       IntCmb(vsArt[i], vsArt[i + 1]);
-       hayCambios = true;
-     }
-   }
- } while (hayCambios);
+    for (ushort i = 0; i < card - k; i++) {
+      if (strcmp(vsArt[i].descArt, vsArt[i + 1].descArt) > 0) {
+        IntCmb(vsArt[i], vsArt[i + 1]);
+        hayCambios = true;
+      }
+    }
+  } while (hayCambios);
 
-}    
+}  // OrdxBur
 
 void IntCmb(tsArt &sElem1, tsArt &sElem2) {
   tsArt auxiliar = sElem1;
