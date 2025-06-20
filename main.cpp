@@ -130,15 +130,15 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
          timeinfo->tm_mday;
 }  // GetDate
 
-bool LeerArticulo(fstream &Arc, tsArt &sArt) {
-  Arc >> sArt.codVen >> sArt.codRub;
-  Arc.get(sArt.descArt, 31);
-  Arc >> sArt.stock >> sArt.preUni;
-  Arc.get(sArt.medida, 11);
+bool LeerArticulo(fstream &Art, tsArt &sArt) {
+  Art >> sArt.codVen >> sArt.codRub;
+  Art.get(sArt.descArt, 31);
+  Art >> sArt.stock >> sArt.preUni;
+  Art.get(sArt.medida, 11);
   for (short i = 0; i < 14; i++)
-    Arc >> sArt.ofertas[i];
-  Arc.ignore();
-  return Arc.good();
+    Art >> sArt.ofertas[i];
+  Art.ignore();
+  return Art.good();
 }  // LeerArticulo
 
 bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc) {
