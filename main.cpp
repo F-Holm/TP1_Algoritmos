@@ -53,6 +53,8 @@ typedef tsCompra tvsListCmp[MAX_COMPRAS];  // lista compras
   fstream &Art, ifstream &IndDesc, ifstream &Rub, ifstream &ListCmpr
 #define REGISTROS \
   tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsRub &vsRub, tvsListCmp &vsListCmpr
+#define ARCHIVO_ART fstream &Art
+#define REG_COMPRAS tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmp &vsListCmpr
 
 // Declaraciones de funciones
 // Las que tienen comentario '// Falta' no están definidas
@@ -71,13 +73,12 @@ void CabeceraTicket(int &ds);  // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
 void ActLinea(fstream &Art, tsArt &sArt);                          // Falta
-int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);  // Falta
+int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult); 
 string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr);
-void ProcCompras(fstream &Art, tvsArt &vsArt, tvsIndDesc &vsIndDesc,
-                 tvsListCmp &vsListCmpr, ushort cantArt,
-                 ushort cantCmpr);  // Falta
+void ProcCompras(ARCHIVO_ART, REG_COMPRAS, ushort cantArt, ushort cantCmpr);
+
 void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmp &vsListCmpr,
                   ushort cantArt, ushort cantCmpr);                    // Falta
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt);  // Falta
@@ -115,6 +116,30 @@ long GetTime(int &hh, int &mm, int &ss) {
   ss = timeinfo->tm_sec;
   return timeinfo->tm_hour * 10000 + timeinfo->tm_min * 100 + timeinfo->tm_sec;
 }  // GetTime
+int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
+  int li = 0, ls = ult, pm;
+
+  while (li <= ls) {
+    pm = (li + ls) / 2;
+
+    int cmp = strcmp(descArt, vsIndDesc[pm].descArt);
+
+    if (cmp == 0) {
+      if (vsIndDesc[pm].estado) {
+        return pm;  // Encontrado y activo
+      } else {
+        return -1;  // Encontrado pero inactivo
+      }
+    } else if (cmp < 0) {
+      ls = pm - 1;
+    } else {
+      li = pm + 1;
+    }
+  }
+
+  return -1;  // No encontrado
+}
+
 
 long GetDate(int &year, int &mes, int &dia, int &ds) {
   time_t rawtime;
@@ -222,6 +247,41 @@ void Abrir(ARCHIVOS) {
   Rub.open("Rubros.txt");
   ListCmpr.open("ListaCompras.txt");
 }  // Abrir
+void ProcCompras(ARCHIVO_ART, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
+  str30 descBuscada;
+  int pos;
+  ushort posArt;
+  short cantSolicitada, cantDisponible, cantComprada;
+
+  for (ushort i = 0; i < cantCmpr; i++) {
+    strcpy(descBuscada, vsListCmpr[i].descArt);
+    pos = BusBinVec(vsIndDesc, descBuscada, cantArt - 1);
+
+    if (pos != -1 && vsIndDesc[pos].estado) {
+      posArt = vsIndDesc[pos].posArt;
+      cantSolicitada = vsListCmpr[i].cantReq;
+      cantDisponible = vsArt[posArt].stock;
+
+      if (cantDisponible >= cantSolicitada) {
+        vsArt[posArt].stock -= cantSolicitada;
+        cantComprada = cantSolicitada;
+      } else {
+        cantComprada = cantDisponible;
+        vsArt[posArt].stock = 0;
+      }
+
+      cout << left << setw(30) << vsArt[posArt].descArt
+           << " Comprado: " << cantComprada << " "
+           << vsArt[posArt].medida << endl;
+
+      ActLinea(Art, vsArt[posArt]);
+
+    } else {
+      cout << left << setw(30) << vsListCmpr[i].descArt
+           << " Comprado: 0 (No disponible)" << endl;
+    }
+  }
+}
 
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
   tsArt sArt;
@@ -251,3 +311,28 @@ void Cerrar(ARCHIVOS) {
   Rub.close();
   ListCmpr.close();
 }  // Cerrar
+void CabeceraTicket(int &ds) {
+  int hh, mm, ss, year, mes, dia;
+  GetTime(hh, mm, ss);
+  GetDate(year, mes, dia, ds);
+
+  const char* diasSemana[] = {
+    "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
+  };
+
+  cout << Replicate('=', 40) << endl;
+  cout << "        TICKET DE COMPRA KOTTO" << endl;
+  cout << "Fecha: " << setfill('0') << setw(2) << dia << "/"
+       << setw(2) << mes << "/" << year << "  "
+       << "Hora: " << setw(2) << hh << ":" << setw(2) << mm << ":" << setw(2) << ss << endl;
+  cout << "Día: " << diasSemana[(ds - 1) % 7] << endl;
+  cout << Replicate('=', 40) << endl;
+  cout << setfill(' ');
+}
+
+void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmp &vsListCmpr,
+                  ushort cantArt, ushort cantCmpr) {
+  int ds;
+  CabeceraTicket(ds);
+  // Por ahora solo la cabecera.
+}
