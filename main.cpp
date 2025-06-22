@@ -335,4 +335,4 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmp &vsListCmpr,
   int ds;
   CabeceraTicket(ds);
   // Por ahora solo la cabecera.
-}
+} 
