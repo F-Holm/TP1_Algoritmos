@@ -219,13 +219,12 @@ void OrdxBur(tvsArt &vsArt, ushort card) {
     k++;
 
     for (ushort i = 0; i < card - k; i++) {
-      if (strcmp(vsArt[i].descArt, vsArt[i + 1].descArt) > 0) {
+      if (vsArt[i].codRub > vsArt[i + 1].codRub) {
         IntCmb(vsArt[i], vsArt[i + 1]);
         hayCambios = true;
       }
     }
   } while (hayCambios);
-
 }  // OrdxBur
 
 void IntCmb(tsArt &sElem1, tsArt &sElem2) {
@@ -303,6 +302,7 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
     vsListCmpr[cantCmpr] = sCompra;
     cantCmpr++;
   }
+  OrdxBur(vsArt, cantArt);
 }  // VolcarArchivos
 
 void Cerrar(ARCHIVOS) {
