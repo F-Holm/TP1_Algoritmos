@@ -1,45 +1,45 @@
-Aceite de Coco                   4 1
-Aceite de Girasol               25 0
-Aceite de Oliva                 23 1
-Agua Mineral                    42 1
-Arvejas                         18 1
-Atún Fresco                      8 0
-Atún en Aceite                   6 0
-Avena                           40 0
-Baguette Francesa               15 1
-Banana Cavendish                 0 1
-Caramelos Surtidos              21 1
-Choclo                          27 0
-Chocolate con Leche             16 1
-Coca-Cola Zero                  33 1
-Corn Flakes                      9 1
-Costilla de Cerdo               17 1
-Detergente Polvo                36 1
-Filet de Res                    19 1
-Gomitas Frutales                 3 1
-Granola                         31 1
-Helado Vainilla                 34 1
-Jabón Líquido                   38 1
-Leche Entera                    20 0
-Lechuga Romana                  22 1
-Limpiador Multiusos             32 1
-Manzana Red Delicious           29 1
-Mayonesa                        35 1
-Maíz Dulce                      30 0
-Medialunas                      37 1
-Merluza Congelada               28 0
-Mostaza                          2 1
-Naranja Valencia                26 1
-Pan Integral                    41 0
-Papel Higiénico                 10 1
-Pechuga de Pollo                11 1
-Pepsi Max                        5 1
-Pizza Congelada                 39 1
-Queso Mozzarella                 7 1
-Salmón Fresco                   13 1
-Salsa de Tomate                  1 1
-Shampoo                         14 1
-Suavizante                      24 1
-Tomate Perita                   12 0
-Verduras Congeladas             44 1
-Yogur Natural                   43 1
+Aceite de Coco                    4 1
+Aceite de Girasol                25 0
+Aceite de Oliva                  23 1
+Agua Mineral                     42 1
+Arvejas                          18 1
+Atún Fresco                       8 0
+Atún en Aceite                    6 0
+Avena                            40 0
+Baguette Francesa                15 1
+Banana Cavendish                  0 1
+Caramelos Surtidos               21 1
+Choclo                           27 0
+Chocolate con Leche              16 1
+Coca-Cola Zero                   33 1
+Corn Flakes                       9 1
+Costilla de Cerdo                17 1
+Detergente Polvo                 36 1
+Filet de Res                     19 1
+Gomitas Frutales                  3 1
+Granola                          31 1
+Helado Vainilla                  34 1
+Jabón Líquido                    38 1
+Leche Entera                     20 0
+Lechuga Romana                   22 1
+Limpiador Multiusos              32 1
+Manzana Red Delicious            29 1
+Mayonesa                         35 1
+Maíz Dulce                       30 0
+Medialunas                       37 1
+Merluza Congelada                28 0
+Mostaza                           2 1
+Naranja Valencia                 26 1
+Pan Integral                     41 0
+Papel Higiénico                  10 1
+Pechuga de Pollo                 11 1
+Pepsi Max                         5 1
+Pizza Congelada                  39 1
+Queso Mozzarella                  7 1
+Salmón Fresco                    13 1
+Salsa de Tomate                   1 1
+Shampoo                          14 1
+Suavizante                       24 1
+Tomate Perita                    12 0
+Verduras Congeladas              44 1
+Yogur Natural                    43 1

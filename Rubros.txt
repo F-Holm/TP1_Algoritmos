@@ -1,15 +1,15 @@
- 1 Frutas              
- 2 Verduras            
- 3 Lácteos             
- 4 Carnes              
- 5 Bebidas             
- 6 Pescados            
- 7 Panadería           
- 8 Higiene             
- 9 Limpieza            
-10 Dulces              
-11 Cereales            
-12 Salsas              
-13 Congelados          
-14 Aceites             
-15 Enlatados           
+ 1 Frutas                        
+ 2 Verduras                      
+ 3 Lácteos                       
+ 4 Carnes                        
+ 5 Bebidas                       
+ 6 Pescados                      
+ 7 Panadería                     
+ 8 Higiene                       
+ 9 Limpieza                      
+10 Dulces                        
+11 Cereales                      
+12 Salsas                        
+13 Congelados                    
+14 Aceites                       
+15 Enlatados                     
