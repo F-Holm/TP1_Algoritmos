@@ -27,7 +27,7 @@ struct tsArt {   // max 10.000 - desordenado
 
 struct tsIndDesc {  // ordenado por descripción
   str30 descArt;
-  int posArt;
+  int posArt; //4 dígitos (0 - 9999)
   bool estado;
 };
 
