@@ -1,11 +1,26 @@
 // NO USAR MEMORIA DINÁMICA (new, delete, malloc, realloc, free)
 // Muchos comentarios van a ser eliminados en la entrega final
 // UTILIZAR LA NOMENCLATURA DE HUGO CUELLO
-// el acceso secuencial es rapidisomo si accedemos a cada compoennete para procesarlo en el mismo orden en el que estos fueron grabados
-// Articulos.txt tiene 103 caracteres por línea + CR y Lf => 105 caracteres por linea
-// Un archivo de texto se compone de lineas donde cada linea es de longitud variable
-// -y cada linea termina con una marca llamada fin de linea, además hay otra marca que indica fin de archivo
-// -todo el contenido de un archivo .txt es  texto
+// el acceso secuencial es rapidisomo si accedemos a cada compoennete para
+// procesarlo en el mismo orden en el que estos fueron grabados Articulos.txt
+// tiene 103 caracteres por línea + CR y Lf => 105 caracteres por linea Un
+// archivo de texto se compone de lineas donde cada linea es de longitud
+// variable -y cada linea termina con una marca llamada fin de linea, además hay
+// otra marca que indica fin de archivo -todo el contenido de un archivo .txt es
+// texto cuando se crea un archivo, siempre crear una copia
+/*
+Entrega:
+  Carátula
+  Consigna
+  Diagramas
+  Muestras de datos
+  Resultados
+  Código
+*/
+// 1° entrega: 06/08
+// 2° entrega: 13/08
+// 3° entrega: 17/09
+#include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
@@ -20,6 +35,7 @@ typedef char str30[31];
 typedef char str20[21];
 typedef char str10[11];
 typedef unsigned short ushort;
+#define CRLF "\r\n"
 
 struct tsArt {   // max 10.000 - desordenado
   int codVen;    // 8 dígitos
@@ -79,7 +95,7 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
 void CabeceraTicket(int &ds);  // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
-void ActLinea(fstream &Art, tsArt &sArt, ushort pos);  // Falta
+void ActLinea(fstream &Art, tsArt &sArt);  // Falta
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);
 string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
@@ -103,8 +119,8 @@ int main() {
   VolcarArchivos(Art, IndDesc, Rub, ListCmpr, vsArt, vsIndDesc, vsRub,
                  vsListCmpr, cantArt, cantCmpr);
   ProcCompras(Art, vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
-  //EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
-  //EmitirArt_x_Rubro(vsArt, vsRub, cantArt);
+  EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
+  // EmitirArt_x_Rubro(vsArt, vsRub, cantArt);
   Cerrar(Art, IndDesc, Rub, ListCmpr);
   return 0;
 }
@@ -170,7 +186,7 @@ bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra) {
 }  // LeerCompra
 
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
-  float pagoUsuario = 1500.00;
+  float pagoUsuario = impTotConDesto;  // El comprador paga exacto
 
   float vuelto = pagoUsuario - impTotConDesto;
 
@@ -192,7 +208,7 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
   cout << Replicate('-', 40) << endl;
 }  // PieTicket
 
-void CabeceraTicket(int &ds) {
+void CabeceraTicket(int &ds) {  // MAL
   int hh, mm, ss, year, mes, dia;
   GetTime(hh, mm, ss);
   GetDate(year, mes, dia, ds);
@@ -233,8 +249,8 @@ void IntCmb(tsArt &sElem1, tsArt &sElem2) {
   sElem2 = auxiliar;
 }  // IntCmb
 
-void ActLinea(fstream &Art, tsArt &sArt, ushort pos){
-} // ActLinea
+void ActLinea(fstream &Art, tsArt &sArt) {
+}  // ActLinea
 
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
   int li = 0, ls = ult, pm;
@@ -310,21 +326,54 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
         vsListCmpr[i].cantReq = vsArt[posArt].stock;
         vsArt[posArt].stock = 0;
       }
-      ActLinea(Art, vsArt[posArt], posArt);
+      Art.seekp(105 * posArt);
+      ActLinea(Art, vsArt[posArt]);
 
     } else {
       vsListCmpr[i].cantReq = 0;
     }
   }
   OrdxBur(vsArt, cantArt);
-} // ProcCompras
+}  // ProcCompras
 
-/*void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
+void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
                   ushort cantArt, ushort cantCmpr) {
+  // El comprador realiza su pago por Mercado pago (paga exacto)
+  // Solo aplican los descuentos de Promo y MercPago
   int ds;
+  float impTot = 0.0f, impTotDesto = 0.0f;
+  freopen("Ticket.txt", "w", stdout);
+
+  for (ushort i = 0; i < cantCmpr; i++) {
+  }
+
   CabeceraTicket(ds);
-  // Por ahora solo la cabecera.
-}*/  // EmitirTicket
+  PieTicket(impTot, impTotDesto, impTot - impTotDesto);
+}  // EmitirTicket
+
+void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
+  freopen("ListadiArticulos.txt", "w", stdout);
+  ushort codRubro = 200;
+  cout << Replicate('-', 103) << CRLF << Replicate(' ', (103 - 49) / 2)
+       << "Listado de Arículos ordenados por Código de Rubro"
+       << Replicate(' ', (103 - 49) / 2) << CRLF << Replicate('=', 103) << CRLF;
+  for (ushort i = 0; i < cantArt; i++) {
+    if (codRubro != vsArt[i].codRub) {
+      codRubro = vsArt[i].codRub;
+      cout << "Cod. Rubro: " << codRubro << ' ' << vsRub[codRubro - 1].descRub
+           << CRLF << "Cod.Art. Descripción" << Replicate(' ', 20)
+           << "Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %"
+           << CRLF << Replicate('-', 103) << CRLF;
+    }
+    cout << setw(8) << vsArt[i].codRub << ' ' << setw(30) << vsArt[i].descArt
+         << ' ' << setw(4) << vsArt[i].stock << ' ' << setw(9)
+         << vsArt[i].preUni << ' ' << setw(10) << vsArt[i].medida;
+    for (ushort j = 0; j < 7; j++)
+      cout << ' ' << vsArt[i].ofertas[2 * j] << ' ' << setw(2)
+           << vsArt[i].ofertas[2 * j + 1];
+    cout << CRLF;
+  }
+} // EmitirArt_x_Rubro
 
 void Cerrar(ARCHIVOS) {
   Art.close();
