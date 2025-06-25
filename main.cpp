@@ -3,9 +3,9 @@
 // UTILIZAR LA NOMENCLATURA DE HUGO CUELLO
 // el acceso secuencial es rapidisomo si accedemos a cada compoennete para procesarlo en el mismo orden en el que estos fueron grabados
 // Articulos.txt tiene 103 caracteres por línea + CR y Lf => 105 caracteres por linea
-// un archivo de texto se compone de lineas donde cada linea es de longitud variable
-// y cada linea termina con una marca llamada fin de linea, además hay otra marca que indica fin de archivo
-//
+// Un archivo de texto se compone de lineas donde cada linea es de longitud variable
+// -y cada linea termina con una marca llamada fin de linea, además hay otra marca que indica fin de archivo
+// -todo el contenido de un archivo .txt es  texto
 #include <cstdio>
 #include <cstring>
 #include <ctime>
@@ -250,11 +250,7 @@ int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
     int cmp = strcmp(descArt, vsIndDesc[pm].descArt);
 
     if (cmp == 0) {
-      if (vsIndDesc[pm].estado) {
-        return pm;  // Encontrado y activo
-      } else {
-        return -1;  // Encontrado pero inactivo
-      }
+      return pm;
     } else if (cmp < 0) {
       ls = pm - 1;
     } else {
