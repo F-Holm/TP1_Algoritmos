@@ -1,12 +1,18 @@
 // NO USAR MEMORIA DINÁMICA (new, delete, malloc, realloc, free)
 // Muchos comentarios van a ser eliminados en la entrega final
 // UTILIZAR LA NOMENCLATURA DE HUGO CUELLO
+// el acceso secuencial es rapidisomo si accedemos a cada compoennete para procesarlo en el mismo orden en el que estos fueron grabados
+// Articulos.txt tiene 103 caracteres por línea + CR y Lf => 105 caracteres por linea
+// un archivo de texto se compone de lineas donde cada linea es de longitud variable
+// y cada linea termina con una marca llamada fin de linea, además hay otra marca que indica fin de archivo
+//
 #include <cstdio>
 #include <cstring>
 #include <ctime>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -79,7 +85,6 @@ string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr);
 void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr);
-
 void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
                   ushort cantArt, ushort cantCmpr);                    // Falta
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt);  // Falta
@@ -98,8 +103,8 @@ int main() {
   VolcarArchivos(Art, IndDesc, Rub, ListCmpr, vsArt, vsIndDesc, vsRub,
                  vsListCmpr, cantArt, cantCmpr);
   ProcCompras(Art, vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
-  EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
-  EmitirArt_x_Rubro(vsArt, vsRub, cantArt);
+  //EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
+  //EmitirArt_x_Rubro(vsArt, vsRub, cantArt);
   Cerrar(Art, IndDesc, Rub, ListCmpr);
   return 0;
 }
@@ -228,6 +233,14 @@ void IntCmb(tsArt &sElem1, tsArt &sElem2) {
   sElem2 = auxiliar;
 }  // IntCmb
 
+void ActLinea(fstream &Art, ushort stock, ushort pos){
+  Art.seekp(pos * 105 + 50);
+  /*string stck = to_string(stock);
+  stck.insert(0, 4 - stck.size(), ' ');
+  Art.write(stck.c_str(), 4);*/
+  Art << setprecision(4) << stock;
+} // ActLinea
+
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
   int li = 0, ls = ult, pm;
 
@@ -266,42 +279,6 @@ void Abrir(ARCHIVOS) {
   ListCmpr.open("ListaCompras.txt");
 }  // Abrir
 
-void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
-  str30 descBuscada;
-  int pos;
-  ushort posArt;
-  short cantSolicitada, cantDisponible, cantComprada;
-
-  for (ushort i = 0; i < cantCmpr; i++) {
-    strcpy(descBuscada, vsListCmpr[i].descArt);
-    pos = BusBinVec(vsIndDesc, descBuscada, cantArt - 1);
-
-    if (pos != -1 && vsIndDesc[pos].estado) {
-      posArt = vsIndDesc[pos].posArt;
-      cantSolicitada = vsListCmpr[i].cantReq;
-      cantDisponible = vsArt[posArt].stock;
-
-      if (cantDisponible >= cantSolicitada) {
-        vsArt[posArt].stock -= cantSolicitada;
-        cantComprada = cantSolicitada;
-      } else {
-        cantComprada = cantDisponible;
-        vsArt[posArt].stock = 0;
-      }
-
-      cout << left << setw(30) << vsArt[posArt].descArt
-           << " Comprado: " << cantComprada << " " << vsArt[posArt].medida
-           << endl;
-
-      ActLinea(Art, vsArt[posArt]);
-
-    } else {
-      cout << left << setw(30) << vsListCmpr[i].descArt
-           << " Comprado: 0 (No disponible)" << endl;
-    }
-  }
-}  // ProcCompras
-
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
   tsArt sArt;
   tsIndDesc sIndDesc;
@@ -310,27 +287,53 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
   cantArt = 0;
   cantCmpr = 0;
 
-  while (LeerArticulo(Art, sArt)) {
+  while (LeerArticulo(Art, sArt) && cantArt <= MAX_ART) {
     vsArt[cantArt] = sArt;
     cantArt++;
   }
-  for (ushort i = 0; LeerDescripcion(IndDesc, sIndDesc); i++)
+  for (ushort i = 0; LeerDescripcion(IndDesc, sIndDesc) && i < cantArt; i++)
     vsIndDesc[i] = sIndDesc;
-  for (ushort i = 0; LeerRubro(Rub, sRub); i++)
+  for (ushort i = 0; LeerRubro(Rub, sRub) && i < CANT_RUB; i++)
     vsRub[i] = sRub;
-  while (LeerCompra(ListCmpr, sCompra)) {
+  while (LeerCompra(ListCmpr, sCompra) && cantCmpr <= MAX_COMPRAS) {
     vsListCmpr[cantCmpr] = sCompra;
     cantCmpr++;
   }
-  OrdxBur(vsArt, cantArt);
 }  // VolcarArchivos
 
-void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
+void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
+  str30 descBuscada;
+  int pos;
+  ushort posArt;
+
+  for (ushort i = 0; i < cantCmpr; i++) {
+    strcpy(descBuscada, vsListCmpr[i].descArt);
+    pos = BusBinVec(vsIndDesc, descBuscada, cantArt - 1);
+
+    if (pos != -1 && vsIndDesc[pos].estado) {
+      posArt = vsIndDesc[pos].posArt;
+
+      if (vsArt[posArt].stock >= vsListCmpr[i].cantReq) {
+        vsArt[posArt].stock -= vsListCmpr[i].cantReq;
+      } else {
+        vsListCmpr[i].cantReq = vsArt[posArt].stock;
+        vsArt[posArt].stock = 0;
+      }
+      ActLinea(Art, vsArt[posArt]);
+
+    } else {
+      vsListCmpr[i].cantReq = 0;
+    }
+  }
+  OrdxBur(vsArt, cantArt);
+} // ProcCompras
+
+/*void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
                   ushort cantArt, ushort cantCmpr) {
   int ds;
   CabeceraTicket(ds);
   // Por ahora solo la cabecera.
-}  // EmitirTicket
+}*/  // EmitirTicket
 
 void Cerrar(ARCHIVOS) {
   Art.close();
