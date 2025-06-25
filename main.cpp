@@ -2,6 +2,7 @@
 // Muchos comentarios van a ser eliminados en la entrega final
 // UTILIZAR LA NOMENCLATURA DE HUGO CUELLO
 #include <cstdio>
+#include <cstring>
 #include <ctime>
 #include <fstream>
 #include <iomanip>
@@ -27,7 +28,7 @@ struct tsArt {   // max 10.000 - desordenado
 
 struct tsIndDesc {  // ordenado por descripción
   str30 descArt;
-  int posArt; //4 dígitos (0 - 9999)
+  int posArt;  // 4 dígitos (0 - 9999)
   bool estado;
 };
 
@@ -47,14 +48,14 @@ const ushort MAX_COMPRAS = 100;
 typedef tsArt tvsArt[MAX_ART];
 typedef tsIndDesc tvsIndDesc[MAX_ART];
 typedef tsRub tvsRub[CANT_RUB];
-typedef tsCompra tvsListCmp[MAX_COMPRAS];  // lista compras
+typedef tsCompra tvsListCmpr[MAX_COMPRAS];  // lista compras
 
 #define ARCHIVOS \
   fstream &Art, ifstream &IndDesc, ifstream &Rub, ifstream &ListCmpr
 #define REGISTROS \
-  tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsRub &vsRub, tvsListCmp &vsListCmpr
-#define ARCHIVO_ART fstream &Art
-#define REG_COMPRAS tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmp &vsListCmpr
+  tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsRub &vsRub, tvsListCmpr &vsListCmpr
+#define REG_COMPRAS \
+  tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr
 
 // Declaraciones de funciones
 // Las que tienen comentario '// Falta' no están definidas
@@ -72,14 +73,14 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
 void CabeceraTicket(int &ds);  // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
-void ActLinea(fstream &Art, tsArt &sArt);                          // Falta
-int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult); 
+void ActLinea(fstream &Art, tsArt &sArt);  // Falta
+int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);
 string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr);
-void ProcCompras(ARCHIVO_ART, REG_COMPRAS, ushort cantArt, ushort cantCmpr);
+void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr);
 
-void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmp &vsListCmpr,
+void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
                   ushort cantArt, ushort cantCmpr);                    // Falta
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt);  // Falta
 void Cerrar(ARCHIVOS);
@@ -88,7 +89,7 @@ int main() {
   tvsArt vsArt;
   tvsIndDesc vsIndDesc;
   tvsRub vsRub;
-  tvsListCmp vsListCmpr;
+  tvsListCmpr vsListCmpr;
   fstream Art;
   ifstream IndDesc, Rub, ListCmpr;
   ushort cantArt, cantCmpr;
@@ -116,30 +117,6 @@ long GetTime(int &hh, int &mm, int &ss) {
   ss = timeinfo->tm_sec;
   return timeinfo->tm_hour * 10000 + timeinfo->tm_min * 100 + timeinfo->tm_sec;
 }  // GetTime
-int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
-  int li = 0, ls = ult, pm;
-
-  while (li <= ls) {
-    pm = (li + ls) / 2;
-
-    int cmp = strcmp(descArt, vsIndDesc[pm].descArt);
-
-    if (cmp == 0) {
-      if (vsIndDesc[pm].estado) {
-        return pm;  // Encontrado y activo
-      } else {
-        return -1;  // Encontrado pero inactivo
-      }
-    } else if (cmp < 0) {
-      ls = pm - 1;
-    } else {
-      li = pm + 1;
-    }
-  }
-
-  return -1;  // No encontrado
-}
-
 
 long GetDate(int &year, int &mes, int &dia, int &ds) {
   time_t rawtime;
@@ -210,6 +187,24 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
   cout << Replicate('-', 40) << endl;
 }  // PieTicket
 
+void CabeceraTicket(int &ds) {
+  int hh, mm, ss, year, mes, dia;
+  GetTime(hh, mm, ss);
+  GetDate(year, mes, dia, ds);
+
+  const char *diasSemana[] = {"Domingo", "Lunes",   "Martes", "Miércoles",
+                              "Jueves",  "Viernes", "Sábado"};
+
+  cout << Replicate('=', 40) << endl;
+  cout << "        TICKET DE COMPRA KOTTO" << endl;
+  cout << "Fecha: " << setfill('0') << setw(2) << dia << "/" << setw(2) << mes
+       << "/" << year << "  " << "Hora: " << setw(2) << hh << ":" << setw(2)
+       << mm << ":" << setw(2) << ss << endl;
+  cout << "Día: " << diasSemana[(ds - 1) % 7] << endl;
+  cout << Replicate('=', 40) << endl;
+  cout << setfill(' ');
+}  // CabeceraTicket
+
 void OrdxBur(tvsArt &vsArt, ushort card) {
   bool hayCambios;
   ushort k = 0;
@@ -233,6 +228,30 @@ void IntCmb(tsArt &sElem1, tsArt &sElem2) {
   sElem2 = auxiliar;
 }  // IntCmb
 
+int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
+  int li = 0, ls = ult, pm;
+
+  while (li <= ls) {
+    pm = (li + ls) / 2;
+
+    int cmp = strcmp(descArt, vsIndDesc[pm].descArt);
+
+    if (cmp == 0) {
+      if (vsIndDesc[pm].estado) {
+        return pm;  // Encontrado y activo
+      } else {
+        return -1;  // Encontrado pero inactivo
+      }
+    } else if (cmp < 0) {
+      ls = pm - 1;
+    } else {
+      li = pm + 1;
+    }
+  }
+
+  return -1;  // No encontrado
+}  // BusBinVec
+
 string Replicate(char car, ushort n) {
   string resultado = "";
   for (ushort i = 0; i < n; i++)
@@ -246,7 +265,8 @@ void Abrir(ARCHIVOS) {
   Rub.open("Rubros.txt");
   ListCmpr.open("ListaCompras.txt");
 }  // Abrir
-void ProcCompras(ARCHIVO_ART, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
+
+void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
   str30 descBuscada;
   int pos;
   ushort posArt;
@@ -270,8 +290,8 @@ void ProcCompras(ARCHIVO_ART, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
       }
 
       cout << left << setw(30) << vsArt[posArt].descArt
-           << " Comprado: " << cantComprada << " "
-           << vsArt[posArt].medida << endl;
+           << " Comprado: " << cantComprada << " " << vsArt[posArt].medida
+           << endl;
 
       ActLinea(Art, vsArt[posArt]);
 
@@ -280,7 +300,7 @@ void ProcCompras(ARCHIVO_ART, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
            << " Comprado: 0 (No disponible)" << endl;
     }
   }
-}
+}  // ProcCompras
 
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
   tsArt sArt;
@@ -305,34 +325,16 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
   OrdxBur(vsArt, cantArt);
 }  // VolcarArchivos
 
+void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
+                  ushort cantArt, ushort cantCmpr) {
+  int ds;
+  CabeceraTicket(ds);
+  // Por ahora solo la cabecera.
+}  // EmitirTicket
+
 void Cerrar(ARCHIVOS) {
   Art.close();
   IndDesc.close();
   Rub.close();
   ListCmpr.close();
 }  // Cerrar
-void CabeceraTicket(int &ds) {
-  int hh, mm, ss, year, mes, dia;
-  GetTime(hh, mm, ss);
-  GetDate(year, mes, dia, ds);
-
-  const char* diasSemana[] = {
-    "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
-  };
-
-  cout << Replicate('=', 40) << endl;
-  cout << "        TICKET DE COMPRA KOTTO" << endl;
-  cout << "Fecha: " << setfill('0') << setw(2) << dia << "/"
-       << setw(2) << mes << "/" << year << "  "
-       << "Hora: " << setw(2) << hh << ":" << setw(2) << mm << ":" << setw(2) << ss << endl;
-  cout << "Día: " << diasSemana[(ds - 1) % 7] << endl;
-  cout << Replicate('=', 40) << endl;
-  cout << setfill(' ');
-}
-
-void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmp &vsListCmpr,
-                  ushort cantArt, ushort cantCmpr) {
-  int ds;
-  CabeceraTicket(ds);
-  // Por ahora solo la cabecera.
-} 
