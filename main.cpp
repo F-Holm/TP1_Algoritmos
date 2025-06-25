@@ -79,7 +79,7 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
 void CabeceraTicket(int &ds);  // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
-void ActLinea(fstream &Art, tsArt &sArt);  // Falta
+void ActLinea(fstream &Art, ushort stock, ushort pos);  // Falta
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);
 string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
@@ -315,7 +315,7 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
         vsListCmpr[i].cantReq = vsArt[posArt].stock;
         vsArt[posArt].stock = 0;
       }
-      ActLinea(Art, vsArt[posArt]);
+      ActLinea(Art, vsArt[posArt].stock, pos);
 
     } else {
       vsListCmpr[i].cantReq = 0;
