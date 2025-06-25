@@ -20,7 +20,6 @@ Entrega:
 // 1° entrega: 06/08
 // 2° entrega: 13/08
 // 3° entrega: 17/09
-#include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
@@ -119,8 +118,8 @@ int main() {
   VolcarArchivos(Art, IndDesc, Rub, ListCmpr, vsArt, vsIndDesc, vsRub,
                  vsListCmpr, cantArt, cantCmpr);
   ProcCompras(Art, vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
-  EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
-  // EmitirArt_x_Rubro(vsArt, vsRub, cantArt);
+  // EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
+  EmitirArt_x_Rubro(vsArt, vsRub, cantArt);
   Cerrar(Art, IndDesc, Rub, ListCmpr);
   return 0;
 }
@@ -352,7 +351,7 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 }  // EmitirTicket
 
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
-  freopen("ListadiArticulos.txt", "w", stdout);
+  freopen("ListadoArticulos.txt", "w", stdout);
   ushort codRubro = 200;
   cout << Replicate('-', 103) << CRLF << Replicate(' ', (103 - 49) / 2)
        << "Listado de Arículos ordenados por Código de Rubro"
@@ -360,8 +359,9 @@ void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
   for (ushort i = 0; i < cantArt; i++) {
     if (codRubro != vsArt[i].codRub) {
       codRubro = vsArt[i].codRub;
-      cout << "Cod. Rubro: " << codRubro << ' ' << vsRub[codRubro - 1].descRub
-           << CRLF << "Cod.Art. Descripción" << Replicate(' ', 20)
+      cout << CRLF << "Cod. Rubro: " << codRubro << ' '
+           << vsRub[codRubro - 1].descRub << CRLF << "Cod.Art. Descripción"
+           << Replicate(' ', 20)
            << "Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %"
            << CRLF << Replicate('-', 103) << CRLF;
     }
@@ -373,7 +373,7 @@ void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
            << vsArt[i].ofertas[2 * j + 1];
     cout << CRLF;
   }
-} // EmitirArt_x_Rubro
+}  // EmitirArt_x_Rubro
 
 void Cerrar(ARCHIVOS) {
   Art.close();
