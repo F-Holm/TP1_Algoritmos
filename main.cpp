@@ -315,7 +315,8 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
         vsListCmpr[i].cantReq = vsArt[posArt].stock;
         vsArt[posArt].stock = 0;
       }
-      ActLinea(Art, vsArt[posArt].stock, pos);
+      cout << "Stock: " << vsArt[posArt].stock << " - Pos: " << posArt << endl;
+      ActLinea(Art, vsArt[posArt].stock, posArt);
 
     } else {
       vsListCmpr[i].cantReq = 0;
