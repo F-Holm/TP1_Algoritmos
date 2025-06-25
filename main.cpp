@@ -79,7 +79,7 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
 void CabeceraTicket(int &ds);  // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
-void ActLinea(fstream &Art, ushort stock, ushort pos);  // Falta
+void ActLinea(fstream &Art, tsArt &sArt, ushort pos);  // Falta
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);
 string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
@@ -233,12 +233,7 @@ void IntCmb(tsArt &sElem1, tsArt &sElem2) {
   sElem2 = auxiliar;
 }  // IntCmb
 
-void ActLinea(fstream &Art, ushort stock, ushort pos){
-  Art.seekp(pos * 105 + 50);
-  /*string stck = to_string(stock);
-  stck.insert(0, 4 - stck.size(), ' ');
-  Art.write(stck.c_str(), 4);*/
-  Art << setprecision(4) << stock;
+void ActLinea(fstream &Art, tsArt &sArt, ushort pos){
 } // ActLinea
 
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
@@ -315,8 +310,7 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
         vsListCmpr[i].cantReq = vsArt[posArt].stock;
         vsArt[posArt].stock = 0;
       }
-      cout << "Stock: " << vsArt[posArt].stock << " - Pos: " << posArt << endl;
-      ActLinea(Art, vsArt[posArt].stock, posArt);
+      ActLinea(Art, vsArt[posArt], posArt);
 
     } else {
       vsListCmpr[i].cantReq = 0;
