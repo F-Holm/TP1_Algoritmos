@@ -34,7 +34,6 @@ typedef char str30[31];
 typedef char str20[21];
 typedef char str10[11];
 typedef unsigned short ushort;
-#define CRLF "\r\n"
 
 struct tsArt {   // max 10.000 - desordenado
   int codVen;    // 8 dígitos
@@ -159,28 +158,28 @@ bool LeerArticulo(fstream &Art, tsArt &sArt) {
   Art.get(sArt.medida, 11);
   for (short i = 0; i < 14; i++)
     Art >> sArt.ofertas[i];
-  Art.ignore();
+  Art.ignore(2, '\n');
   return Art.good();
 }  // LeerArticulo
 
 bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc) {
   IndDesc.get(sIndDesc.descArt, 31);
   IndDesc >> sIndDesc.posArt >> sIndDesc.estado;
-  IndDesc.ignore();
+  IndDesc.ignore(2, '\n');
   return IndDesc.good();
 }  // LeerDescripcion
 
 bool LeerRubro(ifstream &Rub, tsRub &sRub) {
   Rub >> sRub.codRub;
   Rub.get(sRub.descRub, 21);
-  Rub.ignore();
+  Rub.ignore(2, '\n');
   return Rub.good();
 }  // LeerRubro
 
 bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra) {
   ListCmpr.get(sCompra.descArt, 31);
   ListCmpr >> sCompra.cantReq;
-  ListCmpr.ignore();
+  ListCmpr.ignore(2, '\n');
   return ListCmpr.good();
 }  // LeerCompra
 
@@ -361,19 +360,20 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
   freopen("ListadoArticulos.txt", "w", stdout);
   ushort codRubro = 200;
-  cout << Replicate('-', 103) << CRLF << Replicate(' ', (103 - 49) / 2)
+  cout << Replicate('-', 103) << '\n'
+       << Replicate(' ', (103 - 49) / 2)
        << "Listado de Arículos ordenados por Código de Rubro"
-       << Replicate(' ', (103 - 49) / 2) << CRLF << Replicate('=', 103) << CRLF;
+       << Replicate(' ', (103 - 49) / 2) << '\n'
+       << Replicate('=', 103) << '\n';
   for (ushort i = 0; i < cantArt; i++) {
     if (i != 0)
-      cout << CRLF;
+      cout << '\n';
     if (codRubro != vsArt[i].codRub) {
       codRubro = vsArt[i].codRub;
-      cout << CRLF << "Cod. Rubro: " << codRubro << ' '
-           << vsRub[codRubro - 1].descRub << CRLF << "Cod.Art. Descripción"
-           << Replicate(' ', 20)
-           << "Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %"
-           << CRLF << Replicate('-', 103) << CRLF;
+      cout << "\nCod. Rubro: " << codRubro << ' ' << vsRub[codRubro - 1].descRub
+           << "\nCod.Art. Descripción" << Replicate(' ', 20)
+           << "Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %\n"
+           << Replicate('-', 103) << '\n';
     }
     cout << setw(8) << vsArt[i].codRub << ' ' << setw(30) << vsArt[i].descArt
          << ' ' << setw(4) << vsArt[i].stock << ' ' << setw(9)
