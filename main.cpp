@@ -101,7 +101,7 @@ void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr);
 void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr);
 void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
-                  ushort cantArt, ushort cantCmpr);                    // Falta
+                  ushort cantArt, ushort cantCmpr);  // Falta
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt);
 void Cerrar(ARCHIVOS);
 
@@ -249,6 +249,12 @@ void IntCmb(tsArt &sElem1, tsArt &sElem2) {
 }  // IntCmb
 
 void ActLinea(fstream &Art, tsArt &sArt) {
+  Art << setw(8) << sArt.codRub << ' ' << setw(30) << sArt.descArt << ' '
+      << setw(4) << sArt.stock << ' ' << setw(9) << sArt.preUni << ' '
+      << setw(10) << sArt.medida;
+  for (ushort j = 0; j < 7; j++)
+    Art << ' ' << sArt.ofertas[2 * j] << ' ' << setw(2)
+        << sArt.ofertas[2 * j + 1];
 }  // ActLinea
 
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
@@ -296,6 +302,7 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
   while (LeerArticulo(Art, sArt) && cantArt <= MAX_ART) {
     vsArt[cantArt] = sArt;
     cantArt++;
+    cout << sArt.descArt << endl;
   }
   for (ushort i = 0; LeerDescripcion(IndDesc, sIndDesc) && i < cantArt; i++)
     vsIndDesc[i] = sIndDesc;
@@ -311,6 +318,7 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
   str30 descBuscada;
   int pos;
   ushort posArt;
+  Art << fixed << setprecision(2);
 
   for (ushort i = 0; i < cantCmpr; i++) {
     strcpy(descBuscada, vsListCmpr[i].descArt);
@@ -357,6 +365,8 @@ void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
        << "Listado de Arículos ordenados por Código de Rubro"
        << Replicate(' ', (103 - 49) / 2) << CRLF << Replicate('=', 103) << CRLF;
   for (ushort i = 0; i < cantArt; i++) {
+    if (i != 0)
+      cout << CRLF;
     if (codRubro != vsArt[i].codRub) {
       codRubro = vsArt[i].codRub;
       cout << CRLF << "Cod. Rubro: " << codRubro << ' '
@@ -371,7 +381,6 @@ void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
     for (ushort j = 0; j < 7; j++)
       cout << ' ' << vsArt[i].ofertas[2 * j] << ' ' << setw(2)
            << vsArt[i].ofertas[2 * j + 1];
-    cout << CRLF;
   }
 }  // EmitirArt_x_Rubro
 
