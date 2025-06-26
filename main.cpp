@@ -72,7 +72,7 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
 void CabeceraTicket(int &ds);  // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
-void ActLinea(fstream &Art, tsArt &sArt);                          // Falta
+void ActLinea(fstream &Art, tsArt &sArt);                          
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult); 
 string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
@@ -89,6 +89,7 @@ int main() {
   tvsIndDesc vsIndDesc;
   tvsRub vsRub;
   tvsListCmp vsListCmpr;
+  streampos vPosArt[MAX_ART];
   fstream Art;
   ifstream IndDesc, Rub, ListCmpr;
   ushort cantArt, cantCmpr;
@@ -116,6 +117,7 @@ long GetTime(int &hh, int &mm, int &ss) {
   ss = timeinfo->tm_sec;
   return timeinfo->tm_hour * 10000 + timeinfo->tm_min * 100 + timeinfo->tm_sec;
 }  // GetTime
+
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
   int li = 0, ls = ult, pm;
 
@@ -155,7 +157,8 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
          timeinfo->tm_mday;
 }  // GetDate
 
-bool LeerArticulo(fstream &Art, tsArt &sArt) {
+bool LeerArticulo(fstream &Art, tsArt &sArt, streampos &pos) {
+  pos = Art.tellg();
   Art >> sArt.codVen >> sArt.codRub;
   Art.get(sArt.descArt, 31);
   Art >> sArt.stock >> sArt.preUni;
@@ -246,6 +249,22 @@ void Abrir(ARCHIVOS) {
   Rub.open("Rubros.txt");
   ListCmpr.open("ListaCompras.txt");
 }  // Abrir
+
+void ActLinea(fstream &Art, tsArt &sArt, streampos posArt) {
+  Art.clear();
+  Art.seekp(posArt, ios::beg);  // Ir a la posición exacta guardada
+
+  Art << sArt.codVen << ' ' << sArt.codRub << ' ' << sArt.descArt << ' '
+      << sArt.stock << ' ' << fixed << setprecision(2) << sArt.preUni << ' '
+      << sArt.medida;
+
+  for (short i = 0; i < 14; i++)
+    Art << ' ' << sArt.ofertas[i];
+
+  Art << '\n';
+} //ActLinea
+
+
 void ProcCompras(ARCHIVO_ART, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
   str30 descBuscada;
   int pos;
@@ -273,7 +292,7 @@ void ProcCompras(ARCHIVO_ART, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
            << " Comprado: " << cantComprada << " "
            << vsArt[posArt].medida << endl;
 
-      ActLinea(Art, vsArt[posArt]);
+      ActLinea(Art, vsArt[posArt], vPosArt[posArt]);
 
     } else {
       cout << left << setw(30) << vsListCmpr[i].descArt
@@ -282,16 +301,18 @@ void ProcCompras(ARCHIVO_ART, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
   }
 }
 
-void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
+void VolcarArchivos(ARCHIVOS, REGISTROS, streampos vPosArt[], ushort &cantArt, ushort &cantCmpr) {
   tsArt sArt;
   tsIndDesc sIndDesc;
   tsRub sRub;
   tsCompra sCompra;
   cantArt = 0;
   cantCmpr = 0;
+  streampos pos;
 
-  while (LeerArticulo(Art, sArt)) {
+  while (LeerArticulo(Art, sArt, pos)) {
     vsArt[cantArt] = sArt;
+    vPosArt[cantArt] = pos;
     cantArt++;
   }
   for (ushort i = 0; LeerDescripcion(IndDesc, sIndDesc); i++)
