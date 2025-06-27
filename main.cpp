@@ -109,7 +109,7 @@ void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr);
 void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr);
 void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
-                  ushort cantArt, ushort cantCmpr);  // Falta
+                  ushort cantArt, ushort cantCmpr);
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt);
 void Cerrar(ARCHIVOS);
 
