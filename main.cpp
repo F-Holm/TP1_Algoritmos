@@ -448,6 +448,7 @@ void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
       cout << ' ' << vsArt[i].ofertas[2 * j] << ' ' << setw(2)
            << vsArt[i].ofertas[2 * j + 1];
   }
+  fclose(stdout);
 }  // EmitirArt_x_Rubro
 
 void Cerrar(ARCHIVOS) {
