@@ -351,7 +351,6 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
       vsListCmpr[i].cantReq = 0;
     }
   }
-  OrdxBur(vsArt, cantArt);
 }  // ProcCompras
 
 void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
@@ -422,6 +421,7 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 
 
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
+  OrdxBur(vsArt, cantArt);
   freopen("ListadoArticulos.txt", "w", stdout);
   cout << setprecision(2) << fixed;
   ushort codRubro = 200;
