@@ -1,14 +1,21 @@
-// NO USAR MEMORIA DINÁMICA (new, delete, malloc, realloc, free)
-// Muchos comentarios van a ser eliminados en la entrega final
-// UTILIZAR LA NOMENCLATURA DE HUGO CUELLO
-// el acceso secuencial es rapidisomo si accedemos a cada compoennete para
-// procesarlo en el mismo orden en el que estos fueron grabados Articulos.txt
-// tiene 103 caracteres por línea + CR y Lf => 105 caracteres por linea Un
-// archivo de texto se compone de lineas donde cada linea es de longitud
-// variable -y cada linea termina con una marca llamada fin de linea, además hay
-// otra marca que indica fin de archivo -todo el contenido de un archivo .txt es
-// texto cuando se crea un archivo, siempre crear una copia
 /*
+NO USAR MEMORIA DINÁMICA (new, delete, malloc, realloc, free)
+Muchos comentarios van a ser eliminados en la entrega final
+UTILIZAR LA NOMENCLATURA DE HUGO CUELLO
+
+El acceso secuencial es rapidísimo si accedemos a cada compoennete para
+  procesarlo en el mismo orden en el que estos fueron grabados
+
+Articulos.txt tiene 103 caracteres por línea + CR y Lf => 105 caracteres por
+  linea
+
+Un archivo de texto se compone de lineas donde cada linea es de longitud
+  variable y cada linea termina con una marca llamada fin de linea, además hay
+  otra marca que indica fin de archivo
+
+Tod0 el contenido de un archivo .txt es texto cuando se crea un archivo, siempre
+  crear una copia
+
 Entrega:
   Carátula
   Consigna
@@ -16,10 +23,12 @@ Entrega:
   Muestras de datos
   Resultados
   Código
+
+1° entrega: 06/08
+2° entrega: 13/08
+3° entrega: 17/09
 */
-// 1° entrega: 06/08
-// 2° entrega: 13/08
-// 3° entrega: 17/09
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
@@ -93,7 +102,7 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
 void CabeceraTicket(int &ds);  // Falta
 void OrdxBur(tvsArt &vsArt, ushort card);
 void IntCmb(tsArt &sElem1, tsArt &sElem2);
-void ActLinea(fstream &Art, tsArt &sArt);  // Falta
+void ActLinea(fstream &Art, tsArt &sArt);
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);
 string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
@@ -284,7 +293,7 @@ string Replicate(char car, ushort n) {
 }  // Replicate
 
 void Abrir(ARCHIVOS) {
-  Art.open("Articulos.txt", ios::in | ios::out);
+  Art.open("Articulos.txt");
   IndDesc.open("IndDescripArt.txt");
   Rub.open("Rubros.txt");
   ListCmpr.open("ListaCompras.txt");
@@ -301,7 +310,6 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
   while (LeerArticulo(Art, sArt) && cantArt <= MAX_ART) {
     vsArt[cantArt] = sArt;
     cantArt++;
-    cout << sArt.descArt << endl;
   }
   for (ushort i = 0; LeerDescripcion(IndDesc, sIndDesc) && i < cantArt; i++)
     vsIndDesc[i] = sIndDesc;
@@ -343,7 +351,7 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
 }  // ProcCompras
 
 void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
-                  ushort cantArt, ushort cantCmpr) {
+                  ushort cantArt, ushort cantCmpr) {  // Incompleto
   // El comprador realiza su pago por Mercado pago (paga exacto)
   // Solo aplican los descuentos de Promo y MercPago
   int ds;
@@ -360,22 +368,23 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
   freopen("ListadoArticulos.txt", "w", stdout);
   ushort codRubro = 200;
-  cout << Replicate('-', 103) << '\n'
-       << Replicate(' ', (103 - 49) / 2)
-       << "Listado de Arículos ordenados por Código de Rubro"
-       << Replicate(' ', (103 - 49) / 2) << '\n'
-       << Replicate('=', 103) << '\n';
+
+  cout << Replicate('-', 100) << '\n'
+       << Replicate(' ', floor((100.0 - 50.0) / 2.0))
+       << "Listado de Articulos ordenados por Codigo de Rubro"
+       << Replicate(' ', ceil((100.0 - 50.0) / 2.0)) << '\n'
+       << Replicate('=', 100) << '\n';
   for (ushort i = 0; i < cantArt; i++) {
     if (i != 0)
       cout << '\n';
     if (codRubro != vsArt[i].codRub) {
       codRubro = vsArt[i].codRub;
       cout << "\nCod. Rubro: " << codRubro << ' ' << vsRub[codRubro - 1].descRub
-           << "\nCod.Art. Descripción" << Replicate(' ', 20)
+           << "\nCod.Art. Descripcion" << Replicate(' ', 20)
            << "Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %\n"
-           << Replicate('-', 103) << '\n';
+           << Replicate('-', 100) << '\n';
     }
-    cout << setw(8) << vsArt[i].codRub << ' ' << setw(30) << vsArt[i].descArt
+    cout << setw(8) << vsArt[i].codVen << ' ' << setw(30) << vsArt[i].descArt
          << ' ' << setw(4) << vsArt[i].stock << ' ' << setw(9)
          << vsArt[i].preUni << ' ' << setw(10) << vsArt[i].medida;
     for (ushort j = 0; j < 7; j++)
