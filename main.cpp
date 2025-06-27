@@ -355,19 +355,71 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
 }  // ProcCompras
 
 void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
-                  ushort cantArt, ushort cantCmpr) {  // Incompleto
-  // El comprador realiza su pago por Mercado pago (paga exacto)
-  // Solo aplican los descuentos de Promo y MercPago
+                  ushort cantArt, ushort cantCmpr) {
   int ds;
   float impTot = 0.0f, impTotDesto = 0.0f;
+
   freopen("Ticket.txt", "w", stdout);
+  CabeceraTicket(ds);  // ✔ Cabecera
+
+  const char *tipoDesc[] = {"", "Jub.", "Marca.", "MercPago", "Comunid.", "ANSES", "Promo"};
 
   for (ushort i = 0; i < cantCmpr; i++) {
+    if (vsListCmpr[i].cantReq == 0)
+      continue;
+
+    int pos = BusBinVec(vsIndDesc, vsListCmpr[i].descArt, cantArt - 1);
+    if (pos == -1 || !vsIndDesc[pos].estado)
+      continue;
+
+    tsArt &art = vsArt[vsIndDesc[pos].posArt];
+    ushort cant = vsListCmpr[i].cantReq;
+    float precio = art.preUni;
+    float subtotal = cant * precio;
+
+    ushort tipo = art.ofertas[(ds - 1) * 2];
+    ushort porc = art.ofertas[(ds - 1) * 2 + 1];
+    float descuento = 0.0f;
+
+    if (tipo >= 1 && tipo <= 6)  // Solo aplicar si es válido
+      descuento = subtotal * porc / 100.0f;
+
+    float total = subtotal - descuento;
+
+    // Cuerpo del ticket (alineado)
+    cout << right << setw(3) << cant << " x $ " << right << setw(8)
+         << fixed << setprecision(2) << precio << '\n';
+
+    cout << left << setw(30) << art.descArt << setw(10) << art.medida << '\n';
+
+    cout << setw(8) << art.codVen << right << setw(42)
+         << "$ " << setw(10) << fixed << setprecision(2) << subtotal << '\n';
+
+    if (descuento > 0.0f) {
+      cout << left << setw(12) << tipoDesc[tipo] << right << setw(5) << porc
+           << right << setw(28)
+           << "$ -" << setw(9) << fixed << setprecision(2) << descuento << '\n';
+    }
+
+    impTot += subtotal;
+    impTotDesto += descuento;
   }
 
-  CabeceraTicket(ds);
-  PieTicket(impTot, impTotDesto, impTot - impTotDesto);
-}  // EmitirTicket
+  float impTotConDesto = impTot - impTotDesto;
+
+  cout << '\n' << left << setw(35) << "SubTot. sin descuentos....:"
+       << "$ " << right << setw(10) << fixed << setprecision(2) << impTot << '\n';
+  cout << left << setw(35) << "Descuentos por promociones:"
+       << "$ -" << right << setw(9) << fixed << setprecision(2) << impTotDesto << '\n';
+  cout << Replicate('=', 40) << '\n';
+  cout << left << setw(28) << "T O T A L" << "$ " << right << setw(10) << impTotConDesto << '\n';
+  cout << Replicate('=', 40) << '\n';
+
+  // Pie del ticket
+  PieTicket(impTot, impTotDesto, impTotConDesto);
+  fclose(stdout);  // ✔ cerrar salida redirigida
+}
+
 
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
   freopen("ListadoArticulos.txt", "w", stdout);
