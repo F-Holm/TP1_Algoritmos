@@ -71,7 +71,7 @@ struct tsCompra {  // desordenado - max 100
   short cantReq;  // 2 digitos
 };
 
-const ushort MAX_ART = 10000;
+const ushort MAX_ART = 1000;
 const ushort CANT_RUB = 15;
 const ushort MAX_COMPRAS = 100;
 typedef tsArt tvsArt[MAX_ART];
