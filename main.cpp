@@ -1,28 +1,28 @@
 /*
-NO USAR MEMORIA DINÁMICA (new, delete, malloc, realloc, free)
+NO USAR MEMORIA DINAMICA (new, delete, malloc, realloc, free)
 Muchos comentarios van a ser eliminados en la entrega final
 UTILIZAR LA NOMENCLATURA DE HUGO CUELLO
 
-El acceso secuencial es rapidísimo si accedemos a cada compoennete para
+El acceso secuencial es rapidisimo si accedemos a cada compoennete para
   procesarlo en el mismo orden en el que estos fueron grabados
 
-Articulos.txt tiene 103 caracteres por línea + CR y Lf => 105 caracteres por
+Articulos.txt tiene 103 caracteres por linea + CR y Lf => 105 caracteres por
   linea
 
 Un archivo de texto se compone de lineas donde cada linea es de longitud
-  variable y cada linea termina con una marca llamada fin de linea, además hay
+  variable y cada linea termina con una marca llamada fin de linea, ademas hay
   otra marca que indica fin de archivo
 
 Tod0 el contenido de un archivo .txt es texto cuando se crea un archivo, siempre
   crear una copia
 
 Entrega:
-  Carátula
+  Caratula
   Consigna
   Diagramas
   Muestras de datos
   Resultados
-  Código
+  Codigo
 
 1° entrega: 06/08
 2° entrega: 13/08
@@ -45,19 +45,19 @@ typedef char str10[11];
 typedef unsigned short ushort;
 
 struct tsArt {   // max 10.000 - desordenado
-  int codVen;    // 8 dígitos
-  short codRub;  // 2 dígitos
+  int codVen;    // 8 digitos
+  short codRub;  // 2 digitos
   str30 descArt;
-  ushort stock;  // 4 dígitos
+  ushort stock;  // 4 digitos
   float preUni;  // 6,2
   str10 medida;
   short ofertas[14];  //= {tipo descuento; porcentaje; tipo; porcentaje...}
-};  // Cada par de "ofertas" es de un dia específico de la semana
+};  // Cada par de "ofertas" es de un dia especifico de la semana
 // ofertas[0] = oferta_domingo
 
-struct tsIndDesc {  // ordenado por descripción
+struct tsIndDesc {  // ordenado por descripcion
   str30 descArt;
-  int posArt;  // 4 dígitos (0 - 9999)
+  int posArt;  // 4 digitos (0 - 9999)
   bool estado;
 };
 
@@ -66,12 +66,12 @@ struct tsRub {  // hay 15 - ordenado por codigo
   str20 descRub;
 };
 
-struct tsCompra {  // desordenado - máx 100
+struct tsCompra {  // desordenado - max 100
   str30 descArt;
-  short cantReq;  // 2 dígitos
+  short cantReq;  // 2 digitos
 };
 
-const ushort MAX_ART = 10000;
+const ushort MAX_ART = 1000;
 const ushort CANT_RUB = 15;
 const ushort MAX_COMPRAS = 100;
 typedef tsArt tvsArt[MAX_ART];
@@ -87,10 +87,10 @@ typedef tsCompra tvsListCmpr[MAX_COMPRAS];  // lista compras
   tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr
 
 // Declaraciones de funciones
-// Las que tienen comentario '// Falta' no están definidas
-// Puede que tengan que cambiar, eliminar o agregar algunos parámetros
-// Las declaraciones que tienen errores son porque todavía no definimos los
-// parámetros de esa función
+// Las que tienen comentario '// Falta' no estan definidas
+// Puede que tengan que cambiar, eliminar o agregar algunos parametros
+// Las declaraciones que tienen errores son porque todavia no definimos los
+// parametros de esa funcion
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
@@ -162,8 +162,10 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
 
 bool LeerArticulo(fstream &Art, tsArt &sArt) {
   Art >> sArt.codVen >> sArt.codRub;
+  Art.ignore();
   Art.get(sArt.descArt, 31);
   Art >> sArt.stock >> sArt.preUni;
+  Art.ignore();
   Art.get(sArt.medida, 11);
   for (short i = 0; i < 14; i++)
     Art >> sArt.ofertas[i];
@@ -180,6 +182,7 @@ bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc) {
 
 bool LeerRubro(ifstream &Rub, tsRub &sRub) {
   Rub >> sRub.codRub;
+  Rub.ignore();
   Rub.get(sRub.descRub, 21);
   Rub.ignore(2, '\n');
   return Rub.good();
@@ -220,15 +223,15 @@ void CabeceraTicket(int &ds) {  // MAL
   GetTime(hh, mm, ss);
   GetDate(year, mes, dia, ds);
 
-  const char *diasSemana[] = {"Domingo", "Lunes",   "Martes", "Miércoles",
-                              "Jueves",  "Viernes", "Sábado"};
+  const char *diasSemana[] = {"Domingo", "Lunes",   "Martes", "Miercoles",
+                              "Jueves",  "Viernes", "Sabado"};
 
   cout << Replicate('=', 40) << endl;
   cout << "        TICKET DE COMPRA KOTTO" << endl;
   cout << "Fecha: " << setfill('0') << setw(2) << dia << "/" << setw(2) << mes
        << "/" << year << "  " << "Hora: " << setw(2) << hh << ":" << setw(2)
        << mm << ":" << setw(2) << ss << endl;
-  cout << "Día: " << diasSemana[(ds - 1) % 7] << endl;
+  cout << "Dia: " << diasSemana[(ds - 1) % 7] << endl;
   cout << Replicate('=', 40) << endl;
   cout << setfill(' ');
 }  // CabeceraTicket
@@ -257,9 +260,9 @@ void IntCmb(tsArt &sElem1, tsArt &sElem2) {
 }  // IntCmb
 
 void ActLinea(fstream &Art, tsArt &sArt) {
-  Art << setw(8) << sArt.codRub << ' ' << setw(30) << sArt.descArt << ' '
-      << setw(4) << sArt.stock << ' ' << setw(9) << sArt.preUni << ' '
-      << setw(10) << sArt.medida;
+  Art << setw(8) << sArt.codVen << ' ' << setw(2) << sArt.codRub << ' '
+      << setw(30) << sArt.descArt << ' ' << setw(4) << sArt.stock << ' '
+      << setw(9) << sArt.preUni << ' ' << setw(10) << sArt.medida;
   for (ushort j = 0; j < 7; j++)
     Art << ' ' << sArt.ofertas[2 * j] << ' ' << setw(2)
         << sArt.ofertas[2 * j + 1];
@@ -340,6 +343,7 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
         vsListCmpr[i].cantReq = vsArt[posArt].stock;
         vsArt[posArt].stock = 0;
       }
+      Art.clear();
       Art.seekp(105 * posArt);
       ActLinea(Art, vsArt[posArt]);
 
@@ -367,6 +371,7 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
   freopen("ListadoArticulos.txt", "w", stdout);
+  cout << setprecision(2) << fixed;
   ushort codRubro = 200;
 
   cout << Replicate('-', 100) << '\n'
