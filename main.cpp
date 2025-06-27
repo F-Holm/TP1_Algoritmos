@@ -162,8 +162,10 @@ long GetDate(int &year, int &mes, int &dia, int &ds) {
 
 bool LeerArticulo(fstream &Art, tsArt &sArt) {
   Art >> sArt.codVen >> sArt.codRub;
+  Art.ignore();
   Art.get(sArt.descArt, 31);
   Art >> sArt.stock >> sArt.preUni;
+  Art.ignore();
   Art.get(sArt.medida, 11);
   for (short i = 0; i < 14; i++)
     Art >> sArt.ofertas[i];
@@ -180,6 +182,7 @@ bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc) {
 
 bool LeerRubro(ifstream &Rub, tsRub &sRub) {
   Rub >> sRub.codRub;
+  Rub.ignore();
   Rub.get(sRub.descRub, 21);
   Rub.ignore(2, '\n');
   return Rub.good();
@@ -257,9 +260,9 @@ void IntCmb(tsArt &sElem1, tsArt &sElem2) {
 }  // IntCmb
 
 void ActLinea(fstream &Art, tsArt &sArt) {
-  Art << setw(8) << sArt.codRub << ' ' << setw(30) << sArt.descArt << ' '
-      << setw(4) << sArt.stock << ' ' << setw(9) << sArt.preUni << ' '
-      << setw(10) << sArt.medida;
+  Art << setw(8) << sArt.codVen << ' ' << setw(2) << sArt.codRub << ' '
+      << setw(30) << sArt.descArt << ' ' << setw(4) << sArt.stock << ' '
+      << setw(9) << sArt.preUni << ' ' << setw(10) << sArt.medida;
   for (ushort j = 0; j < 7; j++)
     Art << ' ' << sArt.ofertas[2 * j] << ' ' << setw(2)
         << sArt.ofertas[2 * j + 1];
@@ -340,6 +343,7 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
         vsListCmpr[i].cantReq = vsArt[posArt].stock;
         vsArt[posArt].stock = 0;
       }
+      Art.clear();
       Art.seekp(105 * posArt);
       ActLinea(Art, vsArt[posArt]);
 
@@ -367,6 +371,7 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
   freopen("ListadoArticulos.txt", "w", stdout);
+  cout << setprecision(2) << fixed;
   ushort codRubro = 200;
 
   cout << Replicate('-', 100) << '\n'
