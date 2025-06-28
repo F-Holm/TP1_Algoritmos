@@ -218,6 +218,8 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
   cout << Replicate('-', 40) << endl;
 }  // PieTicket
 
+ 
+
 void CabeceraTicket(int &ds) {  // MAL
   int hh, mm, ss, year, mes, dia;
   GetTime(hh, mm, ss);
@@ -226,15 +228,24 @@ void CabeceraTicket(int &ds) {  // MAL
   const char *diasSemana[] = {"Domingo", "Lunes",   "Martes", "Miercoles",
                               "Jueves",  "Viernes", "Sabado"};
 
-  cout << Replicate('=', 40) << endl;
-  cout << "        TICKET DE COMPRA KOTTO" << endl;
-  cout << "Fecha: " << setfill('0') << setw(2) << dia << "/" << setw(2) << mes
-       << "/" << year << "  " << "Hora: " << setw(2) << hh << ":" << setw(2)
-       << mm << ":" << setw(2) << ss << endl;
-  cout << "Dia: " << diasSemana[(ds - 1) % 7] << endl;
-  cout << Replicate('=', 40) << endl;
-  cout << setfill(' ');
-}  // CabeceraTicket
+
+  cout << "K O T T O" << endl;
+  cout << "Yo te reconozco" << endl;
+  cout << "SUC 170" << endl;
+  cout << "XXXXXX...X 9993423529" << endl;
+  cout << "XX...X" << endl;
+  cout << "C.U.I.T. 99-99999999-9" << endl;
+  cout << "Fecha: " << diasSemana[ds - 1] <<" "<<setw(2)<<setfill('0')<< dia<<"/"<<setw(2)<<setfill('0')<< mes<<"/"<<setw(4)<<setfill('0')<< year << endl;
+  cout << "Hora: " << setw(2) << setfill('0') << hh << ":" << setw(2) << mm
+       << ":" << setw(2) << ss << endl;
+  cout << "Nro. Ticket: 9999-99999999" << endl;
+  cout << "Nro. Caja: 9999" << endl;
+  cout << Replicate('-', 40) << endl;
+  cout << "F A C T U R A - B" << endl;
+  cout << "ORIGINAL" << endl;
+  cout << Replicate('-', 40) << endl;
+
+} // CabeceraTicket
 
 void OrdxBur(tvsArt &vsArt, ushort card) {
   bool hayCambios;
