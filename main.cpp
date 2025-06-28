@@ -218,19 +218,6 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
   cout << Replicate('-', 40) << endl;
 }  // PieTicket
 
-// K O T T O 
-// Yo te reconozco 
-// SUC 170 
-// XXXXXX...X 9999 
-// XX....X 
-// C.U.I.T. 99-99999999-9 
-// Fecha: nomdia 99/99/9999 
-// Hora: 99:99:99 
-// Nro. Ticket: 9999-99999999 
-// Nro. Caja: 9999 
-// ---------------------------------------- 
-// F A C T U R A - B 
-// ORIGINAL ---------------------------------------- 
  
 
 void CabeceraTicket(int &ds) {  // MAL
@@ -245,10 +232,10 @@ void CabeceraTicket(int &ds) {  // MAL
   cout << "K O T T O" << endl;
   cout << "Yo te reconozco" << endl;
   cout << "SUC 170" << endl;
-  cout << "XXXXXX...X 9999" << endl;
-  cout << "XX....X" << endl;
+  cout << "XXXXXX...X 9993423529" << endl;
+  cout << "XX...X" << endl;
   cout << "C.U.I.T. 99-99999999-9" << endl;
-  cout << "Fecha: " << diasSemana[ds - 1] << dia < < < < mes << year << endl;
+  cout << "Fecha: " << diasSemana[ds - 1] <<" "<<setw(2)<<setfill('0')<< dia<<"/"<<setw(2)<<setfill('0')<< mes<<"/"<<setw(4)<<setfill('0')<< year << endl;
   cout << "Hora: " << setw(2) << setfill('0') << hh << ":" << setw(2) << mm
        << ":" << setw(2) << ss << endl;
   cout << "Nro. Ticket: 9999-99999999" << endl;
@@ -258,7 +245,7 @@ void CabeceraTicket(int &ds) {  // MAL
   cout << "ORIGINAL" << endl;
   cout << Replicate('-', 40) << endl;
 
-}  // CabeceraTicket
+} // CabeceraTicket
 
 void OrdxBur(tvsArt &vsArt, ushort card) {
   bool hayCambios;
