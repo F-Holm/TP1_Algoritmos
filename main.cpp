@@ -28,11 +28,11 @@ Entrega:
 2° entrega: 13/08
 3° entrega: 17/09
 */
-#include <cmath>
+#include <math.h>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
-#include <fstream>
+#include <fstream> // Required for fstream, ifstream
 #include <iomanip>
 #include <iostream>
 #include <string>
@@ -126,7 +126,7 @@ int main() {
   VolcarArchivos(Art, IndDesc, Rub, ListCmpr, vsArt, vsIndDesc, vsRub,
                  vsListCmpr, cantArt, cantCmpr);
   ProcCompras(Art, vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
-  // EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
+  EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
   EmitirArt_x_Rubro(vsArt, vsRub, cantArt);
   Cerrar(Art, IndDesc, Rub, ListCmpr);
   return 0;
@@ -201,7 +201,6 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
   float vuelto = pagoUsuario - impTotConDesto;
 
   cout << fixed << setprecision(2);
-  cout << Replicate('-', 40) << endl;
   cout << left << setw(28) << "Total bruto:" << "$ " << setw(9) << impTot
        << endl;
   cout << left << setw(28) << "Descuento aplicado:" << "$ " << setw(9)
@@ -220,7 +219,7 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
 
  
 
-void CabeceraTicket(int &ds) {  // MAL
+void CabeceraTicket(int &ds) {  
   int hh, mm, ss, year, mes, dia;
   GetTime(hh, mm, ss);
   GetDate(year, mes, dia, ds);
@@ -386,7 +385,8 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
     ushort cant = vsListCmpr[i].cantReq;
     float precio = art.preUni;
     float subtotal = cant * precio;
-
+    string subtotalStr = "$" + to_string(subtotal);
+    subtotalStr = subtotalStr.substr(0, subtotalStr.find('.') + 3); // Limitar a 2 decimales
     ushort tipo = art.ofertas[(ds - 1) * 2];
     ushort porc = art.ofertas[(ds - 1) * 2 + 1];
     float descuento = 0.0f;
@@ -395,35 +395,45 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
       descuento = subtotal * porc / 100.0f;
 
     float total = subtotal - descuento;
-
+    string descuentoStr = "$-" + to_string(descuento);
+    descuentoStr = descuentoStr.substr(0, descuentoStr.find('.') + 3); // Limitar a 2 decimales
     // Cuerpo del ticket (alineado)
-    cout << right << setw(3) << cant << " x $ " << right << setw(8)
-         << fixed << setprecision(2) << precio << '\n';
+    cout << setfill(' ')
+    << right << setw(3) << cant << " x $ "
+    << right << setw(8) << fixed << setprecision(2) << precio << '\n';
 
-    cout << left << setw(30) << art.descArt << setw(10) << art.medida << '\n';
+// Línea 2: descripción + medida
+cout <<left << setw(10) << art.descArt
+    << left << setw(9) << art.medida << '\n';
 
-    cout << setw(8) << art.codVen << right << setw(42)
-         << "$ " << setw(10) << fixed << setprecision(2) << subtotal << '\n';
+// Línea 3: código artículo + subtotal alineado a derecha
 
-    if (descuento > 0.0f) {
-      cout << left << setw(12) << tipoDesc[tipo] << right << setw(5) << porc
-           << right << setw(28)
-           << "$ -" << setw(9) << fixed << setprecision(2) << descuento << '\n';
-    }
+cout << left <<setw(24)<< art.codVen
+     <<right<<setw(23)<<subtotalStr;
 
+// Línea 4: tipo descuento + nro + descuento (solo si aplica)
+if (descuento > 0.0f) {
+  string tipoStr = tipoDesc[tipo]; // renombrado para evitar conflicto
+
+  cout <<"\n"<< left << setw(10) << tipoStr
+       << right << setw(6) << porc
+       << right << setw(31) << descuentoStr ;
+}
+
+    cout<< "\n\n";
     impTot += subtotal;
     impTotDesto += descuento;
   }
 
   float impTotConDesto = impTot - impTotDesto;
 
-  cout << '\n' << left << setw(35) << "SubTot. sin descuentos....:"
+  cout << left << setw(35) << "SubTot. sin descuentos....:"
        << "$ " << right << setw(10) << fixed << setprecision(2) << impTot << '\n';
   cout << left << setw(35) << "Descuentos por promociones:"
        << "$ -" << right << setw(9) << fixed << setprecision(2) << impTotDesto << '\n';
-  cout << Replicate('=', 40) << '\n';
-  cout << left << setw(28) << "T O T A L" << "$ " << right << setw(10) << impTotConDesto << '\n';
-  cout << Replicate('=', 40) << '\n';
+  cout << Replicate('=', 53) << '\n';
+  cout << left << setw(35) << "T O T A L" << "$" << right << setw(11) << impTotConDesto << '\n';
+  cout << Replicate('=', 53) << '\n';
 
   // Pie del ticket
   PieTicket(impTot, impTotDesto, impTotConDesto);
