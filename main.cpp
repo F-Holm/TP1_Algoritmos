@@ -200,24 +200,21 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
 
   float vuelto = pagoUsuario - impTotConDesto;
 
-  cout << '\n'
-       << left << setw(42) << "SubTot. sin descuentos....:"
-       << "$ " << right << setw(10) << impTot
-       << '\n';
-  cout << left << setw(42) << "Descuentos por promociones:"
-       << "$ " << right << setw(10) << -impTotDesto
-       << '\n';
-  cout << Replicate('=', 54) << '\n';
-  cout << left << setw(42) << "T O T A L" << "$ " << right << setw(10)
-       << impTotConDesto << '\n';
-  cout << Replicate('=', 54) << '\n';
-
-  cout << left << setw(42) << "Su pago con Mercado Pago:" << "$ " << setw(10)
-       << right << pagoUsuario << endl;
-  cout << left << setw(42) << "Su vuelto:" << "$ " << setw(10) << right << vuelto << '\n';
-  cout << Replicate(' ', 8) << "G R A C I A S  P O R  S U  C O M P R A\n";
-  cout << Replicate(' ', 8) << "Para consultas, sugerencias o reclamos\n";
-  cout << Replicate(' ', 8) << "comunicarse al correo infoKotto.com.ar";
+  cout << setw(42) << left << "SubTot. sin descuentos....:"
+       << "$ " << setw(10) << right << impTot << '\n'
+       << setw(42) << left << "Descuentos por promociones:"
+       << "$ " << setw(10) << right << -impTotDesto << '\n'
+       << Replicate('=', 54) << '\n'
+       << setw(42) << left << "T O T A L" << "$ " << right << setw(10)
+       << impTotConDesto << '\n'
+       << Replicate('=', 54) << '\n'
+       << setw(42) << left << "Su pago con Mercado Pago:" << "$ " << setw(10)
+       << right << pagoUsuario << endl
+       << setw(42) << left << "Su vuelto:" << "$ " << setw(10) << right
+       << vuelto << '\n'
+       << Replicate(' ', 8) << "G R A C I A S  P O R  S U  C O M P R A\n"
+       << Replicate(' ', 8) << "Para consultas, sugerencias o reclamos\n"
+       << Replicate(' ', 8) << "comunicarse al correo infoKotto.com.ar";
 }  // PieTicket
 
 void CabeceraTicket(int &ds) {
@@ -395,8 +392,10 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
         float total = subtotal - descuento;
 
         // Cuerpo del ticket (alineado)
-        cout << setw(2) << right << cant << " x $ " << setw(9) << precio << '\n';
-        cout << setw(30) << left << art.descArt << ' ' << setw(10) << art.medida << '\n';
+        cout << setw(2) << right << cant << " x $ " << setw(9) << precio
+             << '\n';
+        cout << setw(30) << left << art.descArt << ' ' << setw(10) << art.medida
+             << '\n';
         cout << setw(8) << right << art.codVen << setw(36) << "$ " << setw(10)
              << subtotal << '\n';
 
@@ -419,7 +418,7 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 }
 
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
-  OrdxBur(vsArt, cantArt);// Ancho Ticket=53
+  OrdxBur(vsArt, cantArt);  // Ancho Ticket=53
   freopen("ListadoArticulos.txt", "w", stdout);
   cout << setfill(' ') << setprecision(2) << fixed;
   ushort codRubro = 200;

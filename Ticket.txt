@@ -5,7 +5,7 @@ XXXXXX...X 9999
 XX...X
 C.U.I.T. 99-99999999-9
 Fecha: Martes 15/07/2025
-Hora: 11:35:06
+Hora: 11:44:39
 Nro. Ticket: 9999-99999999
 Nro. Caja: 9999
 ------------------------------------------------------
@@ -121,7 +121,6 @@ Promo          36                         $   -9674.21
 Naranja Valencia               kg        
 75291495                                  $   16088.04
 Promo           4                         $    -643.52
-
 
 SubTot. sin descuentos....:               $ 1142375.38
 Descuentos por promociones:               $ -506797.59
