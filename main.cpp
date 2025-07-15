@@ -360,11 +360,10 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 
         float total = subtotal - descuento;
 
-        cout << setw(2) << right << cant << " x $ " << setw(9) << precio
-             << '\n';
-        cout << setw(30) << left << art.descArt << ' ' << setw(10) << art.medida
-             << '\n';
-        cout << setw(8) << right << art.codVen << setw(36) << "$ " << setw(10)
+        cout << setw(2) << right << cant << " x $ " << setw(9) << precio << '\n'
+             << setw(30) << left << art.descArt << ' ' << setw(10) << art.medida
+             << '\n'
+             << setw(8) << right << art.codVen << setw(36) << "$ " << setw(10)
              << subtotal << '\n';
 
         if (descuento > 0.0f) {
