@@ -5,7 +5,7 @@ XXXXXX...X 9999
 XX...X
 C.U.I.T. 99-99999999-9
 Fecha: Martes 15/07/2025
-Hora: 14:30:42
+Hora: 14:42:57
 Nro. Ticket: 9999-99999999
 Nro. Caja: 9999
 ------------------------------------------------------
@@ -29,7 +29,7 @@ Comunid.       72                         $   -2879.14
 20 x $   3692.72
 Gomitas Frutales               unidad    
 77811558                                  $   73854.40
-ANSES          91                         $  -67207.51
+ANSES          91                         $  -67207.50
 
  8 x $   1055.04
 Aceite de Coco                 l         
@@ -44,7 +44,7 @@ Marca.         10                         $   -4552.65
  7 x $   5897.99
 Queso Mozzarella               l         
 75287095                                  $   41285.93
-Marca.         77                         $  -31790.16
+Marca.         77                         $  -31790.17
 
 13 x $   4249.51
 Corn Flakes                    kg        
