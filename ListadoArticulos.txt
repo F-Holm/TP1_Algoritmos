@@ -5,7 +5,7 @@
 Cod. Rubro: 1 Frutas              
 Cod.Art. Descripcion                    Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %
 ----------------------------------------------------------------------------------------------------
-98024047 Banana Cavendish               7310   1193.41 kg         6 58 6 13 6 13 3  8 5 80 4 98 2 15
+98024047 Banana Cavendish                  0   1193.41 kg         6 58 6 13 6 13 3  8 5 80 4 98 2 15
 75291495 Naranja Valencia               5661   2681.34 kg         1 36 6 23 6  4 6 94 2 67 5 73 0 76
 85944160 Manzana Red Delicious            44   8922.24 kg         2 49 2  0 1 86 5 74 4 10 1 17 2 45
 

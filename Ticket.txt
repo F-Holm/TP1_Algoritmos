@@ -5,17 +5,16 @@ XXXXXX...X 9999
 XX...X
 C.U.I.T. 99-99999999-9
 Fecha: Martes 15/07/2025
-Hora: 11:44:39
+Hora: 14:30:42
 Nro. Ticket: 9999-99999999
 Nro. Caja: 9999
 ------------------------------------------------------
 F A C T U R A - B
 ORIGINAL
 ------------------------------------------------------
-12 x $   1193.41
+ 0 x $   1193.41
 Banana Cavendish               kg        
-98024047                                  $   14320.92
-Promo          13                         $   -1861.72
+98024047                                  $       0.00
 
  5 x $   6937.68
 Salsa de Tomate                unidad    
@@ -122,12 +121,12 @@ Naranja Valencia               kg
 75291495                                  $   16088.04
 Promo           4                         $    -643.52
 
-SubTot. sin descuentos....:               $ 1142375.38
-Descuentos por promociones:               $ -506797.59
+SubTot. sin descuentos....:               $ 1128054.62
+Descuentos por promociones:               $ -504935.84
 ======================================================
-T O T A L                                 $  635577.75
+T O T A L                                 $  623118.75
 ======================================================
-Su pago con Mercado Pago:                 $  635577.75
+Su pago con Mercado Pago:                 $  623118.75
 Su vuelto:                                $       0.00
         G R A C I A S  P O R  S U  C O M P R A
         Para consultas, sugerencias o reclamos
