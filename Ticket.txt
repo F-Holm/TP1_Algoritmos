@@ -5,7 +5,7 @@ XXXXXX...X 9999
 XX...X
 C.U.I.T. 99-99999999-9
 Fecha: Martes 15/07/2025
-Hora: 01:45:41
+Hora: 11:35:06
 Nro. Ticket: 9999-99999999
 Nro. Caja: 9999
 ------------------------------------------------------
@@ -123,19 +123,13 @@ Naranja Valencia               kg
 Promo           4                         $    -643.52
 
 
-SubTot. sin descuentos....:        $ 1142375.38
-Descuentos por promociones:        $ -506797.59
-========================================
-T O T A L                   $  635577.75
-========================================
-----------------------------------------
-Total bruto:                $ 1142375.38
-Descuento aplicado:         $ 506797.59
-Total a pagar:              $ 635577.75
-Su pago con Tipo Pago:      $ 635577.75
-Su vuelto:                  $ 0.00     
-
-         G R A C I A S  P O R  S U  C O M P R A
-Para consultas, sugerencias o reclamos
-comunicarse al correo infoKotto.com.ar
-----------------------------------------
+SubTot. sin descuentos....:               $ 1142375.38
+Descuentos por promociones:               $ -506797.59
+======================================================
+T O T A L                                 $  635577.75
+======================================================
+Su pago con Mercado Pago:                 $  635577.75
+Su vuelto:                                $       0.00
+        G R A C I A S  P O R  S U  C O M P R A
+        Para consultas, sugerencias o reclamos
+        comunicarse al correo infoKotto.com.ar

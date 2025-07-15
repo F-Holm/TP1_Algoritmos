@@ -200,22 +200,24 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
 
   float vuelto = pagoUsuario - impTotConDesto;
 
-  cout << fixed << setprecision(2) << setfill(' ');
-  cout << Replicate('-', 40) << endl;
-  cout << left << setw(28) << "Total bruto:" << "$ " << setw(9) << impTot
-       << endl;
-  cout << left << setw(28) << "Descuento aplicado:" << "$ " << setw(9)
-       << impTotDesto << endl;
-  cout << left << setw(28) << "Total a pagar:" << "$ " << setw(9)
-       << impTotConDesto << endl;
-  cout << left << setw(28) << "Su pago con Tipo Pago:" << "$ " << setw(9)
-       << pagoUsuario << endl;
-  cout << left << setw(28) << "Su vuelto:" << "$ " << setw(9) << vuelto << endl;
-  cout << endl;
-  cout << "         G R A C I A S  P O R  S U  C O M P R A" << endl;
-  cout << "Para consultas, sugerencias o reclamos" << endl;
-  cout << "comunicarse al correo infoKotto.com.ar" << endl;
-  cout << Replicate('-', 40) << endl;
+  cout << '\n'
+       << left << setw(42) << "SubTot. sin descuentos....:"
+       << "$ " << right << setw(10) << impTot
+       << '\n';
+  cout << left << setw(42) << "Descuentos por promociones:"
+       << "$ " << right << setw(10) << -impTotDesto
+       << '\n';
+  cout << Replicate('=', 54) << '\n';
+  cout << left << setw(42) << "T O T A L" << "$ " << right << setw(10)
+       << impTotConDesto << '\n';
+  cout << Replicate('=', 54) << '\n';
+
+  cout << left << setw(42) << "Su pago con Mercado Pago:" << "$ " << setw(10)
+       << right << pagoUsuario << endl;
+  cout << left << setw(42) << "Su vuelto:" << "$ " << setw(10) << right << vuelto << '\n';
+  cout << Replicate(' ', 8) << "G R A C I A S  P O R  S U  C O M P R A\n";
+  cout << Replicate(' ', 8) << "Para consultas, sugerencias o reclamos\n";
+  cout << Replicate(' ', 8) << "comunicarse al correo infoKotto.com.ar";
 }  // PieTicket
 
 void CabeceraTicket(int &ds) {
@@ -395,7 +397,7 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
         // Cuerpo del ticket (alineado)
         cout << setw(2) << right << cant << " x $ " << setw(9) << precio << '\n';
         cout << setw(30) << left << art.descArt << ' ' << setw(10) << art.medida << '\n';
-        cout << setw(8) << right << art.codVen << setw(37) << "$  " << setw(9)
+        cout << setw(8) << right << art.codVen << setw(36) << "$ " << setw(10)
              << subtotal << '\n';
 
         if (descuento > 0.0f) {
@@ -412,19 +414,6 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 
   float impTotConDesto = impTot - impTotDesto;
 
-  cout << '\n'
-       << left << setw(35) << "SubTot. sin descuentos....:"
-       << "$ " << right << setw(10) << impTot
-       << '\n';
-  cout << left << setw(35) << "Descuentos por promociones:"
-       << "$ -" << right << setw(9) << impTotDesto
-       << '\n';
-  cout << Replicate('=', 54) << '\n';
-  cout << left << setw(28) << "T O T A L" << "$ " << right << setw(10)
-       << impTotConDesto << '\n';
-  cout << Replicate('=', 54) << '\n';
-
-  // Pie del ticket
   PieTicket(impTot, impTotDesto, impTotConDesto);
   fclose(stdout);  // ✔ cerrar salida redirigida
 }
