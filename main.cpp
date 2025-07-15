@@ -343,7 +343,7 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
                             "Comunid.", "ANSES", "Promo"};
 
   for (ushort i = 0; i < cantCmpr; i++) {
-    if (vsListCmpr[i].cantReq > 0) {
+    if (vsListCmpr[i].cantReq >= 0) {
       int pos = BusBinVec(vsIndDesc, vsListCmpr[i].descArt, cantArt - 1);
       if (pos > -1 && vsIndDesc[pos].estado) {
         tsArt &art = vsArt[vsIndDesc[pos].posArt];
