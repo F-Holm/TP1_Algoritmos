@@ -225,21 +225,18 @@ void CabeceraTicket(int &ds) {
   const char *diasSemana[] = {"Domingo", "Lunes",   "Martes", "Miercoles",
                               "Jueves",  "Viernes", "Sabado"};
 
-  cout << setfill('0')
-       << "K O T T O\n"
+  cout << "K O T T O\n"
        << "Yo te reconozco\n"
        << "SUC 170\n"
        << "XXXXXX...X 9999\n"
        << "XX...X\n"
        << "C.U.I.T. 99-99999999-9\n"
-       << "Fecha: " << diasSemana[ds - 1] << " " << setw(2) << right << dia
-       << "/" << setw(2) << mes << "/" << setw(4) << anio
+       << setfill('0') << "Fecha: " << diasSemana[ds - 1] << " " << setw(2)
+       << right << dia << "/" << setw(2) << mes << "/" << setw(4) << anio
        << "\nHora: " << setw(2) << hh << ":" << setw(2) << mm << ":" << setw(2)
-       << ss
-       << "\nNro. Ticket: 9999-99999999\n"
+       << ss << "\nNro. Ticket: 9999-99999999\n"
        << "Nro. Caja: 9999\n"
-       << Replicate('-', 54)
-       << "\nF A C T U R A - B\n"
+       << Replicate('-', 54) << "\nF A C T U R A - B\n"
        << "ORIGINAL\n"
        << Replicate('-', 54) << endl;
 
