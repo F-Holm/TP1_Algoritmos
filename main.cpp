@@ -1,32 +1,12 @@
 /*
-NO USAR MEMORIA DINAMICA (new, delete, malloc, realloc, free)
-Muchos comentarios van a ser eliminados en la entrega final
-UTILIZAR LA NOMENCLATURA DE HUGO CUELLO
-
-El acceso secuencial es rapidisimo si accedemos a cada compoennete para
-  procesarlo en el mismo orden en el que estos fueron grabados
-
-Articulos.txt tiene 103 caracteres por linea + CR y Lf => 105 caracteres por
-  linea
-
-Un archivo de texto se compone de lineas donde cada linea es de longitud
-  variable y cada linea termina con una marca llamada fin de linea, ademas hay
-  otra marca que indica fin de archivo
-
-Tod0 el contenido de un archivo .txt es texto cuando se crea un archivo, siempre
-  crear una copia
-
-Entrega:
-  Caratula
-  Consigna
-  Diagramas
-  Muestras de datos
-  Resultados
-  Codigo
-
-1° entrega: 06/08
-2° entrega: 13/08
-3° entrega: 17/09
+  Nombre  del  programa
+  fecha  entrega
+  Nro. versión
+  breve comentario del objetivo del programa
+  datos del curso, nombre del día, turno
+  nro. del grupo
+  integrantes (Apellido, Nombre)
+  Nombre del compilador: Borland C++ V.5.5
 */
 #include <cmath>
 #include <cstdio>
@@ -44,31 +24,30 @@ typedef char str20[21];
 typedef char str10[11];
 typedef unsigned short ushort;
 
-struct tsArt {   // max 10.000 - desordenado
-  int codVen;    // 8 digitos
-  short codRub;  // 2 digitos
+struct tsArt {
+  int codVen;
+  short codRub;
   str30 descArt;
-  ushort stock;  // 4 digitos
-  float preUni;  // 6,2
+  ushort stock;
+  float preUni;
   str10 medida;
-  short ofertas[14];  //= {tipo descuento; porcentaje; tipo; porcentaje...}
-};  // Cada par de "ofertas" es de un dia especifico de la semana
-// ofertas[0] = oferta_domingo
+  short ofertas[14];
+};
 
-struct tsIndDesc {  // ordenado por descripcion
+struct tsIndDesc {
   str30 descArt;
-  int posArt;  // 4 digitos (0 - 9999)
+  int posArt;
   bool estado;
 };
 
-struct tsRub {  // hay 15 - ordenado por codigo
+struct tsRub {
   short codRub;
   str20 descRub;
 };
 
-struct tsCompra {  // desordenado - max 100
+struct tsCompra {
   str30 descArt;
-  short cantReq;  // 2 digitos
+  short cantReq;
 };
 
 const ushort MAX_ART = 1000;
@@ -77,7 +56,7 @@ const ushort MAX_COMPRAS = 100;
 typedef tsArt tvsArt[MAX_ART];
 typedef tsIndDesc tvsIndDesc[MAX_ART];
 typedef tsRub tvsRub[CANT_RUB];
-typedef tsCompra tvsListCmpr[MAX_COMPRAS];  // lista compras
+typedef tsCompra tvsListCmpr[MAX_COMPRAS];
 
 #define ARCHIVOS \
   fstream &Art, ifstream &IndDesc, ifstream &Rub, ifstream &ListCmpr
@@ -85,12 +64,6 @@ typedef tsCompra tvsListCmpr[MAX_COMPRAS];  // lista compras
   tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsRub &vsRub, tvsListCmpr &vsListCmpr
 #define REG_COMPRAS \
   tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr
-
-// Declaraciones de funciones
-// Las que tienen comentario '// Falta' no estan definidas
-// Puede que tengan que cambiar, eliminar o agregar algunos parametros
-// Las declaraciones que tienen errores son porque todavia no definimos los
-// parametros de esa funcion
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
@@ -131,8 +104,6 @@ int main() {
   Cerrar(Art, IndDesc, Rub, ListCmpr);
   return 0;
 }
-
-// Definiciones de funciones
 
 long GetTime(int &hh, int &mm, int &ss) {
   time_t rawtime;
@@ -389,7 +360,6 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 
         float total = subtotal - descuento;
 
-        // Cuerpo del ticket (alineado)
         cout << setw(2) << right << cant << " x $ " << setw(9) << precio
              << '\n';
         cout << setw(30) << left << art.descArt << ' ' << setw(10) << art.medida
@@ -412,11 +382,11 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   float impTotConDesto = impTot - impTotDesto;
 
   PieTicket(impTot, impTotDesto, impTotConDesto);
-  fclose(stdout);  // ✔ cerrar salida redirigida
+  fclose(stdout);
 }
 
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
-  OrdxBur(vsArt, cantArt);  // Ancho Ticket=53
+  OrdxBur(vsArt, cantArt);
   freopen("ListadoArticulos.txt", "w", stdout);
   cout << setfill(' ') << setprecision(2) << fixed;
   ushort codRubro = 200;
