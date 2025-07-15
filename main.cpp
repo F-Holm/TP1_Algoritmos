@@ -200,7 +200,7 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
 
   float vuelto = pagoUsuario - impTotConDesto;
 
-  cout << fixed << setprecision(2);
+  cout << fixed << setprecision(2) << setfill(' ');
   cout << Replicate('-', 40) << endl;
   cout << left << setw(28) << "Total bruto:" << "$ " << setw(9) << impTot
        << endl;
@@ -218,31 +218,30 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
   cout << Replicate('-', 40) << endl;
 }  // PieTicket
 
-void CabeceraTicket(int &ds) {  // MAL
-  int hh, mm, ss, year, mes, dia;
+void CabeceraTicket(int &ds) {
+  int hh, mm, ss, anio, mes, dia;
   GetTime(hh, mm, ss);
-  GetDate(year, mes, dia, ds);
+  GetDate(anio, mes, dia, ds);
 
   const char *diasSemana[] = {"Domingo", "Lunes",   "Martes", "Miercoles",
                               "Jueves",  "Viernes", "Sabado"};
 
-  cout << "K O T T O" << endl;
+  cout << setfill('0') << "K O T T O" << endl;
   cout << "Yo te reconozco" << endl;
   cout << "SUC 170" << endl;
-  cout << "XXXXXX...X 9993423529" << endl;
+  cout << "XXXXXX...X 9999" << endl;
   cout << "XX...X" << endl;
   cout << "C.U.I.T. 99-99999999-9" << endl;
-  cout << "Fecha: " << diasSemana[ds - 1] << " " << setw(2) << setfill('0')
-       << dia << "/" << setw(2) << setfill('0') << mes << "/" << setw(4)
-       << setfill('0') << year << endl;
-  cout << "Hora: " << setw(2) << setfill('0') << hh << ":" << setw(2) << mm
-       << ":" << setw(2) << ss << endl;
+  cout << "Fecha: " << diasSemana[ds - 1] << " " << setw(2) << right << dia
+       << "/" << setw(2) << mes << "/" << setw(4) << anio << endl;
+  cout << "Hora: " << setw(2) << hh << ":" << setw(2) << mm << ":" << setw(2)
+       << ss << endl;
   cout << "Nro. Ticket: 9999-99999999" << endl;
   cout << "Nro. Caja: 9999" << endl;
-  cout << Replicate('-', 40) << endl;
+  cout << Replicate('-', 54) << endl;
   cout << "F A C T U R A - B" << endl;
   cout << "ORIGINAL" << endl;
-  cout << Replicate('-', 40) << endl;
+  cout << Replicate('-', 54) << endl;
 
 }  // CabeceraTicket
 
@@ -369,65 +368,61 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   float impTot = 0.0f, impTotDesto = 0.0f;
 
   freopen("Ticket.txt", "w", stdout);
-  CabeceraTicket(ds);  // ✔ Cabecera
+  CabeceraTicket(ds);
+  cout << fixed << setprecision(2) << setfill(' ');
 
   const char *tipoDesc[] = {"",         "Jub.",  "Marca.", "MercPago",
                             "Comunid.", "ANSES", "Promo"};
 
   for (ushort i = 0; i < cantCmpr; i++) {
-    if (vsListCmpr[i].cantReq == 0)
-      continue;
+    if (vsListCmpr[i].cantReq > 0) {
+      int pos = BusBinVec(vsIndDesc, vsListCmpr[i].descArt, cantArt - 1);
+      if (pos > -1 && vsIndDesc[pos].estado) {
+        tsArt &art = vsArt[vsIndDesc[pos].posArt];
+        ushort cant = vsListCmpr[i].cantReq;
+        float precio = art.preUni;
+        float subtotal = cant * precio;
 
-    int pos = BusBinVec(vsIndDesc, vsListCmpr[i].descArt, cantArt - 1);
-    if (pos == -1 || !vsIndDesc[pos].estado)
-      continue;
+        ushort tipo = art.ofertas[(ds - 1) * 2];
+        ushort porc = art.ofertas[(ds - 1) * 2 + 1];
+        float descuento = 0.0f;
 
-    tsArt &art = vsArt[vsIndDesc[pos].posArt];
-    ushort cant = vsListCmpr[i].cantReq;
-    float precio = art.preUni;
-    float subtotal = cant * precio;
+        if (tipo >= 1 && tipo <= 6)  // Solo aplicar si es válido
+          descuento = subtotal * porc / 100.0f;
 
-    ushort tipo = art.ofertas[(ds - 1) * 2];
-    ushort porc = art.ofertas[(ds - 1) * 2 + 1];
-    float descuento = 0.0f;
+        float total = subtotal - descuento;
 
-    if (tipo >= 1 && tipo <= 6)  // Solo aplicar si es válido
-      descuento = subtotal * porc / 100.0f;
+        // Cuerpo del ticket (alineado)
+        cout << setw(2) << right << cant << " x $ " << setw(9) << precio << '\n';
+        cout << setw(30) << left << art.descArt << ' ' << setw(10) << art.medida << '\n';
+        cout << setw(8) << right << art.codVen << setw(37) << "$  " << setw(9)
+             << subtotal << '\n';
 
-    float total = subtotal - descuento;
+        if (descuento > 0.0f) {
+          cout << setw(12) << left << tipoDesc[tipo] << setw(5) << right << porc
+               << setw(27) << "$ " << setw(10) << -descuento << '\n';
+        }
 
-    // Cuerpo del ticket (alineado)
-    cout << right << setw(3) << cant << " x $ " << right << setw(8) << fixed
-         << setprecision(2) << precio << '\n';
-
-    cout << left << setw(30) << art.descArt << setw(10) << art.medida << '\n';
-
-    cout << setw(8) << art.codVen << right << setw(42) << "$ " << setw(10)
-         << fixed << setprecision(2) << subtotal << '\n';
-
-    if (descuento > 0.0f) {
-      cout << left << setw(12) << tipoDesc[tipo] << right << setw(5) << porc
-           << right << setw(28) << "$ -" << setw(9) << fixed << setprecision(2)
-           << descuento << '\n';
+        impTot += subtotal;
+        impTotDesto += descuento;
+        cout << '\n';
+      }
     }
-
-    impTot += subtotal;
-    impTotDesto += descuento;
   }
 
   float impTotConDesto = impTot - impTotDesto;
 
   cout << '\n'
        << left << setw(35) << "SubTot. sin descuentos....:"
-       << "$ " << right << setw(10) << fixed << setprecision(2) << impTot
+       << "$ " << right << setw(10) << impTot
        << '\n';
   cout << left << setw(35) << "Descuentos por promociones:"
-       << "$ -" << right << setw(9) << fixed << setprecision(2) << impTotDesto
+       << "$ -" << right << setw(9) << impTotDesto
        << '\n';
-  cout << Replicate('=', 40) << '\n';
+  cout << Replicate('=', 54) << '\n';
   cout << left << setw(28) << "T O T A L" << "$ " << right << setw(10)
        << impTotConDesto << '\n';
-  cout << Replicate('=', 40) << '\n';
+  cout << Replicate('=', 54) << '\n';
 
   // Pie del ticket
   PieTicket(impTot, impTotDesto, impTotConDesto);
@@ -435,7 +430,7 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
 }
 
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
-  OrdxBur(vsArt, cantArt);
+  OrdxBur(vsArt, cantArt);// Ancho Ticket=53
   freopen("ListadoArticulos.txt", "w", stdout);
   cout << setfill(' ') << setprecision(2) << fixed;
   ushort codRubro = 200;
