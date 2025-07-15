@@ -205,7 +205,7 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
        << setw(42) << left << "Descuentos por promociones:"
        << "$ " << setw(10) << right << -impTotDesto << '\n'
        << Replicate('=', 54) << '\n'
-       << setw(42) << left << "T O T A L" << "$ " << right << setw(10)
+       << setw(42) << left << "T O T A L" << "$ " << setw(10) << right
        << impTotConDesto << '\n'
        << Replicate('=', 54) << '\n'
        << setw(42) << left << "Su pago con Mercado Pago:" << "$ " << setw(10)
