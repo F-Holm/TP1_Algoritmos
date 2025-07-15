@@ -3,6 +3,11 @@
 !/**/
 !*.*
 
+# Archivos de configuración de usuario de CodeBlocks
+*.layout
+*.depend
+*.layout.save
+
 # Archivos de compilación
 *.o
 *.obj
