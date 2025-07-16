@@ -1,0 +1,30 @@
+Banana Cavendish               12
+Salsa de Tomate                 5
+Mostaza                        10
+Gomitas Frutales               20
+Aceite de Coco                  8
+Pepsi Max                      15
+Atun en Aceite                  6
+Queso Mozzarella                7
+Atun Fresco                    11
+Corn Flakes                    13
+Papel Higienico                 9
+Pechuga de Pollo                4
+Tomate Perita                  14
+Salmon Fresco                  10
+Shampoo                        12
+Baguette Francesa               3
+Chocolate con Leche             8
+Costilla de Cerdo               5
+Arvejas                        17
+Filet de Res                   16
+Leche Entera                   14
+Caramelos Surtidos             19
+Lechuga Romana                 11
+Aceite de Oliva                15
+Suavizante                     10
+Aceite de Girasol              12
+Naranja Valencia                6
+Choclo                          9
+Merluza Congelada              13
+Manzana Red Delicious          10

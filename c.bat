@@ -1,0 +1,1 @@
+clang++ -std=c++23 -Wall -Wextra -Wpedantic -g -O0 -DDEBUG ./main.cpp -o main.exe
