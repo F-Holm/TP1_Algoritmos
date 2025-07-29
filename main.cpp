@@ -361,7 +361,7 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   for (ushort i = 0; i < cantCmpr; i++) {
     if (vsListCmpr[i].cantReq >= 0) {
       int pos = BusBinVec(vsIndDesc, vsListCmpr[i].descArt, cantArt - 1);
-      if (pos > -1 && vsIndDesc[pos].estado) {
+      if (pos > -1) {
         Art.clear();
         Art.seekp(105 * vsIndDesc[pos].posArt);
         LeerArticulo(Art, sArt);

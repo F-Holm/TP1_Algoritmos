@@ -7,7 +7,7 @@ Cod.Art. Descripcion                    Stk. Prec.Uni. Uni.Medida TD % TD % TD %
 ----------------------------------------------------------------------------------------------------
 98024047 Banana Cavendish                  0   1193.41 kg         6 58 6 13 6 13 3  8 5 80 4 98 2 15
 75291495 Naranja Valencia               5661   2681.34 kg         1 36 6 23 6  4 6 94 2 67 5 73 0 76
-85944160 Manzana Red Delicious            44   8922.24 kg         2 49 2  0 1 86 5 74 4 10 1 17 2 45
+85944160 Manzana Red Delicious            34   8922.24 kg         2 49 2  0 1 86 5 74 4 10 1 17 2 45
 
 Cod. Rubro: 2 Verduras            
 Cod.Art. Descripcion                    Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %
@@ -91,6 +91,7 @@ Cod.Art. Descripcion                    Stk. Prec.Uni. Uni.Medida TD % TD % TD %
 ----------------------------------------------------------------------------------------------------
 80786032 Helado Vainilla                3499   9071.57 unidad     4 14 0 64 0  7 3 61 2 80 4 34 2 74
 24358058 Pizza Congelada                8943   3279.19 unidad     2 19 4 70 2 70 1 36 6 49 0 77 5 41
+ 6643982 Verduras Congeladas            4696   5204.42 unidad     4 94 0 36 3 25 5 45 2 83 3  4 5  5
 
 Cod. Rubro: 14 Aceites             
 Cod.Art. Descripcion                    Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %

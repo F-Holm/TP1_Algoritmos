@@ -5,7 +5,7 @@ XXXXXX...X 9999
 XX...X
 C.U.I.T. 99-99999999-9
 Fecha: Martes 29/07/2025
-Hora: 03:03:14
+Hora: 15:59:06
 Nro. Ticket: 9999-99999999
 Nro. Caja: 9999
 ------------------------------------------------------
@@ -41,10 +41,18 @@ Pepsi Max                      l
 79944212                                  $   45526.50
 Marca.         10                         $   -4552.65
 
+ 0 x $   6370.83
+Atun en Aceite                 unidad    
+15742093                                  $       0.00
+
  7 x $   5897.99
 Queso Mozzarella               l         
 75287095                                  $   41285.93
 Marca.         77                         $  -31790.17
+
+ 0 x $   4384.19
+Atun Fresco                    kg        
+96060718                                  $       0.00
 
 13 x $   4249.51
 Corn Flakes                    kg        
@@ -60,6 +68,10 @@ Marca.         79                         $  -24285.13
 Pechuga de Pollo               kg        
 99496819                                  $   22874.36
 Marca.         63                         $  -14410.85
+
+ 0 x $   1575.23
+Tomate Perita                  kg        
+90880352                                  $       0.00
 
 10 x $   8609.23
 Salmon Fresco                  kg        
@@ -96,6 +108,10 @@ Filet de Res                   kg
 81807170                                  $  128687.84
 ANSES           4                         $   -5147.51
 
+ 0 x $   6664.69
+Leche Entera                   l         
+ 3772978                                  $       0.00
+
 19 x $   9205.07
 Caramelos Surtidos             unidad    
 99840726                                  $  174896.34
@@ -116,17 +132,34 @@ Suavizante                     unidad
 18565176                                  $   26872.80
 Promo          36                         $   -9674.21
 
+ 0 x $   6645.97
+Aceite de Girasol              l         
+57622019                                  $       0.00
+
  6 x $   2681.34
 Naranja Valencia               kg        
 75291495                                  $   16088.04
 Promo           4                         $    -643.52
 
-SubTot. sin descuentos....:               $ 1128054.62
-Descuentos por promociones:               $ -504935.84
+ 0 x $   9441.03
+Choclo                         kg        
+65805349                                  $       0.00
+
+ 0 x $   3422.22
+Merluza Congelada              kg        
+95959493                                  $       0.00
+
+10 x $   8922.24
+Manzana Red Delicious          kg        
+85944160                                  $   89222.41
+Jub.           86                         $  -76731.27
+
+SubTot. sin descuentos....:               $ 1217277.00
+Descuentos por promociones:               $ -581667.12
 ======================================================
-T O T A L                                 $  623118.75
+T O T A L                                 $  635609.88
 ======================================================
-Su pago con Mercado Pago:                 $  623118.75
+Su pago con Mercado Pago:                 $  635609.88
 Su vuelto:                                $       0.00
         G R A C I A S  P O R  S U  C O M P R A
         Para consultas, sugerencias o reclamos
