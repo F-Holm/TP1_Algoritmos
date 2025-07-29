@@ -55,7 +55,7 @@ struct tsArtRub {
   int posArt;
 };
 
-const ushort MAX_ART = 1000;
+const ushort MAX_ART = 10000;
 const ushort CANT_RUB = 15;
 const ushort MAX_COMPRAS = 100;
 typedef tsArtRub tvsArtRub[MAX_ART];
