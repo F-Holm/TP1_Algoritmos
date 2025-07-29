@@ -50,20 +50,24 @@ struct tsCompra {
   short cantReq;
 };
 
-const ushort MAX_ART = 1000;
+struct tsArtRub {
+  short codRub;
+  int posArt;
+};
+
+const ushort MAX_ART = 10000;
 const ushort CANT_RUB = 15;
 const ushort MAX_COMPRAS = 100;
-typedef tsArt tvsArt[MAX_ART];
+typedef tsArtRub tvsArtRub[MAX_ART];
 typedef tsIndDesc tvsIndDesc[MAX_ART];
 typedef tsRub tvsRub[CANT_RUB];
 typedef tsCompra tvsListCmpr[MAX_COMPRAS];
 
 #define ARCHIVOS \
   fstream &Art, ifstream &IndDesc, ifstream &Rub, ifstream &ListCmpr
-#define REGISTROS \
-  tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsRub &vsRub, tvsListCmpr &vsListCmpr
-#define REG_COMPRAS \
-  tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr
+#define REGISTROS                                            \
+  tvsArtRub &vsArtRub, tvsIndDesc &vsIndDesc, tvsRub &vsRub, \
+      tvsListCmpr &vsListCmpr
 
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
@@ -73,21 +77,23 @@ bool LeerRubro(ifstream &Rub, tsRub &sRub);
 bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra);
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
 void CabeceraTicket(int &ds);
-void OrdxBur(tvsArt &vsArt, ushort card);
-void IntCmb(tsArt &sElem1, tsArt &sElem2);
+void OrdxBur(tvsArtRub &vsArt, ushort card);
+void IntCmb(tsArtRub &sElem1, tsArtRub &sElem2);
 void ActLinea(fstream &Art, tsArt &sArt);
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);
 string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr);
-void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr);
-void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
+void ProcCompras(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
+                 ushort cantArt, ushort cantCmpr);
+void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
                   ushort cantArt, ushort cantCmpr);
-void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt);
+void EmitirArt_x_Rubro(fstream &Art, tvsArtRub &vsArtRub, tvsRub &vsRub,
+                       ushort cantArt);
 void Cerrar(ARCHIVOS);
 
 int main() {
-  tvsArt vsArt;
+  tvsArtRub vsArtRub;
   tvsIndDesc vsIndDesc;
   tvsRub vsRub;
   tvsListCmpr vsListCmpr;
@@ -96,11 +102,11 @@ int main() {
   ushort cantArt, cantCmpr;
 
   Abrir(Art, IndDesc, Rub, ListCmpr);
-  VolcarArchivos(Art, IndDesc, Rub, ListCmpr, vsArt, vsIndDesc, vsRub,
+  VolcarArchivos(Art, IndDesc, Rub, ListCmpr, vsArtRub, vsIndDesc, vsRub,
                  vsListCmpr, cantArt, cantCmpr);
-  ProcCompras(Art, vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
-  EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
-  EmitirArt_x_Rubro(vsArt, vsRub, cantArt);
+  ProcCompras(Art, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
+  EmitirTicket(Art, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
+  EmitirArt_x_Rubro(Art, vsArtRub, vsRub, cantArt);
   Cerrar(Art, IndDesc, Rub, ListCmpr);
   return 0;
 }
@@ -171,10 +177,10 @@ void PieTicket(float impTot, float impTotDesto, float impTotConDesto) {
 
   float vuelto = pagoUsuario - impTotConDesto;
 
-  cout << setw(42) << left << "SubTot. sin descuentos....:"
-       << "$ " << setw(10) << right << impTot << '\n'
-       << setw(42) << left << "Descuentos por promociones:"
-       << "$ " << setw(10) << right << -impTotDesto << '\n'
+  cout << setw(42) << left << "SubTot. sin descuentos....:" << "$ " << setw(10)
+       << right << impTot << '\n'
+       << setw(42) << left << "Descuentos por promociones:" << "$ " << setw(10)
+       << right << -impTotDesto << '\n'
        << Replicate('=', 54) << '\n'
        << setw(42) << left << "T O T A L" << "$ " << setw(10) << right
        << impTotConDesto << '\n'
@@ -213,7 +219,7 @@ void CabeceraTicket(int &ds) {
 
 }  // CabeceraTicket
 
-void OrdxBur(tvsArt &vsArt, ushort card) {
+void OrdxBur(tvsArtRub &vsArtRub, ushort card) {
   bool hayCambios;
   ushort k = 0;
 
@@ -222,16 +228,16 @@ void OrdxBur(tvsArt &vsArt, ushort card) {
     k++;
 
     for (ushort i = 0; i < card - k; i++) {
-      if (vsArt[i].codRub > vsArt[i + 1].codRub) {
-        IntCmb(vsArt[i], vsArt[i + 1]);
+      if (vsArtRub[i].codRub > vsArtRub[i + 1].codRub) {
+        IntCmb(vsArtRub[i], vsArtRub[i + 1]);
         hayCambios = true;
       }
     }
   } while (hayCambios);
 }  // OrdxBur
 
-void IntCmb(tsArt &sElem1, tsArt &sElem2) {
-  tsArt auxiliar = sElem1;
+void IntCmb(tsArtRub &sElem1, tsArtRub &sElem2) {
+  tsArtRub auxiliar = sElem1;
   sElem1 = sElem2;
   sElem2 = auxiliar;
 }  // IntCmb
@@ -288,7 +294,8 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
   cantCmpr = 0;
 
   while (LeerArticulo(Art, sArt) && cantArt <= MAX_ART) {
-    vsArt[cantArt] = sArt;
+    vsArtRub[cantArt].codRub = sArt.codRub;
+    vsArtRub[cantArt].posArt = cantArt;
     cantArt++;
   }
   for (ushort i = 0; LeerDescripcion(IndDesc, sIndDesc) && i < cantArt; i++)
@@ -299,12 +306,16 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
     vsListCmpr[cantCmpr] = sCompra;
     cantCmpr++;
   }
+
+  OrdxBur(vsArtRub, cantArt);
 }  // VolcarArchivos
 
-void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
+void ProcCompras(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
+                 ushort cantArt, ushort cantCmpr) {
   str30 descBuscada;
   int pos;
   ushort posArt;
+  tsArt sArt;
   Art << fixed << setprecision(2);
 
   for (ushort i = 0; i < cantCmpr; i++) {
@@ -314,15 +325,19 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
     if (pos != -1 && vsIndDesc[pos].estado) {
       posArt = vsIndDesc[pos].posArt;
 
-      if (vsArt[posArt].stock >= vsListCmpr[i].cantReq) {
-        vsArt[posArt].stock -= vsListCmpr[i].cantReq;
+      Art.clear();
+      Art.seekp(105 * posArt);
+      LeerArticulo(Art, sArt);
+
+      if (sArt.stock >= vsListCmpr[i].cantReq) {
+        sArt.stock -= vsListCmpr[i].cantReq;
       } else {
-        vsListCmpr[i].cantReq = vsArt[posArt].stock;
-        vsArt[posArt].stock = 0;
+        vsListCmpr[i].cantReq = sArt.stock;
+        sArt.stock = 0;
       }
       Art.clear();
       Art.seekp(105 * posArt);
-      ActLinea(Art, vsArt[posArt]);
+      ActLinea(Art, sArt);
 
     } else {
       vsListCmpr[i].cantReq = 0;
@@ -330,10 +345,11 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
   }
 }  // ProcCompras
 
-void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
+void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
                   ushort cantArt, ushort cantCmpr) {
   int ds;
   float impTot = 0.0f, impTotDesto = 0.0f;
+  tsArt sArt;
 
   freopen("Ticket.txt", "w", stdout);
   CabeceraTicket(ds);
@@ -346,13 +362,16 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
     if (vsListCmpr[i].cantReq >= 0) {
       int pos = BusBinVec(vsIndDesc, vsListCmpr[i].descArt, cantArt - 1);
       if (pos > -1 && vsIndDesc[pos].estado) {
-        tsArt &art = vsArt[vsIndDesc[pos].posArt];
+        Art.clear();
+        Art.seekp(105 * vsIndDesc[pos].posArt);
+        LeerArticulo(Art, sArt);
+
         ushort cant = vsListCmpr[i].cantReq;
-        float precio = art.preUni;
+        float precio = sArt.preUni;
         float subtotal = cant * precio;
 
-        ushort tipo = art.ofertas[(ds - 1) * 2];
-        ushort porc = art.ofertas[(ds - 1) * 2 + 1];
+        ushort tipo = sArt.ofertas[(ds - 1) * 2];
+        ushort porc = sArt.ofertas[(ds - 1) * 2 + 1];
         float descuento = 0.0f;
 
         if (tipo >= 1 && tipo <= 6)  // Solo aplicar si es válido
@@ -361,9 +380,9 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
         float total = subtotal - descuento;
 
         cout << setw(2) << right << cant << " x $ " << setw(9) << precio << '\n'
-             << setw(30) << left << art.descArt << ' ' << setw(10) << art.medida
-             << '\n'
-             << setw(8) << right << art.codVen << setw(36) << "$ " << setw(10)
+             << setw(30) << left << sArt.descArt << ' ' << setw(10)
+             << sArt.medida << '\n'
+             << setw(8) << right << sArt.codVen << setw(36) << "$ " << setw(10)
              << subtotal << '\n';
 
         if (descuento > 0.0f) {
@@ -384,11 +403,12 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   fclose(stdout);
 }
 
-void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
-  OrdxBur(vsArt, cantArt);
+void EmitirArt_x_Rubro(fstream &Art, tvsArtRub &vsArtRub, tvsRub &vsRub,
+                       ushort cantArt) {
   freopen("ListadoArticulos.txt", "w", stdout);
   cout << setfill(' ') << setprecision(2) << fixed;
   ushort codRubro = 200;
+  tsArt sArt;
 
   cout << Replicate('-', 100) << '\n'
        << Replicate(' ', floor((100.0 - 50.0) / 2.0))
@@ -396,22 +416,25 @@ void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
        << Replicate(' ', ceil((100.0 - 50.0) / 2.0)) << '\n'
        << Replicate('=', 100) << '\n';
   for (ushort i = 0; i < cantArt; i++) {
+    Art.clear();
+    Art.seekp(105 * vsArtRub[i].posArt);
+    LeerArticulo(Art, sArt);
     if (i != 0)
       cout << '\n';
-    if (codRubro != vsArt[i].codRub) {
-      codRubro = vsArt[i].codRub;
+    if (codRubro != sArt.codRub) {
+      codRubro = sArt.codRub;
       cout << "\nCod. Rubro: " << codRubro << ' ' << vsRub[codRubro - 1].descRub
            << "\nCod.Art. Descripcion" << Replicate(' ', 20)
            << "Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %\n"
            << Replicate('-', 100) << '\n';
     }
-    cout << setw(8) << right << vsArt[i].codVen << ' ' << setw(30) << left
-         << vsArt[i].descArt << ' ' << setw(4) << right << vsArt[i].stock << ' '
-         << setw(9) << right << vsArt[i].preUni << ' ' << setw(10) << left
-         << vsArt[i].medida;
+    cout << setw(8) << right << sArt.codVen << ' ' << setw(30) << left
+         << sArt.descArt << ' ' << setw(4) << right << sArt.stock << ' '
+         << setw(9) << right << sArt.preUni << ' ' << setw(10) << left
+         << sArt.medida;
     for (ushort j = 0; j < 7; j++)
-      cout << ' ' << vsArt[i].ofertas[2 * j] << ' ' << setw(2) << right
-           << vsArt[i].ofertas[2 * j + 1];
+      cout << ' ' << sArt.ofertas[2 * j] << ' ' << setw(2) << right
+           << sArt.ofertas[2 * j + 1];
   }
   fclose(stdout);
 }  // EmitirArt_x_Rubro

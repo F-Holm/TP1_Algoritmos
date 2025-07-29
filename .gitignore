@@ -3,6 +3,8 @@
 !/**/
 !*.*
 
+i.bat
+
 # Archivos de configuración de usuario de CodeBlocks
 *.layout
 *.depend
