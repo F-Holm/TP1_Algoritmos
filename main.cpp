@@ -78,10 +78,11 @@ void IntCmb(tsArt &sElem1, tsArt &sElem2);
 void ActLinea(fstream &Art, tsArt &sArt);
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);
 string Replicate(char car, ushort n);
+void OrdxRubroyCod(tvsArt &vsArt, ushort cantArt);
 void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr);
 void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr);
-void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
+void EmitirTicket(tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
                   ushort cantArt, ushort cantCmpr);
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt);
 void Cerrar(ARCHIVOS);
@@ -99,7 +100,8 @@ int main() {
   VolcarArchivos(Art, IndDesc, Rub, ListCmpr, vsArt, vsIndDesc, vsRub,
                  vsListCmpr, cantArt, cantCmpr);
   ProcCompras(Art, vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
-  EmitirTicket(vsArt, vsIndDesc, vsListCmpr, cantArt, cantCmpr);
+  EmitirTicket(vsIndDesc, vsListCmpr, cantArt, cantCmpr);
+
   EmitirArt_x_Rubro(vsArt, vsRub, cantArt);
   Cerrar(Art, IndDesc, Rub, ListCmpr);
   return 0;
@@ -271,7 +273,16 @@ string Replicate(char car, ushort n) {
     resultado += car;
   return resultado;
 }  // Replicate
-
+void OrdxRubroyCod(tvsArt &vsArt, ushort cantArt) {
+  for (ushort i = 0; i < cantArt - 1; i++) {
+    for (ushort j = 0; j < cantArt - i - 1; j++) {
+      if (vsArt[j].codRub > vsArt[j + 1].codRub ||
+         (vsArt[j].codRub == vsArt[j + 1].codRub && vsArt[j].codVen > vsArt[j + 1].codVen)) {
+        swap(vsArt[j], vsArt[j + 1]);
+      }
+    }
+  }
+}
 void Abrir(ARCHIVOS) {
   Art.open("Articulos.txt");
   IndDesc.open("IndDescripArt.txt");
@@ -330,23 +341,47 @@ void ProcCompras(fstream &Art, REG_COMPRAS, ushort cantArt, ushort cantCmpr) {
   }
 }  // ProcCompras
 
-void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
+void EmitirTicket(tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
                   ushort cantArt, ushort cantCmpr) {
   int ds;
   float impTot = 0.0f, impTotDesto = 0.0f;
 
-  freopen("Ticket.txt", "w", stdout);
-  CabeceraTicket(ds);
-  cout << fixed << setprecision(2) << setfill(' ');
+  // Abrir archivo de artículos en modo lectura aleatoria
+  fstream ArtRead("Articulos.txt", ios::in);
+  if (!ArtRead) {
+    cerr << "Error al abrir Articulos.txt para lectura en EmitirTicket\n";
+    return;
+  }
 
-  const char *tipoDesc[] = {"",         "Jub.",  "Marca.", "MercPago",
+  // Abrir archivo de ticket
+  ofstream Ticket("Ticket.txt");
+  if (!Ticket) {
+    cerr << "Error al crear Ticket.txt\n";
+    ArtRead.close();
+    return;
+  }
+
+  // Cabecera usando cout redirigido a Ticket
+  streambuf* oldBuf = cout.rdbuf(Ticket.rdbuf());
+  CabeceraTicket(ds);
+  cout << fixed << setprecision(2);
+
+  const char *tipoDesc[] = {"", "Jub.", "Marca.", "MercPago",
                             "Comunid.", "ANSES", "Promo"};
 
   for (ushort i = 0; i < cantCmpr; i++) {
-    if (vsListCmpr[i].cantReq >= 0) {
+    if (vsListCmpr[i].cantReq > 0) {
+      // buscar posición en índice
       int pos = BusBinVec(vsIndDesc, vsListCmpr[i].descArt, cantArt - 1);
       if (pos > -1 && vsIndDesc[pos].estado) {
-        tsArt &art = vsArt[vsIndDesc[pos].posArt];
+        ushort posArt = vsIndDesc[pos].posArt;
+        
+        // lectura aleatoria de la línea de Articulos.txt
+        ArtRead.clear();
+        ArtRead.seekg(105 * posArt, ios::beg);
+        tsArt art;
+        LeerArticulo(ArtRead, art);
+        
         ushort cant = vsListCmpr[i].cantReq;
         float precio = art.preUni;
         float subtotal = cant * precio;
@@ -354,67 +389,112 @@ void EmitirTicket(tvsArt &vsArt, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
         ushort tipo = art.ofertas[(ds - 1) * 2];
         ushort porc = art.ofertas[(ds - 1) * 2 + 1];
         float descuento = 0.0f;
-
-        if (tipo >= 1 && tipo <= 6)  // Solo aplicar si es válido
+        if (tipo >= 1 && tipo <= 6)
           descuento = subtotal * porc / 100.0f;
-
         float total = subtotal - descuento;
 
+        // imprimir línea de ticket
+        cout<<setfill(' ');
         cout << setw(2) << right << cant << " x $ " << setw(9) << precio << '\n'
-             << setw(30) << left << art.descArt << ' ' << setw(10) << art.medida
-             << '\n'
+             << setw(30) << left << art.descArt << ' ' << setw(10) << art.medida << '\n'
              << setw(8) << right << art.codVen << setw(36) << "$ " << setw(10)
              << subtotal << '\n';
-
         if (descuento > 0.0f) {
           cout << setw(12) << left << tipoDesc[tipo] << setw(5) << right << porc
                << setw(27) << "$ " << setw(10) << -descuento << '\n';
         }
+        cout << '\n';
 
         impTot += subtotal;
         impTotDesto += descuento;
-        cout << '\n';
       }
     }
   }
 
   float impTotConDesto = impTot - impTotDesto;
-
   PieTicket(impTot, impTotDesto, impTotConDesto);
-  fclose(stdout);
+
+  // restaurar cout
+  cout.rdbuf(oldBuf);
+  Ticket.close();
+  ArtRead.close();
 }
 
 void EmitirArt_x_Rubro(tvsArt &vsArt, tvsRub &vsRub, ushort cantArt) {
-  OrdxBur(vsArt, cantArt);
-  freopen("ListadoArticulos.txt", "w", stdout);
-  cout << setfill(' ') << setprecision(2) << fixed;
-  ushort codRubro = 200;
+  // Ordenar el vector en memoria por codRub y luego codVen
+  OrdxRubroyCod(vsArt, cantArt);  // Asegúrate de que esta versión ordena por codRub
 
-  cout << Replicate('-', 100) << '\n'
-       << Replicate(' ', floor((100.0 - 50.0) / 2.0))
-       << "Listado de Articulos ordenados por Codigo de Rubro"
-       << Replicate(' ', ceil((100.0 - 50.0) / 2.0)) << '\n'
-       << Replicate('=', 100) << '\n';
-  for (ushort i = 0; i < cantArt; i++) {
-    if (i != 0)
-      cout << '\n';
-    if (codRubro != vsArt[i].codRub) {
-      codRubro = vsArt[i].codRub;
-      cout << "\nCod. Rubro: " << codRubro << ' ' << vsRub[codRubro - 1].descRub
-           << "\nCod.Art. Descripcion" << Replicate(' ', 20)
-           << "Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %\n"
-           << Replicate('-', 100) << '\n';
-    }
-    cout << setw(8) << right << vsArt[i].codVen << ' ' << setw(30) << left
-         << vsArt[i].descArt << ' ' << setw(4) << right << vsArt[i].stock << ' '
-         << setw(9) << right << vsArt[i].preUni << ' ' << setw(10) << left
-         << vsArt[i].medida;
-    for (ushort j = 0; j < 7; j++)
-      cout << ' ' << vsArt[i].ofertas[2 * j] << ' ' << setw(2) << right
-           << vsArt[i].ofertas[2 * j + 1];
+  // Abrir archivo de lectura
+  fstream ArtRead("Articulos.txt", ios::in);
+  if (!ArtRead) {
+    cerr << "Error al abrir Articulos.txt\n";
+    return;
   }
-  fclose(stdout);
-}  // EmitirArt_x_Rubro
+
+  // Archivo de salida
+  ofstream Listado("ListadoArticulos.txt");
+if (!Listado) {
+  cerr << "Error al crear ListadoArticulos.txt\n";
+  ArtRead.close();
+  return;
+}
+
+Listado << setfill(' ') << fixed << setprecision(2);
+Listado << Replicate('-', 100) << '\n'
+        << Replicate(' ', (100 - 50) / 2) << "Listado de Articulos ordenados por Codigo de Rubro"
+        << Replicate(' ', (100 - 50) / 2) << '\n'
+        << Replicate('=', 100) << '\n';
+
+
+  ushort codRubroActual = 0;
+  tsArt art;
+
+  for (ushort i = 0; i < cantArt; i++) {
+    // Buscar posición del artículo en el archivo
+    bool encontrado = false;
+    ushort posFisica = 0;
+
+    // Buscar el artículo por su codVen
+    while (!encontrado && !ArtRead.eof()) {
+      ArtRead.clear();
+      ArtRead.seekg(105 * posFisica, ios::beg);  // posición fija
+      LeerArticulo(ArtRead, art);
+      if (art.codVen == vsArt[i].codVen)
+        encontrado = true;
+      else
+        posFisica++;
+    }
+
+    if (!encontrado) {
+      cerr << "Artículo no encontrado: codVen " << vsArt[i].codVen << '\n';
+      continue;
+    }
+
+    // Si cambia el rubro, imprimir encabezado
+    if (art.codRub != codRubroActual) {
+      codRubroActual = art.codRub;
+      Listado << "\nCod. Rubro: " << codRubroActual << ' ' << vsRub[codRubroActual - 1].descRub << "\n"
+        << "Cod.Art. Descripcion" << Replicate(' ', 20)
+        << "Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %\n"
+        << Replicate('-', 100) << '\n';
+    }
+
+    // Imprimir el artículo
+    Listado << setw(8) << right << art.codVen << ' ' << setw(30) << left
+        << art.descArt << ' ' << setw(4) << right << art.stock << ' '
+        << setw(9) << right << art.preUni << ' ' << setw(10) << left
+        << art.medida;
+    for (ushort j = 0; j < 7; j++) {
+      Listado << ' ' << art.ofertas[2 * j] << ' ' << setw(2) << art.ofertas[2 * j + 1];
+    }
+    Listado << '\n';
+  }
+
+ 
+  ArtRead.close();
+  Listado.close();
+}
+
 
 void Cerrar(ARCHIVOS) {
   Art.close();
