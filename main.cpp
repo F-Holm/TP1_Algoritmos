@@ -355,9 +355,6 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   CabeceraTicket(ds);
   cout << fixed << setprecision(2) << setfill(' ');
 
-  const char *tipoDesc[] = {"",         "Jub.",  "Marca.", "MercPago",
-                            "Comunid.", "ANSES", "Promo"};
-
   for (ushort i = 0; i < cantCmpr; i++) {
     if (vsListCmpr[i].cantReq >= 0) {
       int pos = BusBinVec(vsIndDesc, vsListCmpr[i].descArt, cantArt - 1);
@@ -373,11 +370,34 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
         ushort tipo = sArt.ofertas[(ds - 1) * 2];
         ushort porc = sArt.ofertas[(ds - 1) * 2 + 1];
         float descuento = 0.0f;
+        str10 strDesc;
 
         if (tipo >= 1 && tipo <= 6)  // Solo aplicar si es válido
           descuento = subtotal * porc / 100.0f;
 
-        float total = subtotal - descuento;
+        switch (tipo) {
+          case 1:
+            strcpy(strDesc, "Promo");
+            break;
+          case 2:
+            strcpy(strDesc, "Marca");
+            break;
+          case 3:
+            strcpy(strDesc, "Jub.");
+            break;
+          case 4:
+            strcpy(strDesc, "Comunid.");
+            break;
+          case 5:
+            strcpy(strDesc, "MercPago");
+            break;
+          case 6:
+            strcpy(strDesc, "ANSES");
+            break;
+          default:
+            strcpy(strDesc, "SinPromo");
+            break;
+        }
 
         cout << setw(2) << right << cant << " x $ " << setw(9) << precio << '\n'
              << setw(30) << left << sArt.descArt << ' ' << setw(10)
@@ -386,7 +406,7 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
              << subtotal << '\n';
 
         if (descuento > 0.0f) {
-          cout << setw(12) << left << tipoDesc[tipo] << setw(5) << right << porc
+          cout << setw(12) << left << strDesc << setw(5) << right << porc
                << setw(27) << "$ " << setw(10) << -descuento << '\n';
         }
 
@@ -408,6 +428,7 @@ void EmitirArt_x_Rubro(fstream &Art, tvsArtRub &vsArtRub, tvsRub &vsRub,
   freopen("ListadoArticulos.txt", "w", stdout);
   cout << setfill(' ') << setprecision(2) << fixed;
   ushort codRubro = 200;
+  short posRubro = -1;
   tsArt sArt;
 
   cout << Replicate('-', 100) << '\n'
@@ -423,7 +444,11 @@ void EmitirArt_x_Rubro(fstream &Art, tvsArtRub &vsArtRub, tvsRub &vsRub,
       cout << '\n';
     if (codRubro != sArt.codRub) {
       codRubro = sArt.codRub;
-      cout << "\nCod. Rubro: " << codRubro << ' ' << vsRub[codRubro - 1].descRub
+      do {
+        posRubro++;
+      } while (posRubro < 15 && codRubro != vsRub[posRubro].codRub);
+
+      cout << "\nCod. Rubro: " << codRubro << ' ' << vsRub[posRubro].descRub
            << "\nCod.Art. Descripcion" << Replicate(' ', 20)
            << "Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %\n"
            << Replicate('-', 100) << '\n';
