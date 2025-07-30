@@ -377,8 +377,6 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
         if (tipo >= 1 && tipo <= 6)  // Solo aplicar si es válido
           descuento = subtotal * porc / 100.0f;
 
-        float total = subtotal - descuento;
-
         cout << setw(2) << right << cant << " x $ " << setw(9) << precio << '\n'
              << setw(30) << left << sArt.descArt << ' ' << setw(10)
              << sArt.medida << '\n'
@@ -408,6 +406,7 @@ void EmitirArt_x_Rubro(fstream &Art, tvsArtRub &vsArtRub, tvsRub &vsRub,
   freopen("ListadoArticulos.txt", "w", stdout);
   cout << setfill(' ') << setprecision(2) << fixed;
   ushort codRubro = 200;
+  short posRubro = -1;
   tsArt sArt;
 
   cout << Replicate('-', 100) << '\n'
@@ -423,7 +422,11 @@ void EmitirArt_x_Rubro(fstream &Art, tvsArtRub &vsArtRub, tvsRub &vsRub,
       cout << '\n';
     if (codRubro != sArt.codRub) {
       codRubro = sArt.codRub;
-      cout << "\nCod. Rubro: " << codRubro << ' ' << vsRub[codRubro - 1].descRub
+      do {
+        posRubro++;
+      } while (posRubro < 15 && codRubro != vsRub[posRubro].codRub);
+
+      cout << "\nCod. Rubro: " << codRubro << ' ' << vsRub[posRubro].descRub
            << "\nCod.Art. Descripcion" << Replicate(' ', 20)
            << "Stk. Prec.Uni. Uni.Medida TD % TD % TD % TD % TD % TD % TD %\n"
            << Replicate('-', 100) << '\n';
