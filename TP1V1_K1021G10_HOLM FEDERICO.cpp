@@ -1,5 +1,5 @@
 /*
- - Nombre  del  programa: TP1V1_K1023G10_HOLM FEDERICO.cpp
+ - Nombre  del  programa: TP1V1_K1021G10_HOLM FEDERICO.cpp
  - fecha  entrega: 06/08/2025
  - Nro. versión: 1
  - Breve comentario del objetivo del programa:
