@@ -1,1 +1,1 @@
-clang++ -std=c++23 -Wall -Wextra -Wpedantic -g -O0 -DDEBUG ./main.cpp -o main.exe
+clang++ -std=c++23 -Wall -Wextra -Wpedantic -g -O0 -DDEBUG "./TP1V1_K1023G10_HOLM FEDERICO.cpp" -o "./TP1V1_K1023G10_HOLM FEDERICO.exe"
