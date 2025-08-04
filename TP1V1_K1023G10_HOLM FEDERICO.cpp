@@ -1,13 +1,32 @@
 /*
-  Nombre  del  programa
-  fecha  entrega
-  Nro. versión
-  breve comentario del objetivo del programa
-  datos del curso, nombre del día, turno
-  nro. del grupo
-  integrantes (Apellido, Nombre)
-  Nombre del compilador: Borland C++ V.5.5
-*/
+ - Nombre  del  programa: TP1V1_K1023G10_HOLM FEDERICO.cpp
+ - fecha  entrega: 06/08/2025
+ - Nro. versión: 1
+ - Breve comentario del objetivo del programa:
+   Este programa gestiona un sistema de ventas de artículos, permitiendo
+   registrar artículos, rubros, descripciones y compras. Genera tickets
+   de compra y listados de artículos por rubro, aplicando descuentos según
+   promociones. Utiliza archivos para almacenar y recuperar datos.
+
+
+ - Curso: Algoritmos y Estructuras de Datos
+ - Comision: K1021
+ - Turno: Mañana
+ - Docente: Lic. Hugo A. Cuello
+
+ Integrantes (Apellido, Nombre):
+    Almada, Tomas
+    Baquero, Francisco
+    Barcala Roca, Santiago
+    Cejas, Facundo Javier
+    Dominguez, Joaquin Ezequiel
+    Holm, Federico
+    Incutti, Mateo
+    Mampaso Romero, Brayan
+    Soria, Francisco
+
+ - Nombre del compilador: Borland C++ V.5.5
+ */
 #include <cmath>
 #include <cstdio>
 #include <cstring>
