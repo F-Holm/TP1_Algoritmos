@@ -375,7 +375,7 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   cout << fixed << setprecision(2) << setfill(' ');
 
   for (ushort i = 0; i < cantCmpr; i++) {
-    if (vsListCmpr[i].cantReq >= 0) {
+    if (vsListCmpr[i].cantReq > 0) {
       int pos = BusBinVec(vsIndDesc, vsListCmpr[i].descArt, cantArt - 1);
       if (pos > -1) {
         Art.clear();
