@@ -370,7 +370,7 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   float impTot = 0.0f, impTotDesto = 0.0f;
   tsArt sArt;
 
-  freopen("Ticket.txt", "w", stdout);
+  freopen("Salida.txt", "w", stdout);
   CabeceraTicket(ds);
   cout << fixed << setprecision(2) << setfill(' ');
 
@@ -439,12 +439,10 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   float impTotConDesto = impTot - impTotDesto;
 
   PieTicket(impTot, impTotDesto, impTotConDesto);
-  fclose(stdout);
 }
 
 void EmitirArt_x_Rubro(fstream &Art, tvsArtRub &vsArtRub, tvsRub &vsRub,
                        ushort cantArt) {
-  freopen("ListadoArticulos.txt", "w", stdout);
   cout << setfill(' ') << setprecision(2) << fixed;
   ushort codRubro = 200;
   short posRubro = -1;
