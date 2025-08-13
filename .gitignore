@@ -3,6 +3,11 @@
 !/**/
 !*.*
 
+*.docx
+*.doc
+*.pdf
+*.exe
+
 i.bat
 
 # Archivos de configuración de usuario de CodeBlocks
