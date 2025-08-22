@@ -312,7 +312,7 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
   cantArt = 0;
   cantCmpr = 0;
 
-  while (LeerArticulo(Art, sArt) && cantArt <= MAX_ART) {
+  while (LeerArticulo(Art, sArt) && cantArt < MAX_ART) {
     vsArtRub[cantArt].codRub = sArt.codRub;
     vsArtRub[cantArt].posArt = cantArt;
     cantArt++;
@@ -321,7 +321,7 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
     vsIndDesc[i] = sIndDesc;
   for (ushort i = 0; LeerRubro(Rub, sRub) && i < CANT_RUB; i++)
     vsRub[i] = sRub;
-  while (LeerCompra(ListCmpr, sCompra) && cantCmpr <= MAX_COMPRAS) {
+  while (LeerCompra(ListCmpr, sCompra) && cantCmpr < MAX_COMPRAS) {
     vsListCmpr[cantCmpr] = sCompra;
     cantCmpr++;
   }
