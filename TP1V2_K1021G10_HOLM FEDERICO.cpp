@@ -1,7 +1,7 @@
 /*
- - Nombre  del  programa: TP1V1_K1021G10_HOLM FEDERICO.cpp
- - fecha  entrega: 06/08/2025
- - Nro. versión: 1
+ - Nombre  del  programa: TP1V2_K1021G10_HOLM FEDERICO.cpp
+ - fecha  entrega: 27/08/2025
+ - Nro. versión: 2
  - Breve comentario del objetivo del programa:
    Este programa gestiona un sistema de ventas de artículos, permitiendo
    registrar artículos, rubros, descripciones y compras. Genera tickets
