@@ -91,7 +91,7 @@ typedef tsCompra tvsListCmpr[MAX_COMPRAS];
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
 bool LeerArticulo(fstream &Art, tsArt &sArt);
-bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc);
+bool LeerIndDescrip(ifstream &IndDesc, tsIndDesc &sIndDesc);
 bool LeerRubro(ifstream &Rub, tsRub &sRub);
 bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra);
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
@@ -99,7 +99,7 @@ void CabeceraTicket(int &ds);
 void OrdxBur(tvsArtRub &vsArt, ushort card);
 void IntCmb(tsArtRub &sElem1, tsArtRub &sElem2);
 void ActLinea(fstream &Art, tsArt &sArt);
-int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);
+int BusBinVec(tvsIndDesc &vsIndDesc, str30 descArt, ushort ult);
 string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr);
@@ -169,12 +169,13 @@ bool LeerArticulo(fstream &Art, tsArt &sArt) {
   return Art.good();
 }  // LeerArticulo
 
-bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc) {
+bool LeerIndDescrip(ifstream &IndDesc, tsIndDesc &sIndDesc) {
   IndDesc.get(sIndDesc.descArt, 31);
   IndDesc >> sIndDesc.posArt >> sIndDesc.estado;
   IndDesc.ignore(2, '\n');
+  strlwr(sIndDesc.descArt);
   return IndDesc.good();
-}  // LeerDescripcion
+}  // LeerIndDescrip
 
 bool LeerRubro(ifstream &Rub, tsRub &sRub) {
   Rub >> sRub.codRub;
@@ -270,12 +271,13 @@ void ActLinea(fstream &Art, tsArt &sArt) {
         << sArt.ofertas[2 * j + 1];
 }  // ActLinea
 
-int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
+int BusBinVec(tvsIndDesc &vsIndDesc, str30 descArt, ushort ult) {
   int li = 0, ls = ult, pm;
 
   while (li <= ls) {
     pm = (li + ls) / 2;
 
+    strlwr(descArt);
     int cmp = strcmp(descArt, vsIndDesc[pm].descArt);
 
     if (cmp == 0) {
@@ -317,7 +319,7 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
     vsArtRub[cantArt].posArt = cantArt;
     cantArt++;
   }
-  for (ushort i = 0; LeerDescripcion(IndDesc, sIndDesc) && i < cantArt; i++)
+  for (ushort i = 0; LeerIndDescrip(IndDesc, sIndDesc) && i < cantArt; i++)
     vsIndDesc[i] = sIndDesc;
   for (ushort i = 0; LeerRubro(Rub, sRub) && i < CANT_RUB; i++)
     vsRub[i] = sRub;
