@@ -448,7 +448,8 @@ void EmitirArt_x_Rubro(fstream &Art, tvsArtRub &vsArtRub, tvsRub &vsRub,
   short posRubro = -1;
   tsArt sArt;
 
-  cout << Replicate('-', 100) << '\n'
+  cout << Replicate('\n', 10) << '\n'  // Separa el Ticket del Listado
+       << Replicate('-', 100) << '\n'
        << Replicate(' ', floor((100.0 - 50.0) / 2.0))
        << "Listado de Articulos ordenados por Codigo de Rubro"
        << Replicate(' ', ceil((100.0 - 50.0) / 2.0)) << '\n'
