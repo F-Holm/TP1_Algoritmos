@@ -1,7 +1,7 @@
 /*
- - Nombre  del  programa: TP1V1_K1021G10_HOLM FEDERICO.cpp
- - fecha  entrega: 06/08/2025
- - Nro. versión: 1
+ - Nombre  del  programa: TP1V2_K1021G10_HOLM FEDERICO.cpp
+ - fecha  entrega: 03/09/2025
+ - Nro. versión: 2
  - Breve comentario del objetivo del programa:
    Este programa gestiona un sistema de ventas de artículos, permitiendo
    registrar artículos, rubros, descripciones y compras. Genera tickets
@@ -91,7 +91,7 @@ typedef tsCompra tvsListCmpr[MAX_COMPRAS];
 long GetTime(int &hh, int &mm, int &ss);
 long GetDate(int &year, int &mes, int &dia, int &ds);
 bool LeerArticulo(fstream &Art, tsArt &sArt);
-bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc);
+bool LeerIndDescrip(ifstream &IndDesc, tsIndDesc &sIndDesc);
 bool LeerRubro(ifstream &Rub, tsRub &sRub);
 bool LeerCompra(ifstream &ListCmpr, tsCompra &sCompra);
 void PieTicket(float impTot, float impTotDesto, float impTotConDesto);
@@ -99,7 +99,7 @@ void CabeceraTicket(int &ds);
 void OrdxBur(tvsArtRub &vsArt, ushort card);
 void IntCmb(tsArtRub &sElem1, tsArtRub &sElem2);
 void ActLinea(fstream &Art, tsArt &sArt);
-int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult);
+int BusBinVec(tvsIndDesc &vsIndDesc, str30 descArt, ushort ult);
 string Replicate(char car, ushort n);
 void Abrir(ARCHIVOS);
 void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr);
@@ -169,12 +169,13 @@ bool LeerArticulo(fstream &Art, tsArt &sArt) {
   return Art.good();
 }  // LeerArticulo
 
-bool LeerDescripcion(ifstream &IndDesc, tsIndDesc &sIndDesc) {
+bool LeerIndDescrip(ifstream &IndDesc, tsIndDesc &sIndDesc) {
   IndDesc.get(sIndDesc.descArt, 31);
   IndDesc >> sIndDesc.posArt >> sIndDesc.estado;
   IndDesc.ignore(2, '\n');
+  strlwr(sIndDesc.descArt);
   return IndDesc.good();
-}  // LeerDescripcion
+}  // LeerIndDescrip
 
 bool LeerRubro(ifstream &Rub, tsRub &sRub) {
   Rub >> sRub.codRub;
@@ -270,12 +271,13 @@ void ActLinea(fstream &Art, tsArt &sArt) {
         << sArt.ofertas[2 * j + 1];
 }  // ActLinea
 
-int BusBinVec(tvsIndDesc &vsIndDesc, str30 &descArt, ushort ult) {
+int BusBinVec(tvsIndDesc &vsIndDesc, str30 descArt, ushort ult) {
   int li = 0, ls = ult, pm;
 
   while (li <= ls) {
     pm = (li + ls) / 2;
 
+    strlwr(descArt);
     int cmp = strcmp(descArt, vsIndDesc[pm].descArt);
 
     if (cmp == 0) {
@@ -312,16 +314,16 @@ void VolcarArchivos(ARCHIVOS, REGISTROS, ushort &cantArt, ushort &cantCmpr) {
   cantArt = 0;
   cantCmpr = 0;
 
-  while (LeerArticulo(Art, sArt) && cantArt <= MAX_ART) {
+  while (LeerArticulo(Art, sArt) && cantArt < MAX_ART) {
     vsArtRub[cantArt].codRub = sArt.codRub;
     vsArtRub[cantArt].posArt = cantArt;
     cantArt++;
   }
-  for (ushort i = 0; LeerDescripcion(IndDesc, sIndDesc) && i < cantArt; i++)
+  for (ushort i = 0; LeerIndDescrip(IndDesc, sIndDesc) && i < cantArt; i++)
     vsIndDesc[i] = sIndDesc;
   for (ushort i = 0; LeerRubro(Rub, sRub) && i < CANT_RUB; i++)
     vsRub[i] = sRub;
-  while (LeerCompra(ListCmpr, sCompra) && cantCmpr <= MAX_COMPRAS) {
+  while (LeerCompra(ListCmpr, sCompra) && cantCmpr < MAX_COMPRAS) {
     vsListCmpr[cantCmpr] = sCompra;
     cantCmpr++;
   }
@@ -370,7 +372,7 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   float impTot = 0.0f, impTotDesto = 0.0f;
   tsArt sArt;
 
-  freopen("Ticket.txt", "w", stdout);
+  freopen("Salida.txt", "w", stdout);
   CabeceraTicket(ds);
   cout << fixed << setprecision(2) << setfill(' ');
 
@@ -439,18 +441,17 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   float impTotConDesto = impTot - impTotDesto;
 
   PieTicket(impTot, impTotDesto, impTotConDesto);
-  fclose(stdout);
 }
 
 void EmitirArt_x_Rubro(fstream &Art, tvsArtRub &vsArtRub, tvsRub &vsRub,
                        ushort cantArt) {
-  freopen("ListadoArticulos.txt", "w", stdout);
   cout << setfill(' ') << setprecision(2) << fixed;
   ushort codRubro = 200;
   short posRubro = -1;
   tsArt sArt;
 
-  cout << Replicate('-', 100) << '\n'
+  cout << Replicate('\n', 10) << '\n'  // Separa el Ticket del Listado
+       << Replicate('-', 100) << '\n'
        << Replicate(' ', floor((100.0 - 50.0) / 2.0))
        << "Listado de Articulos ordenados por Codigo de Rubro"
        << Replicate(' ', ceil((100.0 - 50.0) / 2.0)) << '\n'
