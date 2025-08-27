@@ -1,6 +1,6 @@
 /*
  - Nombre  del  programa: TP1V2_K1021G10_HOLM FEDERICO.cpp
- - fecha  entrega: 27/08/2025
+ - fecha  entrega: 03/09/2025
  - Nro. versión: 2
  - Breve comentario del objetivo del programa:
    Este programa gestiona un sistema de ventas de artículos, permitiendo
