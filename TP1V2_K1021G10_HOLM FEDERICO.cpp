@@ -397,25 +397,25 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
           descuento = subtotal * porc / 100.0f;
 
         switch (tipo) {
-          case 1:
+          case 2:
             strcpy(strDesc, "Promo");
             break;
-          case 2:
+          case 3:
             strcpy(strDesc, "Marca");
             break;
-          case 3:
+          case 4:
             strcpy(strDesc, "Jub.");
             break;
-          case 4:
+          case 5:
             strcpy(strDesc, "Comunid.");
             break;
-          case 5:
+          case 6:
             strcpy(strDesc, "MercPago");
             break;
-          case 6:
+          case 7:
             strcpy(strDesc, "ANSES");
             break;
-          default:
+          default: // case 0:
             strcpy(strDesc, "SinPromo");
             break;
         }
