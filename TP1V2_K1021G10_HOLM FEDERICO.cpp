@@ -372,7 +372,7 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
   float impTot = 0.0f, impTotDesto = 0.0f;
   tsArt sArt;
 
-  freopen("Salida.txt", "w", stdout);
+  freopen("Ticket.txt", "w", stdout);
   CabeceraTicket(ds);
   cout << fixed << setprecision(2) << setfill(' ');
 
