@@ -8,6 +8,8 @@
 *.pdf
 *.exe
 
+!./TP1V2_K1021G10_HOLM\ FEDERICO.exe
+
 # Archivos de configuración de usuario de CodeBlocks
 *.layout
 *.depend

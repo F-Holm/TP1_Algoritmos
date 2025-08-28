@@ -1,1 +1,21 @@
+# Regla general: todos los archivos de texto usan CRLF
 * text eol=crlf
+
+# Archivos binarios (nunca tocar EOL)
+*.pdf   binary
+*.doc   binary
+*.docx  binary
+*.exe   binary
+*.dll   binary
+*.png   binary
+*.jpg   binary
+*.zip   binary
+*.tar   binary
+*.obj   binary
+*.gz    binary
+*.ilc   binary
+*.ild   binary
+*.ilf   binary
+*.ils   binary
+*.map   binary
+*.tds   binary
