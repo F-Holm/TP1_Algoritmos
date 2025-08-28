@@ -393,7 +393,7 @@ void EmitirTicket(fstream &Art, tvsIndDesc &vsIndDesc, tvsListCmpr &vsListCmpr,
         float descuento = 0.0f;
         str10 strDesc;
 
-        if (tipo >= 1 && tipo <= 6)  // Solo aplicar si es válido
+        if (tipo >= 2 && tipo <= 7)  // Solo aplicar si es válido
           descuento = subtotal * porc / 100.0f;
 
         switch (tipo) {
