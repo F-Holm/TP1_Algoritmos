@@ -3,8 +3,8 @@ Aceite de Girasol                25 0
 Aceite de Oliva                  23 1
 Agua Mineral                     42 1
 Arvejas                          18 1
-Atun Fresco                       8 0
 Atun en Aceite                    6 0
+Atun Fresco                       8 0
 Avena                            40 0
 Baguette Francesa                15 1
 Banana Cavendish                  0 1

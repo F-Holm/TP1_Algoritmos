@@ -1,10 +1,10 @@
  1 Frutas                        
  2 Verduras                      
- 3 Lácteos                       
+ 3 Lacteos                       
  4 Carnes                        
  5 Bebidas                       
  6 Pescados                      
- 7 Panadería                     
+ 7 Panaderia                     
  8 Higiene                       
  9 Limpieza                      
 10 Dulces                        
