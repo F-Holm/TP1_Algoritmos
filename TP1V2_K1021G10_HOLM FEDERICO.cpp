@@ -274,10 +274,11 @@ void ActLinea(fstream &Art, tsArt &sArt) {
 int BusBinVec(tvsIndDesc &vsIndDesc, str30 descArt, ushort ult) {
   int li = 0, ls = ult, pm;
 
+  strlwr(descArt);
+ 
   while (li <= ls) {
     pm = (li + ls) / 2;
 
-    strlwr(descArt);
     int cmp = strcmp(descArt, vsIndDesc[pm].descArt);
 
     if (cmp == 0) {
